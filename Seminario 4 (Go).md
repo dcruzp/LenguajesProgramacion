@@ -2,7 +2,7 @@
 
 
 
-#### 1 - Cual es la forma de procesamiento del código fuente utilizada.
+#### 1 - Cual es la forma de procesamiento del código fuente utilizada. (los 3 )
 
 ​	El compilador de Go se divide lógicamente en cuatro etapas 
 
@@ -63,11 +63,11 @@ A continuación, el árbol de sintaxis abstracta se actualizara y compilara en n
 
 
 
-#### 2 - Go es un lenguaje moderno con muchisimas decisiones de diseño intencionales. Que ventejas  y desventajas le da al lenguaje su forma de procesamiento. Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.  
+#### 2 - Go es un lenguaje moderno con muchisimas decisiones de diseño intencionales. Que ventejas  y desventajas le da al lenguaje su forma de procesamiento. Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.  (David)
 
 
 
-#### 3 - Realice un sumario sobre las características mas interesantes de la sintaxis de Go:
+#### 3 - Realice un sumario sobre las características mas interesantes de la sintaxis de Go: (los 3)
 
 - Presente un Hello World (creatividad apreciada) 
 
@@ -96,41 +96,126 @@ A continuación, el árbol de sintaxis abstracta se actualizara y compilara en n
 - Otros elementos de las sintaxis que consideres relevante  a mostrar
 
   
-#### 4 - Presente los tipos nativos
+#### 4 - Presente los tipos nativos  (Daniel)
 
-#### 5 - Comente sobre ```nil``` y los valores por defecto 
+ 1. **Enteros** 
 
-#### 6 - Arrays y slices en Go. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas?
+    Go tiene los siguientes tipos de enteros independientes de la arquitectura
 
-#### 7 - Los tipos en Go son por referencia o por valor. Punteros en Go, que son , que se puede hacer con ellos , son seguros? Por que es seguro referenciar en Go a una variable local de un metodo?  Haga una comparacion con los punteros de C o C++.
+    | Nombre | signo    | bits   | type     | Range                                        |
+    | ------ | -------- | ------ | -------- | -------------------------------------------- |
+    | uint8  | unsigned | 8-bit  | integers | (0 a 255)                                    |
+    | uint16 | unsigned | 16-bit | integers | (0 a 65535)                                  |
+    | uint32 | unsigned | 32-bit | integers | (0 a 4294967295)                             |
+    | uint64 | unsigned | 64-bit | integers | (0 a 18446744073709551615)                   |
+    | int8   | signed   | 8-bits | integers | (-128 a 127)                                 |
+    | int16  | signed   | 16-bit | integers | (-32768 a 32767)                             |
+    | int32  | signed   | 32-bit | integers | (-2147483648 a 2147483647)                   |
+    | int64  | signed   | 64-bit | integers | (-9223372036854775808 a 9223372036854775807) |
+
+2. **Flotantes**
+
+   Los números flotantes y complejos también vienen en diferentes tamaños:
+
+    | Nombre  | Signo    | bits   | Type                   |
+    | ------- | -------- | ------ | ---------------------- |
+    | float32 | IEEE-754 | 32-bit | floating-point numbers |
+    | float64 | IEEE-754 | 64-bit | floating-point numbers |
+
+3. **Complejos**
+
+   | Nombre     | Especificaciones                                      |
+   | ---------- | ----------------------------------------------------- |
+   | complex64  | complex numbers with float32 real and imaginary parts |
+   | complex128 | complex numbres with float64 real and imaginary parts |
+
+    También existen varios alias de tipos de números, que asignan nombres útiles a tipos de datos específicos:
+   
+    | Alias | Tipo de datos |
+    | ----- | ------------- |
+    | byte  | uint8         |
+    | rune  | int32         |
+
+4. **Booleanos**
+  El tipo de datos booleanos puede ser uno de los dos valores, ya sea `true` o `false` y se define como `bool` al declararlo como un tipo de datos. Estos valores siempre aparecen con `t` y `f` ya que son identificadores declarado previamente en Go.
+
+5. **Cadenas**
+
+  Una cadena es una secuencia de uno o mas caracteres (letras, números, símbolos) que pueden ser una constante o una variable. Las cadenas existen dentro de comillas invertidas en Go y tienen diferentes características según se utilice.
+
+  Si se utiliza comilla invertida, creara un literal de cadena sin formato. Si utiliza comillas inversas, a veces se conocen como tildes inversas. Dentro de las comillas, cualquier carácter aparecerá como se muestra entre las comillas inversas,  excepción del propio carácter de comilla inversa.
+
+  ```go
+  fmt.Println(`Say "Hello World" to Go`)
+  ```
+
+  **Output:** ```Say "Hello World" to Go``` 
+
+  Normalmente las barras diagonales inversas se usan para representar caracteres especiales de cadenas. Sin embargo, las barras diagonales inversas no tiene un significado especial dentro de las  caracteres de cadena sin formato. 
+
+  ```go
+  fmt.Println(`Say "Hello World" to Go\n`)
+  ```
+
+  **Output:** ```Say "Hello World" to Go\n```
+
+  
+
+  
 
 
 
-#### 8 - Que es el keyword ```defer``` ? 
+
+
+#### 5 - Comente sobre ```nil``` y los valores por defecto (Daniel)
+
+#### 6 - Arrays y slices en Go. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas? (Javier) 
+
+#### 7 - Los tipos en Go son por referencia o por valor. Punteros en Go, que son , que se puede hacer con ellos , son seguros? Por que es seguro referenciar en Go a una variable local de un metodo?  Haga una comparacion con los punteros de C o C++. (Javier)
 
 
 
-#### 9 - Presente los ```structs``` en Go y comparelos con los de C. 
+#### 8 - Que es el keyword ```defer``` ?  (Daniel)
 
 
 
-#### 10.  Que es la composicion de tipos? Que son las interfaces en Go? Haga una comparacion entre composicion de tipos y herencia. Valore ventejas y desventajas de la composicion de tipos de Go y exprese su preferencia. 
+#### 9 - Presente los ```structs``` en Go y comparelos con los de C. (David)
 
 
 
-#### 11 - Se puede decir que Go es un lenguaje que ofrece programacion orientada a objetos? 
+#### 10.  Que es la composición de tipos? Que son las interfaces en Go? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de Go y exprese su preferencia. (David)
 
 
 
-#### 12 - Implemente una gerarquia de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los metodos solo reciban tipos nativos o interfaces . Les resulto mas comodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo? 
-
-#### 13 - Argumente  el poder que tiene la programacion con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de Go y C#. 
+#### 11 - Se puede decir que Go es un lenguaje que ofrece programación orientada a objetos? 
 
 
 
-#### 14 Como maneja Go las excepciones y errores en ejecucion? 
+#### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo? 
 
-#### 15 - Go no presente genericidad de tipos Que limitaciones les puede ofrecer esto el lenguaje? que alternativa propone? 
+#### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de Go y C#. 
+
+
+
+#### 14 Como maneja Go las excepciones y errores en ejecución? 
+
+#### 15 - Go no presente genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone? 
+
+## David el comepigna 
+
+	- esto es le punto 1 
+	- skdgjflig
+	- rgk;dfg
+
+skldglkfg
+
+
+
+| dfgdlfhn | s;gjdlifg | efihjfd |
+| -------- | --------- | ------- |
+|          |           |         |
+|          |           |         |
+|          |           |         |
 
 
 
