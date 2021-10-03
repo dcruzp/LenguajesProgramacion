@@ -161,13 +161,117 @@ A continuación, el árbol de sintaxis abstracta se actualizara y compilara en n
 
   
 
-  
+#### 5 - Comente sobre ```nil``` y los valores por defecto (Daniel) 
 
+	##### Defaults Values 
 
+ 1. ##### Valores por defecto para los `string` 
 
+    Los valores por defecto para los string en Go es un string vacio `""`
 
+    ```go
+    package main
+    
+    import "fmt"
+    
+    func main (){
+        var message string 
+        fmt.Println(message) 
+    }
+    ```
 
-#### 5 - Comente sobre ```nil``` y los valores por defecto (Daniel)
+    **Output**: ` `
+
+    
+
+	2. ##### Valores por defecto para los enteros 
+
+    En Go existen varios tipos para los enteros primitivos, estos son: `int` `int8` `int16` `int32` `int64` `uint` `uint8` `uint16` `uint32` `uint64` `uintptr` `byte` `rune` . 
+
+     Los valores por defecto para todos esos tipos de enteros en Go son el numero `0` .
+
+    ```go
+    package main
+    
+    import "fmt"
+    
+    func main() {
+       var num int
+       var num1 int8
+       var num2 uint16
+       var num3 uintptr
+       var num4 byte
+       var num5 rune
+    
+       fmt.Println(num, num1, num2, num3, num4, num5) // 0, 0, 0, 0, 0, 0
+    }
+    ```
+
+    **Output**: `0 0 0 0 0 0`
+
+    
+
+	3. ##### Valores por defecto para los Floats
+
+    Como en los enteros en Go hay multiples tipos para representar los floats. Los tipos para los floats son `float32` `float64`
+
+    El valor por defecto para los floats en Go es `0`  , como en los enteros.
+
+    ```go
+    package main 
+    
+    import "fmt" 
+    
+    func main(){
+        var num float32
+        var num1 float64
+        
+        fmt.Println(num,num1)
+    }
+    ```
+
+    **Output**: `0 0`
+
+	4. ##### Valores por defecto para los Complejos
+
+    En Go tambien existen dos tipos primitivos para representar los numeros complejos que pueden tener o no parte imaginaria. Los dos tipos son `complex64` `complex128` y susu valores por defecto son `(0+0i)`.
+
+    ```go
+    package main 
+    
+    import "fmt" 
+    
+    func main(){
+        var num complex64
+        var num1 complex128
+        
+        fmt.Println(num,num1)
+    }
+    ```
+
+    **Output**: `(0+0i) (0+0i)`
+
+	5. ##### Valores por defecto para los booleanos
+
+    El valor por defecto para el tipo `bool` en Go es `false`
+
+     
+
+    ```go
+    package main
+    
+    import "fmt"
+    
+    func main() {
+       var facts bool
+    
+       fmt.Println(facts) // false
+    }
+    ```
+
+    **Output**: `false`
+
+    
 
 #### 6 - Arrays y slices en Go. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas? (Javier) 
 
