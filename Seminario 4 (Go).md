@@ -65,6 +65,10 @@ A continuación, el árbol de sintaxis abstracta se actualizara y compilara en n
 
 #### 2 - Go es un lenguaje moderno con muchisimas decisiones de diseño intencionales. Que ventejas  y desventajas le da al lenguaje su forma de procesamiento. Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.  (David)
 
+Go es un lenguaje que pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo
+que no tendrás que pasar años hojeando la documenación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar.Tiene una compuilación rápida lo que mejora la productividad. Tine un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir
+código más simple. Es un leguaje de tipado estático con una librería standard bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado y bien documentado . Es libre y de código abierto (licencia BSD).
+
 
 
 #### 3 - Realice un sumario sobre las características mas interesantes de la sintaxis de Go: (los 3)
@@ -77,11 +81,109 @@ A continuación, el árbol de sintaxis abstracta se actualizara y compilara en n
   import "fmt"
   
   func main() {
-  	fmt.Println("Hello, World!")
+  	fmt.Println("Hello, World!!!")
   }
   ```
 
-  
+- 
+
+- 
+
+
+
+## For
+
+Go tiene solo una sola estructura para ciclos **for loop**
+
+Un ciclo **for** básico en go tiene tres componentes principales separadas por semicolons(;):
+
+1.  **init statment**:  la declaración init se ejectuta antes de la primera iteración del ciclo
+2.  **condition expression**: la condicional es evaluada antes de cada iteración
+3.  **post statement**: se ejectuta al final de cada iteración
+
+
+
+La declaración init a menudo será una declaración de variable corta(usando **:=**), y las variables declaradas alli son visibles solo en el scope
+
+de esta instrucción. El ciclo for para de iterar una vez que la condición booleana evaluada es falsa. A diferencia de otros lenguajes como C, Java o Javascript aquí no hay paréntesis que rodeen las tress componentes de la instrucción for y las llaves (**{}**) siempre son necesarias.
+
+Ejemplo de instrucción **for** básico en **Go**:
+
+
+
+```
+package main
+
+import "fmt"
+
+func main() {
+	sum := 0
+	for i := 0; i < 5; i++ {
+		sum += 2*i
+	}
+	fmt.Println(sum)
+}
+
+```
+
+
+
+Las instrucciones init y post son opcionales:
+
+```
+package main
+
+import "fmt"
+
+func main() {
+	sum := 0
+	for ; sum < 50; {
+		sum += 5
+	}
+	fmt.Println(sum)
+}
+```
+
+For is también el "while" de Go :):
+
+Puedes quitar el semicolon(;) y el "while" está escritor for en Go
+
+Ejemplo:
+
+```
+package main
+
+import "fmt"
+
+func main() {
+	sum := 1
+	for sum < 1000 {
+		sum += sum
+	}
+	fmt.Println(sum)
+}
+
+```
+
+Ciclo infinito:
+
+Si tu omites la condición booleana sería un ciclo infinito. Por lo tanto puedes expresar un ciclo infinito de forma compacta (no es necesario poner true como en otros lenguajes)
+
+Ejemplo:
+
+```
+package main
+
+func main() {
+	for {
+	}
+}
+```
+
+
+
+
+
 
 - Creación de variables 
 
@@ -117,10 +219,10 @@ A continuación, el árbol de sintaxis abstracta se actualizara y compilara en n
 
    Los números flotantes y complejos también vienen en diferentes tamaños:
 
-    | Nombre  | Signo    | bits   | Type                   |
-    | ------- | -------- | ------ | ---------------------- |
-    | float32 | IEEE-754 | 32-bit | floating-point numbers |
-    | float64 | IEEE-754 | 64-bit | floating-point numbers |
+   | Nombre  | Signo    | bits   | Type                   |
+   | ------- | -------- | ------ | ---------------------- |
+   | float32 | IEEE-754 | 32-bit | floating-point numbers |
+   | float64 | IEEE-754 | 64-bit | floating-point numbers |
 
 3. **Complejos**
 
@@ -131,10 +233,10 @@ A continuación, el árbol de sintaxis abstracta se actualizara y compilara en n
 
     También existen varios alias de tipos de números, que asignan nombres útiles a tipos de datos específicos:
    
-    | Alias | Tipo de datos |
-    | ----- | ------------- |
-    | byte  | uint8         |
-    | rune  | int32         |
+   | Alias | Tipo de datos |
+   | ----- | ------------- |
+   | byte  | uint8         |
+   | rune  | int32         |
 
 4. **Booleanos**
     El tipo de datos booleanos puede ser uno de los dos valores, ya sea `true` o `false` y se define como `bool` al declararlo como un tipo de datos. Estos valores siempre aparecen con `t` y `f` ya que son identificadores declarado previamente en Go.
