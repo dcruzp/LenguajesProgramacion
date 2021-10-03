@@ -336,7 +336,7 @@ func main() {
   4. ##### Valores por defecto para los Complejos
 
       En Go tambien existen dos tipos primitivos para representar los numeros complejos que pueden tener o no parte imaginaria. Los dos tipos son `complex64` `complex128` y susu valores por defecto son `(0+0i)`.
-    
+        
       ```go
       package main 
       
@@ -369,6 +369,108 @@ func main() {
       ```
       
       **Output**: `false`
+      
+  6. ##### Valores por defecto para los Punteros 
+
+      Los valores por defecto para los punteros en Go es `nil`
+
+      ```go
+      package main
+      
+      import "fmt"
+      
+      func main() {
+         var num *int
+      
+         fmt.Println(num)
+      }
+      ```
+
+      **Output:** `nil`
+
+  7. ##### Valores por defecto para los Structs
+
+      Los tipos por defecto para las variables de los Strucut son los propos valores por defecto de cada uno de los tipos presentados. 
+
+      ```go
+      package main
+      
+      import "fmt"
+      
+      type Person struct {
+        Name string
+        Age int
+      }
+      
+      func main() {
+        var ado Person
+      
+        fmt.Println(ado) // { "", 0 }
+      }
+      ```
+
+       **Output:**`{"",0}`
+
+  8. ##### Valores por defecto para los Slices
+
+      Los valores por defecto para los slices en Go en `nil`. Un slice `nil` tiene una longitud y una capacidad `0`  y no tiene ningún array subyacente. 
+
+      Si se imprime un slice vacio, se va a obtener de vuelta un `[]` en vez de`nil`. Pero sin embargo si se pregunta si un slice vacío es igual a `nil`, se va a retornar `true`. 
+
+      ```go
+      package main
+      
+      import "fmt"
+      
+      func main() {
+      	var s []int
+      	fmt.Println(s) // []
+      	if s == nil { // true
+      		fmt.Println("nil!")
+      	}
+      }
+      ```
+
+      **Output:** ` [] , nil!`
+
+  9. ##### Valores por defecto para los `Maps` en Go 
+
+      Los valores por defecto para los maps en Go es `nil`. Igual que con los slices. si se imprime un map vacio se optiene `map []`, pero si se chequea si el map es `nil` se obtiene `true`. 
+
+      ```go
+      package main
+      
+      import "fmt"
+      
+      func main() {
+        var data map[string]interface{}
+        fmt.Println(data) // map[]
+        if m == nil { // true
+        fmt.Println("nil!")
+        }
+      }
+      ```
+
+      **Output:** `map[] , nil!`
+
+  10. ##### Valore por defecto para las intefaces en Go 
+
+      El valor por defecto de una interface vacia`interface{}` en Go  es también `nil`.
+
+      ```go
+      package main
+      
+      import "fmt"
+      
+      func main() {
+        var data interface{}
+        fmt.Println(data) // nil
+      }
+      ```
+
+       **Output:** `nil`
+
+      
 
 
 #### 6 - Arrays y slices en Go. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas? (Javier) 
