@@ -142,37 +142,141 @@ código más simple. Es un leguaje de tipado estático con una librería standar
     | rune  | int32         |
 
 4. **Booleanos**
-  El tipo de datos booleanos puede ser uno de los dos valores, ya sea `true` o `false` y se define como `bool` al declararlo como un tipo de datos. Estos valores siempre aparecen con `t` y `f` ya que son identificadores declarado previamente en Go.
+    El tipo de datos booleanos puede ser uno de los dos valores, ya sea `true` o `false` y se define como `bool` al declararlo como un tipo de datos. Estos valores siempre aparecen con `t` y `f` ya que son identificadores declarado previamente en Go.
 
 5. **Cadenas**
 
-  Una cadena es una secuencia de uno o mas caracteres (letras, números, símbolos) que pueden ser una constante o una variable. Las cadenas existen dentro de comillas invertidas en Go y tienen diferentes características según se utilice.
+    Una cadena es una secuencia de uno o mas caracteres (letras, números, símbolos) que pueden ser una constante o una variable. Las cadenas existen dentro de comillas invertidas en Go y tienen diferentes características según se utilice.
 
-  Si se utiliza comilla invertida, creara un literal de cadena sin formato. Si utiliza comillas inversas, a veces se conocen como tildes inversas. Dentro de las comillas, cualquier carácter aparecerá como se muestra entre las comillas inversas,  excepción del propio carácter de comilla inversa.
+    Si se utiliza comilla invertida, creara un literal de cadena sin formato. Si utiliza comillas inversas, a veces se conocen como tildes inversas. Dentro de las comillas, cualquier carácter aparecerá como se muestra entre las comillas inversas,  excepción del propio carácter de comilla inversa.
 
-  ```go
-  fmt.Println(`Say "Hello World" to Go`)
-  ```
+    ```go
+    fmt.Println(`Say "Hello World" to Go`)
+    ```
 
-  **Output:** ```Say "Hello World" to Go``` 
+    **Output:** ```Say "Hello World" to Go``` 
 
-  Normalmente las barras diagonales inversas se usan para representar caracteres especiales de cadenas. Sin embargo, las barras diagonales inversas no tiene un significado especial dentro de las  caracteres de cadena sin formato. 
+    Normalmente las barras diagonales inversas se usan para representar caracteres especiales de cadenas. Sin embargo, las barras diagonales inversas no tiene un significado especial dentro de las  caracteres de cadena sin formato. 
 
-  ```go
-  fmt.Println(`Say "Hello World" to Go\n`)
-  ```
+    ```go
+    fmt.Println(`Say "Hello World" to Go\n`)
+    ```
 
-  **Output:** ```Say "Hello World" to Go\n```
-
-  
+    **Output:** ```Say "Hello World" to Go\n```
 
   
 
+#### 5 - Comente sobre ```nil``` y los valores por defecto (Daniel) 
 
+	##### Defaults Values 
 
+ 1. ##### Valores por defecto para los `string` 
 
+    Los valores por defecto para los string en Go es un string vacio `""`
 
-#### 5 - Comente sobre ```nil``` y los valores por defecto (Daniel)
+    ```go
+    package main
+    
+    import "fmt"
+    
+    func main (){
+        var message string 
+        fmt.Println(message) 
+    }
+    ```
+
+    **Output**: ` `
+
+    
+
+	2. ##### Valores por defecto para los enteros 
+
+    En Go existen varios tipos para los enteros primitivos, estos son: `int` `int8` `int16` `int32` `int64` `uint` `uint8` `uint16` `uint32` `uint64` `uintptr` `byte` `rune` . 
+
+     Los valores por defecto para todos esos tipos de enteros en Go son el numero `0` .
+
+    ```go
+    package main
+    
+    import "fmt"
+    
+    func main() {
+       var num int
+       var num1 int8
+       var num2 uint16
+       var num3 uintptr
+       var num4 byte
+       var num5 rune
+    
+       fmt.Println(num, num1, num2, num3, num4, num5) // 0, 0, 0, 0, 0, 0
+    }
+    ```
+
+    **Output**: `0 0 0 0 0 0`
+
+    
+
+	3. ##### Valores por defecto para los Floats
+
+    Como en los enteros en Go hay multiples tipos para representar los floats. Los tipos para los floats son `float32` `float64`
+
+    El valor por defecto para los floats en Go es `0`  , como en los enteros.
+
+    ```go
+    package main 
+    
+    import "fmt" 
+    
+    func main(){
+        var num float32
+        var num1 float64
+        
+        fmt.Println(num,num1)
+    }
+    ```
+
+    **Output**: `0 0`
+
+	4. ##### Valores por defecto para los Complejos
+
+    En Go tambien existen dos tipos primitivos para representar los numeros complejos que pueden tener o no parte imaginaria. Los dos tipos son `complex64` `complex128` y susu valores por defecto son `(0+0i)`.
+
+    ```go
+    package main 
+    
+    import "fmt" 
+    
+    func main(){
+        var num complex64
+        var num1 complex128
+        
+        fmt.Println(num,num1)
+    }
+    ```
+
+    **Output**: `(0+0i) (0+0i)`
+
+	5. ##### Valores por defecto para los booleanos
+
+    El valor por defecto para el tipo `bool` en Go es `false`
+
+     
+
+    ```go
+    package main
+    
+    import "fmt"
+    
+    func main() {
+       var facts bool
+    
+       fmt.Println(facts) // false
+    }
+    ```
+
+    **Output**: `false`
+
+    
 
 #### 6 - Arrays y slices en Go. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas? (Javier) 
 
@@ -205,22 +309,6 @@ código más simple. Es un leguaje de tipado estático con una librería standar
 #### 14 Como maneja Go las excepciones y errores en ejecución? 
 
 #### 15 - Go no presente genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone? 
-
-## David el comepigna 
-
-	- esto es le punto 1 
-	- skdgjflig
-	- rgk;dfg
-
-skldglkfg
-
-
-
-| dfgdlfhn | s;gjdlifg | efihjfd |
-| -------- | --------- | ------- |
-|          |           |         |
-|          |           |         |
-|          |           |         |
 
 
 
