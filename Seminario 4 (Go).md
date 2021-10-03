@@ -137,27 +137,27 @@ A continuación, el árbol de sintaxis abstracta se actualizara y compilara en n
     | rune  | int32         |
 
 4. **Booleanos**
-  El tipo de datos booleanos puede ser uno de los dos valores, ya sea `true` o `false` y se define como `bool` al declararlo como un tipo de datos. Estos valores siempre aparecen con `t` y `f` ya que son identificadores declarado previamente en Go.
+    El tipo de datos booleanos puede ser uno de los dos valores, ya sea `true` o `false` y se define como `bool` al declararlo como un tipo de datos. Estos valores siempre aparecen con `t` y `f` ya que son identificadores declarado previamente en Go.
 
 5. **Cadenas**
 
-  Una cadena es una secuencia de uno o mas caracteres (letras, números, símbolos) que pueden ser una constante o una variable. Las cadenas existen dentro de comillas invertidas en Go y tienen diferentes características según se utilice.
+    Una cadena es una secuencia de uno o mas caracteres (letras, números, símbolos) que pueden ser una constante o una variable. Las cadenas existen dentro de comillas invertidas en Go y tienen diferentes características según se utilice.
 
-  Si se utiliza comilla invertida, creara un literal de cadena sin formato. Si utiliza comillas inversas, a veces se conocen como tildes inversas. Dentro de las comillas, cualquier carácter aparecerá como se muestra entre las comillas inversas,  excepción del propio carácter de comilla inversa.
+    Si se utiliza comilla invertida, creara un literal de cadena sin formato. Si utiliza comillas inversas, a veces se conocen como tildes inversas. Dentro de las comillas, cualquier carácter aparecerá como se muestra entre las comillas inversas,  excepción del propio carácter de comilla inversa.
 
-  ```go
-  fmt.Println(`Say "Hello World" to Go`)
-  ```
+    ```go
+    fmt.Println(`Say "Hello World" to Go`)
+    ```
 
-  **Output:** ```Say "Hello World" to Go``` 
+    **Output:** ```Say "Hello World" to Go``` 
 
-  Normalmente las barras diagonales inversas se usan para representar caracteres especiales de cadenas. Sin embargo, las barras diagonales inversas no tiene un significado especial dentro de las  caracteres de cadena sin formato. 
+    Normalmente las barras diagonales inversas se usan para representar caracteres especiales de cadenas. Sin embargo, las barras diagonales inversas no tiene un significado especial dentro de las  caracteres de cadena sin formato. 
 
-  ```go
-  fmt.Println(`Say "Hello World" to Go\n`)
-  ```
+    ```go
+    fmt.Println(`Say "Hello World" to Go\n`)
+    ```
 
-  **Output:** ```Say "Hello World" to Go\n```
+    **Output:** ```Say "Hello World" to Go\n```
 
   
 
@@ -200,22 +200,6 @@ A continuación, el árbol de sintaxis abstracta se actualizara y compilara en n
 #### 14 Como maneja Go las excepciones y errores en ejecución? 
 
 #### 15 - Go no presente genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone? 
-
-## David el comepigna 
-
-	- esto es le punto 1 
-	- skdgjflig
-	- rgk;dfg
-
-skldglkfg
-
-
-
-| dfgdlfhn | s;gjdlifg | efihjfd |
-| -------- | --------- | ------- |
-|          |           |         |
-|          |           |         |
-|          |           |         |
 
 
 
