@@ -12,6 +12,14 @@ func main() {
 	// 	fmt.Scanln(&input)
 	// 	fmt.Println(palindromo(input))
 	// }
-	shortVariableDeclaration()
+	// shortVariableDeclaration()
+	// Testing_arr()
+	//Arr_managment2()
 
+	// var arr1 = [5]int{1, 2, 3, 4, 5}
+	// Sum(arr1[:])
+
+	// Append_test1()
+
+	Append_test2()
 }

@@ -215,7 +215,7 @@ func main() {
     | int32  | signed   | 32-bit | integers | (-2147483648 a 2147483647)                   |
     | int64  | signed   | 64-bit | integers | (-9223372036854775808 a 9223372036854775807) |
 
-2. **Flotantes**
+1. **Flotantes**
 
    Los números flotantes y complejos también vienen en diferentes tamaños:
 
@@ -224,7 +224,7 @@ func main() {
    | float32 | IEEE-754 | 32-bit | floating-point numbers |
    | float64 | IEEE-754 | 64-bit | floating-point numbers |
 
-3. **Complejos**
+2. **Complejos**
 
    | Nombre     | Especificaciones                                      |
    | ---------- | ----------------------------------------------------- |
@@ -238,10 +238,10 @@ func main() {
    | byte  | uint8         |
    | rune  | int32         |
 
-4. **Booleanos**
+3. **Booleanos**
     El tipo de datos booleanos puede ser uno de los dos valores, ya sea `true` o `false` y se define como `bool` al declararlo como un tipo de datos. Estos valores siempre aparecen con `t` y `f` ya que son identificadores declarado previamente en Go.
 
-5. **Cadenas**
+4. **Cadenas**
 
     Una cadena es una secuencia de uno o mas caracteres (letras, números, símbolos) que pueden ser una constante o una variable. Las cadenas existen dentro de comillas invertidas en Go y tienen diferentes características según se utilice.
 
@@ -376,6 +376,248 @@ func main() {
     
 
 #### 6 - Arrays y slices en Go. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas? (Javier) 
+
+ 1. **Arrays**
+
+    Los arrays en Go son una secuencia de datos enumerados de un mismo tipo, ya sea tipos built-in o previamente definidos, con un tamaño fijo. Los  elementos en un array en Go, estan enumerados apartir del 0, al igual que todos los lenguajes de la familia C, por lo que el   primer elemento de la secuencia está en la posición 0. Cada elemento en el array se inicializa con un valor por defecto, por ejemplo, en caso de que inicialicemos un array de enteros:
+
+    ```go
+    package main 
+    
+    import "fmt" 
+    
+    func main() {
+	    Testing_arr()
+    }
+
+    func Testing_arr() {
+	    var coll [10]int
+
+        //Conditional styled for loop
+	    // for i := 0; i < len(coll); i++ {
+	    // 	fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
+	    // }
+
+	    //Range styled for loop
+	    for i := range coll {
+	    	fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
+	}
+    ```
+
+
+    **output**:
+
+     1. Array coll at index 0 is 0
+     2. Array coll at index 1 is 0
+     3. Array coll at index 2 is 0
+     4. Array coll at index 3 is 0
+     5. Array coll at index 4 is 0
+     6. Array coll at index 5 is 0
+     7. Array coll at index 6 is 0
+     8. Array coll at index 7 is 0
+     9. Array coll at index 8 is 0
+     10. Array coll at index 9 is 0 
+
+    <br/>
+    Solo pueden ser usados índices dentro del rango del tamano del array, en caso de que el compilador pueda detectar que se está indexando incorrectamente, lo notificará, de lo contrario el problema se arrastrará a tiempo de ejecucion, y se mostrará la notificación:
+
+    ```runtime error: index out of range```
+
+    En el fragmento de código anterior pudimos ver como la forma de iterar sobre los elementos de un array es usando el keyword ```for```, y mostramos 2 maneras, la convencional, utilizando una condicional dentro del cuerpo del ciclo, y otra utilizando el keyword ```range```.
+
+    En Go, los arrays por defecto, son tipos por valor, a diferencia de los lenguajes de la familia C, que son un puntero al lugar en memoria y por eso son tipos por referencia. Esto trae como consecuencia, que al hacer una operación como la siguiente:
+
+    ```go
+    arr1 := arr2
+    ```
+
+    Donde arr1 y arr2 son 2 arrays previamente declarados, en vez de simplemente cambiar las referencias, en arr1 se almacena una copia de arr2, lo que se puede ver claramente en el siguiente código de ejemplo:
+
+    ```go
+
+    func main() {
+	    Arr_managment1()
+    }
+
+    func Arr_managment1() {
+	    var arr1 [3]int
+	    arr2 := arr1
+
+	    arr2[0] = 1
+
+	    fmt.Printf("arr1 at index 0 is %d\n", arr1[0])
+	    fmt.Printf("arr2 at index 0 is %d\n", arr2[0])
+    }
+    ```
+    
+    **output**: 
+
+    1. arr1 at index 0 is 0
+    2. arr2 at index 0 is 1
+
+    <br/>
+
+    Como se puede observar el valor de arr2[0] cambió, sin embargo arr1[0] se mantuvo igual.
+
+    Si quisiéramos pasar un array por referencia, se puede usar el operador ```&``` delante del nombre del array deseado al igual que en C++, como se muestra en el siguiente ejemplo:
+
+    ```go
+
+    func main() {
+	    Arr_managment2
+    }
+
+    func Arr_managment2() {
+	    var arr1 [3]int
+	    arr2 := &arr1
+
+	    arr2[0] = 1
+
+	    fmt.Printf("arr1 at index 0 is %d\n", arr1[0])
+	    fmt.Printf("arr2 at index 0 is %d\n", arr2[0])
+    }
+    ```
+
+    **output**
+    1. arr1 at index 0 is 1
+    2. arr2 at index 0 is 1
+
+    <br/>
+    Como podemos observar ambos arr1[0] y arr2[0] cambiaron sus valores, pues ambos son punteros que apuntan al mismo lugar en memoria.
+
+    <br/>
+    <br/>
+    
+    Al igual que en algunos lenguajes de la familia C, como C++, pasar los arrays directamente como argumento a una función, rápidamente consume mucha memoria, por lo que se recomienda pasar un puntero al array con el operador ```&```.
+
+    <br/>
+    Para construir arrays se puede utilizar el operador ..., que indica al compilador que debe contar los elementos para saber el tamaño del array. Se podría decir que está es una forma lazy de construir arrays en Go.
+
+    <br/>
+    Para declarar un array multidimensional, se hace lo siguiente por ejemplo:
+
+    ```go
+    [3][5]int
+    [2][2][2]float64
+    ```
+
+ 2. **Slices**
+    
+    Los slices son una referencia a un fragmento de memoria contiguo, en un array, por lo que los slices son tipos por referencia (igual comportamiento a los arrays en C/C++ y a las listas en Python). Este fragmento puede ser el array en su totalidad, o un subconjunto de este, definido por un índice inicial y otro final, donde el elemento en la posición del índice final no se incluye en el slice. El tamaño de los slices puede variar en tiempo de ejecución, puede ir desde 0, hasta el tamaño del array que lo contiene, así que podríamos decir que un slice es un array de tamaño variable. La información que almacena un slice es el puntero al array, el tamaño actual del slice y el tamaño máximo que puede alcanzar el slice, que es el cap, y que está determinado por el tamaño del array que lo contiene.
+
+    Para declarar un slice se puede hacer de las siguientes maneras:
+
+    ```go
+    var mySlice []type //no es necesario indicar el tamaño
+    ```
+
+    Y para inicializarlo:
+
+    ```go
+    var mySlice []type = arr1[start:end] //Indicamos en que posición de arr1 queremos que comience y en que posición queremos que termine
+    ```
+
+    Si deseamos que el slice sea el array en su totalidad, basta con simplemente hacer:
+
+    ```go
+    var mySlice []type = arr1[:]
+    ```
+
+    Al dejar declarar una de las dos partes del operador ```:``` dentro de los corchetes, se infiere directamente que son ambos extremos del array subyacente, o sea, ```0``` y ```len(arr1)```.
+
+    Es posible modificar los elementos que contiene un slice, por ejemplo si quisieramos remover el último elemento:
+
+    ```go
+    slice1 := slice1[:len(slice1) - 1]
+    ```
+
+    Si quisiéramos agregar elementos a un slice, se podría hacer también, pero hay que tener en cuenta que solo puede contener a lo sumo todos los elementos del array subyacente, por ejemplo si quisiéramos extender el slice lo más posible sería:
+
+    ```go
+    slice1 := slice1[:cap(slice1)]
+    ```
+
+    Lo que agrega al slice, todos los elementos que le faltan desde su último elemento, hasta el último elemento del array que lo contiene, cualquier cantidad mayor, dará error en tiempo de ejecución.
+
+    Debido a que los slices son tipos por referencia, son mucho más usados en Go, y se usan entre otras cosas, para pasar arrays como argumentos a funciones, ya que los slices ocupan mucho menos espacio en memoria que los arrays. Por ejemplo:
+
+    ```go
+    package main
+
+    func main() {
+	    var arr1 = [5]int{1, 2, 3, 4, 5}
+	    Sum(arr1[:]) //Pasamos arr1 como un slice a la función Sum
+    }
+
+    func Sum(elems []int) {
+    	s := 0
+    	for i := range elems {
+    		s += elems[i]
+    	}
+
+    	fmt.Printf("Sum is %d", s)
+    }
+    ```
+
+    **output**: 15
+
+ <br/>
+
+ 3. Métodos nativos ```make()```, ```append()```, ```copy()```
+    
+    ### ```make()```
+    El método ```make()``` se usar para crear slices, y cuando el array que contiene al slice aún no está definido, este método es una vía para hacerlos a ambos juntos. Por ejemplo:
+
+    ```go
+     slice1 := make([]type, length) //Donde length es el tamaño inicial del slice, al igual que el tamaño del array que lo contiene.
+    ```
+
+    Si quisiéramos que el slice no ocupara todo el tamaño del array inicialmente podríamos inicializarlo de la siguiente manera:
+    
+    ```go
+     slice1 := make([]type, length, capacity) //Donde length es el tamaño del slice y capacity el tamaño del array.
+    ```
+
+    La función ```make()```, solo se puede aplicar a los 3 tipos por referencia nativos de Go, slices, maps y channels, y devuelve un valor inicializado del tipo especificado en su primer argumento.
+
+    ### ```append()```
+
+    La función ```append()```, agrega 0 o más valores a un slice s, y devuelve el slice resultante, del mismo tipo que s, por lo que los valores agregados tienen que ser del mismo tipo por supuesto. Si s no es lo suficientemente grande, para almacenar todos lo valores agregadoes, ```append()``` reserva un slice lo suficientemente grande para almacenar todos estos elementos, lo que implica que el array que contiene al slice resultante, no tiene porque ser el inicial. En el siguiente código mostramos como funciona ```append()```:
+
+    ```go
+    func main(){
+        Append_test1()    
+    }
+
+    func Append_test1() {
+    	sli1 := []int{1, 2, 3}
+    	sli1 = append(sli1, 4, 5, 6)
+    	fmt.Println(sli1)
+    }
+    ```
+
+    **output**: [1 2 3 4 5 6]
+
+    Es posible usar ```append()``` para unir 2 slices x e y usando el operador ..., de la siguiente manera:
+
+    ```go
+    func main(){
+        Append_test2()    
+    }
+
+    func Append_test2() {
+        sli1 := []int{1, 2, 3}
+    	sli2 := []int{4, 5, 6}
+	    sli3 := append(sli1, sli2...)
+	    fmt.Println(sli3)
+    }
+    ```
+
+    **output**: [1 2 3 4 5 6]
+
+    ### ```copy()```
+
+    La función ```copy()```, copia elementos de un mismo tipo, de un slice a otro, sobreescribiendo los correspodientes elementos del slice origen en el slice destino. La cantidad de elementos que se copian del origen al destino es el mínimo de los tamaños de ambos slices.
 
 #### 7 - Los tipos en Go son por referencia o por valor. Punteros en Go, que son , que se puede hacer con ellos , son seguros? Por que es seguro referenciar en Go a una variable local de un metodo?  Haga una comparacion con los punteros de C o C++. (Javier)
 
