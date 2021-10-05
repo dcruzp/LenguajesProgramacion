@@ -587,7 +587,7 @@ func main() {
   4. ##### Valores por defecto para los Complejos
 
       En Go tambien existen dos tipos primitivos para representar los numeros complejos que pueden tener o no parte imaginaria. Los dos tipos son `complex64` `complex128` y susu valores por defecto son `(0+0i)`.
-        
+      
       ```go
       package main 
       
@@ -738,15 +738,15 @@ func main() {
     func main() {
 	    Testing_arr()
     }
-
+    
     func Testing_arr() {
 	    var coll [10]int
-
+    
         //Conditional styled for loop
 	    // for i := 0; i < len(coll); i++ {
 	    // 	fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
 	    // }
-
+    
 	    //Range styled for loop
 	    for i := range coll {
 	    	fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
@@ -755,7 +755,7 @@ func main() {
 
 
     **output**:
-
+    
      1. Array coll at index 0 is 0
      2. Array coll at index 1 is 0
      3. Array coll at index 2 is 0
@@ -766,85 +766,85 @@ func main() {
      8. Array coll at index 7 is 0
      9. Array coll at index 8 is 0
      10. Array coll at index 9 is 0 
-
+    
     <br/>
     Solo pueden ser usados índices dentro del rango del tamano del array, en caso de que el compilador pueda detectar que se está indexando incorrectamente, lo notificará, de lo contrario el problema se arrastrará a tiempo de ejecucion, y se mostrará la notificación:
-
+    
     ```runtime error: index out of range```
-
+    
     En el fragmento de código anterior pudimos ver como la forma de iterar sobre los elementos de un array es usando el keyword ```for```, y mostramos 2 maneras, la convencional, utilizando una condicional dentro del cuerpo del ciclo, y otra utilizando el keyword ```range```.
-
+    
     En Go, los arrays por defecto, son tipos por valor, a diferencia de los lenguajes de la familia C, que son un puntero al lugar en memoria y por eso son tipos por referencia. Esto trae como consecuencia, que al hacer una operación como la siguiente:
-
+    
     ```go
     arr1 := arr2
     ```
-
+    
     Donde arr1 y arr2 son 2 arrays previamente declarados, en vez de simplemente cambiar las referencias, en arr1 se almacena una copia de arr2, lo que se puede ver claramente en el siguiente código de ejemplo:
-
+    
     ```go
-
+    
     func main() {
-	    Arr_managment1()
+        Arr_managment1()
     }
-
+    
     func Arr_managment1() {
-	    var arr1 [3]int
-	    arr2 := arr1
-
-	    arr2[0] = 1
-
-	    fmt.Printf("arr1 at index 0 is %d\n", arr1[0])
-	    fmt.Printf("arr2 at index 0 is %d\n", arr2[0])
+        var arr1 [3]int
+        arr2 := arr1
+    
+        arr2[0] = 1
+    
+        fmt.Printf("arr1 at index 0 is %d\n", arr1[0])
+        fmt.Printf("arr2 at index 0 is %d\n", arr2[0])
     }
     ```
     
     **output**: 
-
+    
     1. arr1 at index 0 is 0
     2. arr2 at index 0 is 1
-
+    
     <br/>
-
+    
     Como se puede observar el valor de arr2[0] cambió, sin embargo arr1[0] se mantuvo igual.
-
+    
     Si quisiéramos pasar un array por referencia, se puede usar el operador ```&``` delante del nombre del array deseado al igual que en C++, como se muestra en el siguiente ejemplo:
-
+    
     ```go
-
+    
     func main() {
-	    Arr_managment2
+        Arr_managment2
     }
-
+    
     func Arr_managment2() {
-	    var arr1 [3]int
-	    arr2 := &arr1
-
-	    arr2[0] = 1
-
-	    fmt.Printf("arr1 at index 0 is %d\n", arr1[0])
-	    fmt.Printf("arr2 at index 0 is %d\n", arr2[0])
+        var arr1 [3]int
+        arr2 := &arr1
+    
+        arr2[0] = 1
+    
+        fmt.Printf("arr1 at index 0 is %d\n", arr1[0])
+        fmt.Printf("arr2 at index 0 is %d\n", arr2[0])
     }
     ```
-
+    
     **output**
     1. arr1 at index 0 is 1
     2. arr2 at index 0 is 1
-
+    
     <br/>
     Como podemos observar ambos arr1[0] y arr2[0] cambiaron sus valores, pues ambos son punteros que apuntan al mismo lugar en memoria.
-
+    
     <br/>
     <br/>
     
     Al igual que en algunos lenguajes de la familia C, como C++, pasar los arrays directamente como argumento a una función, rápidamente consume mucha memoria, por lo que se recomienda pasar un puntero al array con el operador ```&```.
-
+    
     <br/>
     Para construir arrays se puede utilizar el operador ..., que indica al compilador que debe contar los elementos para saber el tamaño del array. Se podría decir que está es una forma lazy de construir arrays en Go.
-
+    
     <br/>
     Para declarar un array multidimensional, se hace lo siguiente por ejemplo:
-
+    
     ```go
     [3][5]int
     [2][2][2]float64
@@ -892,18 +892,18 @@ func main() {
 
     ```go
     package main
-
+    
     func main() {
 	    var arr1 = [5]int{1, 2, 3, 4, 5}
 	    Sum(arr1[:]) //Pasamos arr1 como un slice a la función Sum
     }
-
+    
     func Sum(elems []int) {
     	s := 0
     	for i := range elems {
     		s += elems[i]
     	}
-
+    
     	fmt.Printf("Sum is %d", s)
     }
     ```
@@ -937,7 +937,7 @@ func main() {
     func main(){
         Append_test1()    
     }
-
+    
     func Append_test1() {
     	sli1 := []int{1, 2, 3}
     	sli1 = append(sli1, 4, 5, 6)
@@ -953,7 +953,7 @@ func main() {
     func main(){
         Append_test2()    
     }
-
+    
     func Append_test2() {
         sli1 := []int{1, 2, 3}
     	sli2 := []int{4, 5, 6}
@@ -973,6 +973,62 @@ func main() {
 
 
 #### 8 - Que es el keyword ```defer``` ?  (Daniel)
+
+El keyword `defer` es una sentencia que ejecuta el código que le indiquemos antes de que se termine la función, sin importar en que punto se termine la misma. 
+
+```go
+package main 
+
+import "fmt"
+
+func main(){
+    defer fmt.Println("to Go")
+    fmt.Println("Welcome")
+}
+```
+
+**Output**:
+
+```
+Welcome
+to Go
+```
+
+Lo que pasa es que el código de la sentencia `defer` se ejecuta de ultimo (es decir justo antes de que la funcio termine) sin importar el punto en donde se hace el `return` 
+
+No importa si la función termina normalmente o *"se interrumpe"*, todo lo que este agendado con `defer` se ejecutara antes de que termine la función. 
+
+##### Equivalencia a otros lenguajes
+
+La sentencia de `defer` en Go es parecida a la sentencia *finally* de un *try/catch* que otros lenguajes de programación tienen, con la gran diferencia de que en Go no hay excepciones. En otros lenguajes la sentencia *finally* se ejecuta sin importar si se cae dentro de un catch.
+
+##### Ventajas de usar defer en Go 
+
+1. Permite tener  un código mas legible
+
+   Cuando usamos `defer`, podemos terminar algo que estamos iniciando, pocas lineas despues de lo primero. Ejemplo conectar en Go a una base de datos con **MySQL** 
+
+   ```go
+   db, err := obtenerBaseDeDatos() 
+   if (err != nil) {
+       fmt.Printf("Error obteniendo la base de datos: %v", err)
+       return 
+   }
+   
+   defer dbClose()
+   
+   //Aqui el resto del codigo
+   ```
+
+   Como se abrió la base de datos, indicamos que antes de salir de la función actual, esta se cierre con `db.Close()` . Sin importar que después vienen miles de lineas de código, la base de datos se cerrara cuando se termine. 
+
+   Esto es mas legible para que otro programador que lea el codigo sabra que la base de  datos que se abre, se cierra al final, sin importar donde.
+
+   Ademas de que si mas abajo en el código aparecen múltiples condiciones, no tenemos que ir por cada una y en cada una de ellas poner `dbClose()`, en caso de que la función no siga con su curso normal. 
+
+2. Evita olvidar cerrar archivos, bases de datos, etc 
+
+   
 
 
 
