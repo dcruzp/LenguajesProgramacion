@@ -1028,9 +1028,38 @@ La sentencia de `defer` en Go es parecida a la sentencia *finally* de un *try/ca
 
 2. Evita olvidar cerrar archivos, bases de datos, etc 
 
-   
+   El mismo ejemplo de arriba. Si hubieran muchas lineas de codigo y no existiera `defer`, a menudo se olvidaria terminar lo que empezamos si se extende el codigo. 
 
+   En el ejemplo se hablo de una base de datos, pero puede ser con un fichero o cualquier otra cosa que se deba terminar cada vez que se llame a un procedimiento. 
 
+##### Otras cosas sobre `defer`
+
+Se puede llamar a `defer` las veces que sea necesario. Cuando eso pase, las sentencias se ejecutan en el orden inverso de como fueron  llamadas .  
+
+```go
+package main 
+
+import "fmt" 
+
+func main(){
+    fmt.Println("Hola, mundo")
+    
+    defer fmt.Println("Go")
+    defer fmt.Println("al lenguaje")
+    defer fmt.Println("Bienvenido")
+}
+```
+
+**Output:**
+
+```
+Hola, mundo
+Bienvenido
+al lenguaje
+Go
+```
+
+Esto sucede porque la primera llamada a `defer` se ejecuta de ultimo. El orden es **LIFO**. Ultimo en entrar, primero en salir.
 
 #### 9 - Presente los ```structs``` en Go y comparelos con los de C. (David)
 
