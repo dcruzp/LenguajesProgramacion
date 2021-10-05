@@ -12,7 +12,9 @@ func main() {
 	// 	fmt.Scanln(&input)
 	// 	fmt.Println(palindromo(input))
 	// }
-	shortVariableDeclaration()
+	// shortVariableDeclaration()
+	// for_range()
+	switchExample()
 	// fmt.Printf()
 
 	// var arr1 = [5]int{1, 2, 3, 4, 5}
@@ -20,5 +22,5 @@ func main() {
 
 	// Append_test1()
 
-	Append_test2()
+	// Append_test2()
 }

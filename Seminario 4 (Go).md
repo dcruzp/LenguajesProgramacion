@@ -180,22 +180,32 @@ func main() {
 }
 ```
 
+For statements with range clause:  
+Una instrucción for con una cláusula range recorre todos los elementos de un array, slice, string, map o valores recibidos en un canal. Por cada entrada este asigna valoros de iteración a las variables de iteración correspondientes y luego ejecuta el bloque.
 
 
+RangeClause = [ ExpressionList "=" | IdentifierList ":=" ] "range" Expression .
 
+La expresión de la derecha en la clausula **range** se denomina range expression y puede ser un array, puntero a un array,slice,string, map, o un channel que permite operaciones de recepción
 
+For stament with range en array o slices:
+```go
+package main
 
-- Creación de variables 
+import "fmt"
 
-- Ciclos ```for```
+func main() {
+    for_range()
+}
 
-- Indentacion 
-
-- Condiciones ```if``` con declaración de varaibles en la condición 
-
-- Funciones con múltiples retornos 
-
-- Otros elementos de las sintaxis que consideres relevante  a mostrar
+func for_range() {
+	//for statement with range clause in arry or slice
+	a := []string{"C++", "C", "Python", "Go"}
+	for i, j := range a {
+		fmt.Println("index: ", i, " ", "element: ", j)
+	}
+}
+```
 
 
 
@@ -297,6 +307,145 @@ Ambas llamadas a **pow**  devuelven sus resultados antes que se haga la llamada 
 ### Switch:
 
 Una sentencia **switch** es una manera más corta de escribir una secuencia de  sentencias **if-else**.  Esta ejecuta el primer caso cuyo valor es igual a la expresión de condición .
+
+El switch en Go es similar al de C, C++, Java, Javascript, y PHP excepto que Go solo ejecuta el caso seleccionado, no todos los casos que le siguen. En efecto, la declaración break que se necesita al final de cada caso en otros lenguajes es proveída automáticamente en Go. Otra diferencia importante es que los switch en Go no necesitan ser constantes, y los valores involucrados no necesitan ser enteros.
+
+```go
+package main
+
+import (
+	"fmt"
+	"runtime"
+)
+
+func main() {
+	fmt.Print("Go runs on ")
+	switch os := runtime.GOOS; os {
+	case "darwin":
+		fmt.Println("macOS")
+	case "linux":
+		fmt.Println("Linux")
+	default:
+		// freebsd, openbsd,
+		// plan9, windows...
+		fmt.Printf("%s.\n", os)
+	}
+}
+
+```
+
+
+Orden de Evaluación Switch:
+Los switch cases en Go evalúan los casos top to bottom(de arriba hacia abajo) y para cuando encuentra un caso exitoso.
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	fmt.Println("When's Saturday?")
+	today := time.Now().Weekday()
+	switch time.Saturday {
+	case today + 0:
+		fmt.Println("Today.")
+	case today + 1:
+		fmt.Println("Tomorrow.")
+	case today + 2:
+		fmt.Println("In two days.")
+	default:
+		fmt.Println("Too far away.")
+	}
+}
+```
+
+Switch sin ninguna condición:
+
+Switch sin ninguna condición es lo mismo que un **switch true**. Esta construcción puede ser una manera limpia de escribir una larga cadena de 
+**if-then-else**
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func main() {
+	fmt.Println("When's Saturday?")
+	today := time.Now().Weekday()
+	switch time.Saturday {
+	case today + 0:
+		fmt.Println("Today.")
+	case today + 1:
+		fmt.Println("Tomorrow.")
+	case today + 2:
+		fmt.Println("In two days.")
+	default:
+		fmt.Println("Too far away.")
+	}
+}
+```
+
+Defer:
+
+Una declaración **defer**  aplaza la ejecución de una función hasta que returna la función de donde es llamada
+
+Ejemplo:
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	defer fmt.Println("world")
+
+	fmt.Println("hello")
+}
+```
+Si ejecutamos nos muestra en pantalla:
+```
+hello
+world
+```
+
+Stacking defers:
+Las llamadas llamdas a funciones diferidas se insertan en un stack. Cuando una función regresa, sus llamdas diferidas son ejecutadas en orden **last-in-first-out (FIFO)**
+
+Ejemplo:
+```go
+package main
+
+import "fmt"
+
+func main() {
+	fmt.Println("counting")
+
+	for i := 0; i < 10; i++ {
+		defer fmt.Println(i)
+	}
+
+	fmt.Println("done")
+}
+```
+
+
+- Creación de variables 
+
+- Ciclos ```for```
+
+- Indentacion 
+
+- Condiciones ```if``` con declaración de varaibles en la condición 
+
+- Funciones con múltiples retornos 
+
+- Otros elementos de las sintaxis que consideres relevante  a mostrar
+
 
 
 
