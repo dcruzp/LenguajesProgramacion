@@ -13,5 +13,6 @@ func main() {
 	// 	fmt.Println(palindromo(input))
 	// }
 	shortVariableDeclaration()
+	// fmt.Printf()
 
 }

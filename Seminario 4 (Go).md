@@ -111,7 +111,7 @@ Ejemplo de instrucción **for** básico en **Go**:
 
 
 
-```
+```go
 package main
 
 import "fmt"
@@ -130,7 +130,7 @@ func main() {
 
 Las instrucciones init y post son opcionales:
 
-```
+```go
 package main
 
 import "fmt"
@@ -150,7 +150,7 @@ Puedes quitar el semicolon(;) y el "while" está escritor for en Go
 
 Ejemplo:
 
-```
+```go
 package main
 
 import "fmt"
@@ -171,7 +171,7 @@ Si tu omites la condición booleana sería un ciclo infinito. Por lo tanto puede
 
 Ejemplo:
 
-```
+```go
 package main
 
 func main() {
@@ -197,7 +197,109 @@ func main() {
 
 - Otros elementos de las sintaxis que consideres relevante  a mostrar
 
-  
+
+
+
+**If** 
+
+Las sentencias if de Go al igual que for no necesita estar entre paréntesis () pero los llaves  {} si son obligatorias
+
+
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func sqrt(x float64) string {
+	if x < 0 {
+		return sqrt(-x) + "i"
+	}
+	return fmt.Sprint(math.Sqrt(x))
+}
+
+func main() {
+	fmt.Println(sqrt(2), sqrt(-4))
+}
+
+```
+
+**If** con **short statement**
+
+Similar a for, la instrucción if puede comenzar con una instrucción corta para ejecutar antes de la condición. Las variables declaradas por la instrucción
+
+solo son accesible en el scope hasta el final del if 
+
+Por ejemplo:
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func pow(x, n, lim float64) float64 {
+	if v := math.Pow(x, n); v < lim {
+		return v
+	}
+	return lim
+}
+
+func main() {
+	fmt.Println(
+		pow(3, 2, 10),
+		pow(3, 3, 20),
+	)
+}
+
+```
+
+## If and else
+
+Las variables declaradas dentro de un if short statement son también accesibles dentro de cualquiera de los bloques else
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+func pow(x, n, lim float64) float64 {
+	if v := math.Pow(x, n); v < lim {
+		return v
+	} else {
+		fmt.Printf("%g >= %g\n", v, lim)
+	}
+	// can't use v here, though
+	return lim
+}
+
+func main() {
+	fmt.Println(
+		pow(3, 2, 10),
+		pow(3, 3, 20),
+	)
+}
+
+```
+
+Ambas llamadas a **pow**  devuelven sus resultados antes que se haga la llamada a **fmt.Println** en el **main**
+
+
+
+### Switch:
+
+Una sentencia **switch** es una manera más corta de escribir una secuencia de  sentencias **if-else**.  Esta ejecuta el primer caso cuyo valor es igual a la expresión de condición .
+
+
+
 #### 4 - Presente los tipos nativos  (Daniel)
 
  1. **Enteros** 
