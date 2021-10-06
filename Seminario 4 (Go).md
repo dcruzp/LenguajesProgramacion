@@ -4,19 +4,19 @@
 
 #### 1 - Cual es la forma de procesamiento del código fuente utilizada. (los 3 )
 
-​	El compilador de Go se divide lógicamente en cuatro etapas 
+​	El compilador de *Go* se divide lógicamente en cuatro etapas 
 
  1. **Análisis léxico y gramatical**
 
     Análisis del archivo fuente del código. Se convierte la secuencia de cadenas en el archivo en una secuencia `Tokens` para el posterior análisis.(este análisis léxico lo realiza el lexer)
 
-    Al análisis gramatical entra la secuencia de tokens que genera le analizador léxico. Estas secuencias serán analizadas por el analizador gramatical en orden. El procesos de análisis gramatical es seguir la gramática definida por el análisis léxico de abajo hacia arriba. O la especificación de arriba hacia abajo, cada archivo de código fuente de Go se resumira en una estructura `SourceFile`:
+    Al análisis gramatical entra la secuencia de tokens que genera le analizador léxico. Estas secuencias serán analizadas por el analizador gramatical en orden. El procesos de análisis gramatical es seguir la gramática definida por el análisis léxico de abajo hacia arriba. O la especificación de arriba hacia abajo, cada archivo de código fuente de *Go* se resumira en una estructura `SourceFile`:
 
      ```
      SourceFile = PackageClause ";" { ImportDecl ";" } { TopLevelDecl ";" }
      ```
 
-    El analizador sintáctico estándar de Goland  utiliza la gramática de LALR. El resultado del análisis sintáctico es en realidad el árbol de sintaxis abstracta (AST). Cada AST corresponde aun archivo de Go independiente. Este árbol de sintaxis abstracta incluye el nombre del paquete, las constantes definidas, las estructuras y las funciones del archivo actual. 
+    El analizador sintáctico estándar de Goland  utiliza la gramática de LALR. El resultado del análisis sintáctico es en realidad el árbol de sintaxis abstracta (AST). Cada AST corresponde aun archivo de *Go* independiente. Este árbol de sintaxis abstracta incluye el nombre del paquete, las constantes definidas, las estructuras y las funciones del archivo actual. 
 
     Si se produce algún error de sintaxis durante el proceso de análisis, el analizador lo encontrara y el mensaje se imprimirá en la salida estándar. Todo el proceso de compilación también se abortara cuando se produzca un error.
 
@@ -37,25 +37,25 @@
 
     La etapa de verificación de tipos no solo verifica los nodos de la estructura del árbol, sino que también expande y reescribe algunas funciones integradas. Por ejemplo la palabra clave make sera reemplazada con funciones como makeslice o makechan en esta etapa de acuerdo con la estructura del subárbol. 
 
-    La verificación de tipos no solo verifica el tipo, sino que también reescribe el AST y procesa las palabras claves integradas del lenguaje Go. Por lo tanto este proceso es muy importante en todo el proceso de compilación. Sin este paso , muchas claves no estarán disponibles. 
+    La verificación de tipos no solo verifica el tipo, sino que también reescribe el AST y procesa las palabras claves integradas del lenguaje *Go*. Por lo tanto este proceso es muy importante en todo el proceso de compilación. Sin este paso , muchas claves no estarán disponibles. 
 
  3. **Generación SSA general** 
 
     Cuando se convierte el archivo fuente en un árbol de sintaxis abstracta, se analiza la gramática de todo el árbol de sintaxis y se realiza la verificación de tipos, entonces el código no tiene problemas de incompilacion o errores gramaticales. El compilador convertirá el AST de entrada en código intermedio. 
 
-    El código intermedio del compilador de Go utiliza la función SSA (Formulario de asignación única estática). Usando esta función en el proceso de generación de código intermedio, se puede analizar fácilmente las variables y fragmentos inútiles en el código. 
+    El código intermedio del compilador de *Go* utiliza la función SSA (Formulario de asignación única estática). Usando esta función en el proceso de generación de código intermedio, se puede analizar fácilmente las variables y fragmentos inútiles en el código. 
 
-    Después de la verificación de tipos, una función llamada compileFunctions comenzara a compilar todas las funcioes en todo el proyecto del lenguaje Go. Estas funciones esperaran el consumo de varias corrutinas de trabajo del back-end en una cola de compilación.
+    Después de la verificación de tipos, una función llamada compileFunctions comenzara a compilar todas las funcioes en todo el proyecto del lenguaje *Go*. Estas funciones esperaran el consumo de varias corrutinas de trabajo del back-end en una cola de compilación.
 
  4. **Generación final del código de maquina** 
 
-    El directorio `cmd/compiler/internal` del código fuente del lenguaje Go contiene una gran cantidad de paquetes relacionados con la generación de código maquina. Los diferentes tipos de CPU usan diferentes paquetes para generar  `amd64` `arm` `mips` `mips64` `ppc64` `s390x` `x86` y `wasm`, lo que significa que el lenguaje Go en casi todos los tipos de conjuntos de instrucciones de CPU comunes.
+    El directorio `cmd/compiler/internal` del código fuente del lenguaje *Go* contiene una gran cantidad de paquetes relacionados con la generación de código maquina. Los diferentes tipos de CPU usan diferentes paquetes para generar  `amd64` `arm` `mips` `mips64` `ppc64` `s390x` `x86` y `wasm`, lo que significa que el lenguaje *Go* en casi todos los tipos de conjuntos de instrucciones de CPU comunes.
 
     
     
   ##### Entrada del compilador 
 
-La entrada del compilador del lenguaje de Go es el archivo main.go en el paquete `src/cmd/compile/internal/gc` . Esta función es el programa principal del compilador del lenguaje Go. Esta función primero obtiene la entrada de la linea de comandos (Parámetro) y actualiza las opciones de compilación y configuración y luego comienza a ejecutar la función `parseFile`  para realizar análisis léxico y gramatical en todos los archivos de entrada para obtener el árbol de sintaxis abstracto correspondiente al archivo. 
+La entrada del compilador del lenguaje de *Go* es el archivo main.go en el paquete `src/cmd/compile/internal/gc` . Esta función es el programa principal del compilador del lenguaje *Go*. Esta función primero obtiene la entrada de la linea de comandos (Parámetro) y actualiza las opciones de compilación y configuración y luego comienza a ejecutar la función `parseFile`  para realizar análisis léxico y gramatical en todos los archivos de entrada para obtener el árbol de sintaxis abstracto correspondiente al archivo. 
 
 A continuación, el árbol de sintaxis abstracta se actualizara y compilara en nueve etapas. Como presentamos anteriormente, todo el proceso pasara por tres partes: verificación de tipos , generación de código intermedio SSA y generación de código maquina.
 
@@ -63,15 +63,15 @@ A continuación, el árbol de sintaxis abstracta se actualizara y compilara en n
 
 
 
-#### 2 - Go es un lenguaje moderno con muchisimas decisiones de diseño intencionales. Que ventejas  y desventajas le da al lenguaje su forma de procesamiento. Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.  (David)
+#### 2 - *Go* es un lenguaje moderno con muchisimas decisiones de diseño intencionales. Que ventejas  y desventajas le da al lenguaje su forma de procesamiento. Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.  (David)
 
-Go es un lenguaje que pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo
+*Go* es un lenguaje que pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo
 que no tendrás que pasar años hojeando la documenación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar.Tiene una compuilación rápida lo que mejora la productividad. Tine un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir
 código más simple. Es un leguaje de tipado estático con una librería standard bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado y bien documentado . Es libre y de código abierto (licencia BSD).
 
 
 
-#### 3 - Realice un sumario sobre las características mas interesantes de la sintaxis de Go: (los 3)
+#### 3 - Realice un sumario sobre las características mas interesantes de la sintaxis de *Go*: (los 3)
 
 - Presente un Hello World (creatividad apreciada) 
 
@@ -93,7 +93,7 @@ código más simple. Es un leguaje de tipado estático con una librería standar
 
 ## For
 
-Go tiene solo una sola estructura para ciclos **for loop**
+*Go* tiene solo una sola estructura para ciclos **for loop**
 
 Un ciclo **for** básico en go tiene tres componentes principales separadas por semicolons(;):
 
@@ -105,9 +105,9 @@ Un ciclo **for** básico en go tiene tres componentes principales separadas por 
 
 La declaración init a menudo será una declaración de variable corta(usando **:=**), y las variables declaradas alli son visibles solo en el scope
 
-de esta instrucción. El ciclo for para de iterar una vez que la condición booleana evaluada es falsa. A diferencia de otros lenguajes como C, Java o Javascript aquí no hay paréntesis que rodeen las tress componentes de la instrucción for y las llaves (**{}**) siempre son necesarias.
+de esta instrucción. El ciclo for para de iterar una vez que la condición booleana evaluada es falsa. A diferencia de otros lenguajes como *C*, *Java* o *Javascript* aquí no hay paréntesis que rodeen las tress componentes de la instrucción for y las llaves (**{}**) siempre son necesarias.
 
-Ejemplo de instrucción **for** básico en **Go**:
+Ejemplo de instrucción **for** básico en *Go*:
 
 
 
@@ -142,9 +142,9 @@ func main() {
 }
 ```
 
-For is también el "while" de Go :):
+For is también el "while" de *Go* :):
 
-Puedes quitar el semicolon(;) y el "while" está escritor for en Go
+Puedes quitar el semicolon(;) y el "while" está escritor for en *Go*
 
 Ejemplo:
 
@@ -210,7 +210,7 @@ func for_range() {
 
 **If** 
 
-Las sentencias if de Go al igual que for no necesita estar entre paréntesis () pero los llaves  {} si son obligatorias
+Las sentencias if de *Go* al igual que for no necesita estar entre paréntesis () pero los llaves  {} si son obligatorias
 
 
 
@@ -306,7 +306,7 @@ Ambas llamadas a **pow**  devuelven sus resultados antes que se haga la llamada 
 
 Una sentencia **switch** es una manera más corta de escribir una secuencia de  sentencias **if-else**.  Esta ejecuta el primer caso cuyo valor es igual a la expresión de condición .
 
-El switch en Go es similar al de C, C++, Java, Javascript, y PHP excepto que Go solo ejecuta el caso seleccionado, no todos los casos que le siguen. En efecto, la declaración break que se necesita al final de cada caso en otros lenguajes es proveída automáticamente en Go. Otra diferencia importante es que los switch en Go no necesitan ser constantes, y los valores involucrados no necesitan ser enteros.
+El switch en *Go* es similar al de *C*, *C++*, *Java*, *Javascript*, y *PHP* excepto que *Go* solo ejecuta el caso seleccionado, no todos los casos que le siguen. En efecto, la declaración break que se necesita al final de cada caso en otros lenguajes es proveída automáticamente en *Go*. Otra diferencia importante es que los switch en *Go* no necesitan ser constantes, y los valores involucrados no necesitan ser enteros.
 
 ```go
 package main
@@ -334,7 +334,7 @@ func main() {
 
 
 Orden de Evaluación Switch:
-Los switch cases en Go evalúan los casos top to bottom(de arriba hacia abajo) y para cuando encuentra un caso exitoso.
+Los switch cases en *Go* evalúan los casos top to bottom(de arriba hacia abajo) y para cuando encuentra un caso exitoso.
 
 ```go
 package main
@@ -451,7 +451,7 @@ func main() {
 
  1. **Enteros** 
 
-    Go tiene los siguientes tipos de enteros independientes de la arquitectura
+    *Go* tiene los siguientes tipos de enteros independientes de la arquitectura
 
     | Nombre | signo    | bits   | type     | Range                                        |
     | ------ | -------- | ------ | -------- | -------------------------------------------- |
@@ -488,11 +488,11 @@ func main() {
    | rune  | int32         |
 
 3. **Booleanos**
-    El tipo de datos booleanos puede ser uno de los dos valores, ya sea `true` o `false` y se define como `bool` al declararlo como un tipo de datos. Estos valores siempre aparecen con `t` y `f` ya que son identificadores declarado previamente en Go.
+    El tipo de datos booleanos puede ser uno de los dos valores, ya sea `true` o `false` y se define como `bool` al declararlo como un tipo de datos. Estos valores siempre aparecen con `t` y `f` ya que son identificadores declarado previamente en *Go*.
 
 4. **Cadenas**
 
-    Una cadena es una secuencia de uno o mas caracteres (letras, números, símbolos) que pueden ser una constante o una variable. Las cadenas existen dentro de comillas invertidas en Go y tienen diferentes características según se utilice.
+    Una cadena es una secuencia de uno o mas caracteres (letras, números, símbolos) que pueden ser una constante o una variable. Las cadenas existen dentro de comillas invertidas en *Go* y tienen diferentes características según se utilice.
 
     Si se utiliza comilla invertida, creara un literal de cadena sin formato. Si utiliza comillas inversas, a veces se conocen como tildes inversas. Dentro de las comillas, cualquier carácter aparecerá como se muestra entre las comillas inversas,  excepción del propio carácter de comilla inversa.
 
@@ -535,7 +535,7 @@ func main() {
 
   2. ##### Valores por defecto para los enteros 
 
-      En Go existen varios tipos para los enteros primitivos, estos son: `int` `int8` `int16` `int32` `int64` `uint` `uint8` `uint16` `uint32` `uint64` `uintptr` `byte` `rune` . 
+      En *Go* existen varios tipos para los enteros primitivos, estos son: `int` `int8` `int16` `int32` `int64` `uint` `uint8` `uint16` `uint32` `uint64` `uintptr` `byte` `rune` . 
       
        Los valores por defecto para todos esos tipos de enteros en Go son el numero `0` .
       
@@ -562,9 +562,9 @@ func main() {
 
   3. ##### Valores por defecto para los Floats
 
-      Como en los enteros en Go hay multiples tipos para representar los floats. Los tipos para los floats son `float32` `float64`
+      Como en los enteros en *Go* hay multiples tipos para representar los floats. Los tipos para los floats son `float32` `float64`
 
-      El valor por defecto para los floats en Go es `0`  , como en los enteros.
+      El valor por defecto para los floats en *Go* es `0`  , como en los enteros.
           
 
       ```go
@@ -584,7 +584,7 @@ func main() {
 
   4. ##### Valores por defecto para los Complejos
 
-      En Go tambien existen dos tipos primitivos para representar los numeros complejos que pueden tener o no parte imaginaria. Los dos tipos son `complex64` `complex128` y susu valores por defecto son `(0+0i)`.
+      En *Go* tambien existen dos tipos primitivos para representar los numeros complejos que pueden tener o no parte imaginaria. Los dos tipos son `complex64` `complex128` y susu valores por defecto son `(0+0i)`.
       
       ```go
       package main 
@@ -603,7 +603,7 @@ func main() {
 
   5. ##### Valores por defecto para los booleanos
 
-      El valor por defecto para el tipo `bool` en Go es `false`
+      El valor por defecto para el tipo `bool` en *Go* es `false`
       
       ```go
       package main
@@ -621,7 +621,7 @@ func main() {
       
   6. ##### Valores por defecto para los Punteros 
 
-      Los valores por defecto para los punteros en Go es `nil`
+      Los valores por defecto para los punteros en *Go* es `nil`
 
       ```go
       package main
@@ -662,7 +662,7 @@ func main() {
 
   8. ##### Valores por defecto para los Slices
 
-      Los valores por defecto para los slices en Go en `nil`. Un slice `nil` tiene una longitud y una capacidad `0`  y no tiene ningún array subyacente. 
+      Los valores por defecto para los slices en *Go* en `nil`. Un slice `nil` tiene una longitud y una capacidad `0`  y no tiene ningún array subyacente. 
 
       Si se imprime un slice vacio, se va a obtener de vuelta un `[]` en vez de`nil`. Pero sin embargo si se pregunta si un slice vacío es igual a `nil`, se va a retornar `true`. 
 
@@ -682,9 +682,9 @@ func main() {
 
       **Output:** ` [] , nil!`
 
-  9. ##### Valores por defecto para los `Maps` en Go 
+  9. ##### Valores por defecto para los `Maps` en *Go* 
 
-      Los valores por defecto para los maps en Go es `nil`. Igual que con los slices. si se imprime un map vacio se optiene `map []`, pero si se chequea si el map es `nil` se obtiene `true`. 
+      Los valores por defecto para los maps en *Go* es `nil`. Igual que con los slices. si se imprime un map vacio se optiene `map []`, pero si se chequea si el map es `nil` se obtiene `true`. 
 
       ```go
       package main
@@ -702,9 +702,9 @@ func main() {
 
       **Output:** `map[] , nil!`
 
-  10. ##### Valore por defecto para las intefaces en Go 
+  10. ##### Valore por defecto para las intefaces en *Go* 
 
-      El valor por defecto de una interface vacia`interface{}` en Go  es también `nil`.
+      El valor por defecto de una interface vacia`interface{}` en *Go*  es también `nil`.
 
       ```go
       package main
@@ -722,11 +722,11 @@ func main() {
       
 
 
-#### 6 - Arrays y slices en Go. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas? (Javier) 
+#### 6 - Arrays y slices en *Go*. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas? (Javier) 
 
  1. **Arrays**
 
-    Los arrays en Go son una secuencia de datos enumerados de un mismo tipo, ya sea tipos built-in o previamente definidos, con un tamaño fijo. Los  elementos en un array en Go, estan enumerados apartir del 0, al igual que todos los lenguajes de la familia C, por lo que el   primer elemento de la secuencia está en la posición 0. Cada elemento en el array se inicializa con un valor por defecto, por ejemplo, en caso de que inicialicemos un array de enteros:
+    Los arrays en *Go* son una secuencia de datos enumerados de un mismo tipo, ya sea tipos built-in o previamente definidos, con un tamaño fijo. Los  elementos en un array en *Go*, estan enumerados apartir del 0, al igual que todos los lenguajes de la familia *C*, por lo que el   primer elemento de la secuencia está en la posición 0. Cada elemento en el array se inicializa con un valor por defecto, por ejemplo, en caso de que inicialicemos un array de enteros:
 
     ```go
     package main 
@@ -766,13 +766,13 @@ func main() {
      10. Array coll at index 9 is 0 
     
     <br/>
-    Solo pueden ser usados índices dentro del rango del tamano del array, en caso de que el compilador pueda detectar que se está indexando incorrectamente, lo notificará, de lo contrario el problema se arrastrará a tiempo de ejecucion, y se mostrará la notificación:
+    Solo pueden ser usados índices dentro del rango del tamaño del array, en caso de que el compilador pueda detectar que se está indexando incorrectamente, lo notificará, de lo contrario el problema se arrastrará a tiempo de ejecución, y se mostrará la notificación:
     
     ```runtime error: index out of range```
     
     En el fragmento de código anterior pudimos ver como la forma de iterar sobre los elementos de un array es usando el keyword ```for```, y mostramos 2 maneras, la convencional, utilizando una condicional dentro del cuerpo del ciclo, y otra utilizando el keyword ```range```.
     
-    En Go, los arrays por defecto, son tipos por valor, a diferencia de los lenguajes de la familia C, que son un puntero al lugar en memoria y por eso son tipos por referencia. Esto trae como consecuencia, que al hacer una operación como la siguiente:
+    En *Go*, los arrays por defecto, son tipos por valor, a diferencia de los lenguajes de la familia *C*, que son un puntero al lugar en memoria y por eso son tipos por referencia. Esto trae como consecuencia, que al hacer una operación como la siguiente:
     
     ```go
     arr1 := arr2
@@ -806,7 +806,7 @@ func main() {
     
     Como se puede observar el valor de arr2[0] cambió, sin embargo arr1[0] se mantuvo igual.
     
-    Si quisiéramos pasar un array por referencia, se puede usar el operador ```&``` delante del nombre del array deseado al igual que en C++, como se muestra en el siguiente ejemplo:
+    Si quisiéramos pasar un array por referencia, se puede usar el operador ```&``` delante del nombre del array deseado al igual que en *C++*, como se muestra en el siguiente ejemplo:
     
     ```go
     
@@ -835,7 +835,7 @@ func main() {
     <br/>
     <br/>
     
-    Al igual que en algunos lenguajes de la familia C, como C++, pasar los arrays directamente como argumento a una función, rápidamente consume mucha memoria, por lo que se recomienda pasar un puntero al array con el operador ```&```.
+    Al igual que en algunos lenguajes de la familia *C*, como *C++*, pasar los arrays directamente como argumento a una función, rápidamente consume mucha memoria, por lo que se recomienda pasar un puntero al array con el operador ```&```.
     
     <br/>
     Para construir arrays se puede utilizar el operador ..., que indica al compilador que debe contar los elementos para saber el tamaño del array. Se podría decir que está es una forma lazy de construir arrays en Go.
@@ -850,7 +850,7 @@ func main() {
 
  2. **Slices**
     
-    Los slices son una referencia a un fragmento de memoria contiguo, en un array, por lo que los slices son tipos por referencia (igual comportamiento a los arrays en C/C++ y a las listas en Python). Este fragmento puede ser el array en su totalidad, o un subconjunto de este, definido por un índice inicial y otro final, donde el elemento en la posición del índice final no se incluye en el slice. El tamaño de los slices puede variar en tiempo de ejecución, puede ir desde 0, hasta el tamaño del array que lo contiene, así que podríamos decir que un slice es un array de tamaño variable. La información que almacena un slice es el puntero al array, el tamaño actual del slice y el tamaño máximo que puede alcanzar el slice, que es el cap, y que está determinado por el tamaño del array que lo contiene.
+    Los slices son una referencia a un fragmento de memoria contiguo, en un array, por lo que los slices son tipos por referencia (igual comportamiento a los arrays en *C/C++* y a las listas en *Python*). Este fragmento puede ser el array en su totalidad, o un subconjunto de este, definido por un índice inicial y otro final, donde el elemento en la posición del índice final no se incluye en el slice. El tamaño de los slices puede variar en tiempo de ejecución, puede ir desde 0, hasta el tamaño del array que lo contiene, así que podríamos decir que un slice es un array de tamaño variable. La información que almacena un slice es el puntero al array, el tamaño actual del slice y el tamaño máximo que puede alcanzar el slice, que es el cap, y que está determinado por el tamaño del array que lo contiene.
 
     Para declarar un slice se puede hacer de las siguientes maneras:
 
@@ -886,7 +886,7 @@ func main() {
 
     Lo que agrega al slice, todos los elementos que le faltan desde su último elemento, hasta el último elemento del array que lo contiene, cualquier cantidad mayor, dará error en tiempo de ejecución.
 
-    Debido a que los slices son tipos por referencia, son mucho más usados en Go, y se usan entre otras cosas, para pasar arrays como argumentos a funciones, ya que los slices ocupan mucho menos espacio en memoria que los arrays. Por ejemplo:
+    Debido a que los slices son tipos por referencia, son mucho más usados en *Go*, y se usan entre otras cosas, para pasar arrays como argumentos a funciones, ya que los slices ocupan mucho menos espacio en memoria que los arrays. Por ejemplo:
 
     ```go
     package main
@@ -966,9 +966,75 @@ func main() {
 
     La función ```copy()```, copia elementos de un mismo tipo, de un slice a otro, sobreescribiendo los correspodientes elementos del slice origen en el slice destino. La cantidad de elementos que se copian del origen al destino es el mínimo de los tamaños de ambos slices.
 
-#### 7 - Los tipos en Go son por referencia o por valor. Punteros en Go, que son , que se puede hacer con ellos , son seguros? Por que es seguro referenciar en Go a una variable local de un metodo?  Haga una comparacion con los punteros de C o C++. (Javier)
+#### 7 - Los tipos en *Go* son por referencia o por valor. Punteros en *Go*, que son , que se puede hacer con ellos , son seguros? Por que es seguro referenciar en *Go* a una variable local de un metodo?  Haga una comparacion con los punteros de *C* o *C++*. (Javier)
 
 
+ 1. **Tipos en *Go***
+    
+    Excepto los slices, maps y channels que son tipos por referencia, el resto de tipos en *Go* son por valor.
+ 
+ 2. **Punteros**
+
+    Los punteros en *Go*, al igual que en *C/C++*, son un número (representado generalmente en hexadecimal) que indica la dirección en memoria (o el bloque) donde se almacena cierta información.
+    Al igual que los 2 lenguajes previamente mencionados *Go* cuenta con el operador ```&```, que se utiliza para obtener la dirección en memoria de una cierta variable en el código, como se puede apreciar a continuación:
+
+    ```go
+    func main() {
+        Ptrs_test1()
+    }
+
+    func Ptrs_test1() {
+	    number := 10
+	    fmt.Printf("The value of a is %d, and its memory address is %d", number, &number)
+    }
+    ```
+
+    **output**: The value of a is 10, and its memory address is 824634474496
+
+    Esta dirección en memoria, puede ser almacenada en lo que se conoce como un puntero, que puede ser declarado usando el operador ```*``` directamente, de la forma:
+
+    ```go
+    var intPtr *int
+    ```
+
+    Por tanto si hacemos:
+    ```go
+    var intPtr *int
+    number := 10
+    intPtr = &number
+    ```
+
+    ```intPtr``` es un puntero que apunta al mismo lugar en memoria que ```number```, lo que quiere decir que ```intPtr``` *referencia* a la variable ```number```, y por tanto la información almacenada en esa dirección es la misma para ambos punteros.
+
+    El propio operador ```*```, puede ser usado para acceder al valor almacenado en el lugar de memoria al que apunta un puntero de la siguiente manera:
+
+    ```go
+    func main() {
+        Ptrs_test2()
+    }
+
+    func Ptrs_test2() {
+	    number := 10
+	    fmt.Printf("The value of a is %d, and its memory address is %d \n", number, &number)
+
+	    var intPtr *int = &number
+	    fmt.Printf("The value stored where intPtr points to is %d and   intPtr points to %d", *intPtr, intPtr)
+    }
+    ```
+    
+    **output**: 
+
+    The value of a is 10, and its memory address is 824633819464 
+
+    The value stored where intPtr points to is 10 and intPtr points to  824633819464
+
+    Como podemos apreciar el valor de ```a``` y el valor del lugar en memoria a donde apunta ```intPtr``` son el mismo, al igual que la dirección en memoria de ```a``` y la dirección en memoria a donde apunta ```intPtr```.
+
+    De esta forma, dándole al programador el control sobre la distribución y gestión de la memoria, *Go* nos proporciona la capacidad para controlar totalmente el tamaño de una cierta colección de datos, el número de lugares en memoria reservados, así como los patrones de accesoa memoria, todas, herramientas muy importantes para desarrollar programas que se comporten correctamente. Sin embargo, a pesar de que *Go*, como la mayoría de lenguajes de bajo nivel como *C* y *C++*, tiene el concepto de punteros, no tiene la conocida aritmética de punteros, que nos permitiría en estos otros lenguajes usar el operador ```+``` para desplazarnos por los bytes, que están a partir de un puntero o para dezplazarnos por cada posición de un array, que es en su mayoría lo que conduce a accesos a memoria erróneos en C, causando errores en tiempos de ejecución como *segmentation fault*. Por esta razón los punteros son seguros, y el trabajo con memoria en*Go* es seguro, por lo que los punteros en *Go* se asemejan más a los tipos por referecia en *C#* o *Java*.
+
+    En *Go* es seguro referenciar una variable local en un método, ya que las variables que son referenciadas por algún puntero, continúan existiendo en memoria, mientras exista al menos 1 puntero referenciándola, por lo que su tiempo de vida no se limita al scope donde fue creada (por ejemplo una función).
+
+ <br/>
 
 #### 8 - Que es el keyword ```defer``` ?  (Daniel)
 
@@ -998,13 +1064,13 @@ No importa si la función termina normalmente o *"se interrumpe"*, todo lo que e
 
 ##### Equivalencia a otros lenguajes
 
-La sentencia de `defer` en Go es parecida a la sentencia *finally* de un *try/catch* que otros lenguajes de programación tienen, con la gran diferencia de que en Go no hay excepciones. En otros lenguajes la sentencia *finally* se ejecuta sin importar si se cae dentro de un catch.
+La sentencia de `defer` en *Go* es parecida a la sentencia *finally* de un *try/catch* que otros lenguajes de programación tienen, con la gran diferencia de que en *Go* no hay excepciones. En otros lenguajes la sentencia *finally* se ejecuta sin importar si se cae dentro de un catch.
 
-##### Ventajas de usar defer en Go 
+##### Ventajas de usar defer en *Go* 
 
-1. Permite tener  un código mas legible
+1. Permite tener un código mas legible
 
-   Cuando usamos `defer`, podemos terminar algo que estamos iniciando, pocas lineas despues de lo primero. Ejemplo conectar en Go a una base de datos con **MySQL** 
+   Cuando usamos `defer`, podemos terminar algo que estamos iniciando, pocas lineas despues de lo primero. Ejemplo conectar en *Go* a una base de datos con *MySQL* 
 
    ```go
    db, err := obtenerBaseDeDatos() 
@@ -1059,19 +1125,19 @@ Go
 
 Esto sucede porque la primera llamada a `defer` se ejecuta de ultimo. El orden es **LIFO**. Ultimo en entrar, primero en salir.
 
-#### 9 - Presente los ```structs``` en Go y comparelos con los de C. (David)
+#### 9 - Presente los ```structs``` en *Go* y comparelos con los de C. (David)
 
 
 
-#### 10.  Que es la composición de tipos? Que son las interfaces en Go? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de Go y exprese su preferencia. (David)
+#### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia. (David)
 
 
 
-#### 11 - Se puede decir que Go es un lenguaje que ofrece programación orientada a objetos? 
+#### 11 - Se puede decir que *Go* es un lenguaje que ofrece programación orientada a objetos? 
 
-A pesar de que Go tiene tipos y métodos y permite la programación orientada a objetos, no hay jerarquía de tipos. El concepto de *interfaz* en Go tiene una aproximación que creemos que es mucho mas sencilla de usar y en algunos casos mas general. También hay maneras de embeber  tipos en otros tipos proporcionando algo similar (pero no idéntico) a las subclases. Ademas, los métodos en Go son mas generales que en C++ o  Java. Se pueden definir para cualquier tipo de datos, incluso tipos integrados como enteros simples. No están restringidos a estructuras (clases). Ademas, la falta de jerarquía de tipos hace que los objetos en Go parezcan mucho mas ligeros que en lenguajes como C++ o Java. 
+A pesar de que *Go* tiene tipos y métodos y permite la programación orientada a objetos, no hay jerarquía de tipos. El concepto de *interfaz* en *Go* tiene una aproximación que creemos que es mucho más sencilla de usar y en algunos casos mas general. También hay maneras de embeber tipos en otros tipos proporcionando algo similar (pero no idéntico) a las subclases. Además, los métodos en *Go* son mas generales que en *C++* o *Java*. Se pueden definir para cualquier tipo de datos, incluso tipos integrados como enteros simples. No están restringidos a estructuras (clases). Ademas, la falta de jerarquía de tipos hace que los objetos en *Go* parezcan mucho mas ligeros que en lenguajes como *C++* o *Java*. 
 
-Se puede enfocar y utilizar Go como lenguaje orientado a objeto pero tenemos que tener en cuenta que sera el estilo **Go** y se debe moldear los conceptos traídos de otros lenguajes.
+Se puede enfocar y utilizar *Go* como lenguaje orientado a objeto pero tenemos que tener en cuenta que sera el estilo *Go* y se debe moldear los conceptos traídos de otros lenguajes.
 
 De acuerdo a las características que contempla la orientación a objetos en las definiciones actuales. Las características mas importantes son: 
 
@@ -1083,7 +1149,7 @@ De acuerdo a las características que contempla la orientación a objetos en las
   - Principio de ocultación
   -  Recolección de basura 
 
-Se puede decir que se puede utilizar a Go como un lenguaje de programación orientado a objetos, pero no de la forma en se esta acostumbrado a hablar de la orientación a objetos en otros lenguajes.
+Se puede decir que se puede utilizar a *Go* como un lenguaje de programación orientado a objetos, pero no de la forma en se esta acostumbrado a hablar de la orientación a objetos en otros lenguajes.
 
 ##### No hay clases, solo structs 
 
@@ -1091,25 +1157,25 @@ Los structs pueden parecer clases pero no tienen el mismo comportamiento y no so
 
 ##### Encapsulación 
 
-La encapsulacion en Go funciona a nivel de paquetes y se realiza de manera implicita dependiendo de la primera letra del metodo o atributo. Asi que si se declara un metodo o un atributo con la primera letra en mayuscula, quiere decir que es publico fuera del paquete. Go no implementa **protected** ya que no hay herencia, aunque tiene algo que se le asemeja que son los internals. 
+La encapsulacion en *Go* funciona a nivel de paquetes y se realiza de manera implicita dependiendo de la primera letra del metodo o atributo. Asi que si se declara un metodo o un atributo con la primera letra en mayuscula, quiere decir que es publico fuera del paquete. *Go* no implementa **protected** ya que no hay herencia, aunque tiene algo que se le asemeja que son los internals. 
 
 ##### No hay herencia, solo composición 
 
-Al haber discusiones en el tema de si es mejor tener composición o herencia, las ventajas de una sobre a la otra. En Go no hay ese problema porque simplemente no hay herencia.
+Al haber discusiones en el tema de si es mejor tener composición o herencia, las ventajas de una sobre a la otra. En *Go* no hay ese problema porque simplemente no hay herencia.
 
 #####  Interfaces 
 
-Las interfaces en Go son implícitas, es decir si tienes los métodos de los que se compone la interfaz, implementas la interfaz.
+Las interfaces en *Go* son implícitas, es decir si tienes los métodos de los que se compone la interfaz, implementas la interfaz.
 
 #### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo? 
 
-#### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de Go y C#. 
+#### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de *Go* y *C#*. 
 
 
 
-#### 14 Como maneja Go las excepciones y errores en ejecución? 
+#### 14 Como maneja *Go* las excepciones y errores en ejecución? 
 
-#### 15 - Go no presente genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone? 
+#### 15 - *Go* no presente genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone? 
 
 
 
