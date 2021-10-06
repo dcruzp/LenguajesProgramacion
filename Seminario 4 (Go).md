@@ -126,8 +126,6 @@ func main() {
 
 ```
 
-
-
 Las instrucciones init y post son opcionales:
 
 ```go
@@ -414,7 +412,7 @@ world
 ```
 
 Stacking defers:
-Las llamadas llamdas a funciones diferidas se insertan en un stack. Cuando una función regresa, sus llamdas diferidas son ejecutadas en orden **last-in-first-out (FIFO)**
+Las llamadas llamdas a funciones diferidas se insertan en un stack. Cuando una función regresa, sus llamdas diferidas son ejecutadas en orden **last-in-first-out (LIFO)**
 
 Ejemplo:
 ```go
