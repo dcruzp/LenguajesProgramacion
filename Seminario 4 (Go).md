@@ -1026,9 +1026,38 @@ La sentencia de `defer` en Go es parecida a la sentencia *finally* de un *try/ca
 
 2. Evita olvidar cerrar archivos, bases de datos, etc 
 
-   
+   El mismo ejemplo de arriba. Si hubieran muchas lineas de codigo y no existiera `defer`, a menudo se olvidaria terminar lo que empezamos si se extende el codigo. 
 
+   En el ejemplo se hablo de una base de datos, pero puede ser con un fichero o cualquier otra cosa que se deba terminar cada vez que se llame a un procedimiento. 
 
+##### Otras cosas sobre `defer`
+
+Se puede llamar a `defer` las veces que sea necesario. Cuando eso pase, las sentencias se ejecutan en el orden inverso de como fueron  llamadas .  
+
+```go
+package main 
+
+import "fmt" 
+
+func main(){
+    fmt.Println("Hola, mundo")
+    
+    defer fmt.Println("Go")
+    defer fmt.Println("al lenguaje")
+    defer fmt.Println("Bienvenido")
+}
+```
+
+**Output:**
+
+```
+Hola, mundo
+Bienvenido
+al lenguaje
+Go
+```
+
+Esto sucede porque la primera llamada a `defer` se ejecuta de ultimo. El orden es **LIFO**. Ultimo en entrar, primero en salir.
 
 #### 9 - Presente los ```structs``` en Go y comparelos con los de C. (David)
 
@@ -1040,7 +1069,37 @@ La sentencia de `defer` en Go es parecida a la sentencia *finally* de un *try/ca
 
 #### 11 - Se puede decir que Go es un lenguaje que ofrece programación orientada a objetos? 
 
+A pesar de que Go tiene tipos y métodos y permite la programación orientada a objetos, no hay jerarquía de tipos. El concepto de *interfaz* en Go tiene una aproximación que creemos que es mucho mas sencilla de usar y en algunos casos mas general. También hay maneras de embeber  tipos en otros tipos proporcionando algo similar (pero no idéntico) a las subclases. Ademas, los métodos en Go son mas generales que en C++ o  Java. Se pueden definir para cualquier tipo de datos, incluso tipos integrados como enteros simples. No están restringidos a estructuras (clases). Ademas, la falta de jerarquía de tipos hace que los objetos en Go parezcan mucho mas ligeros que en lenguajes como C++ o Java. 
 
+Se puede enfocar y utilizar Go como lenguaje orientado a objeto pero tenemos que tener en cuenta que sera el estilo **Go** y se debe moldear los conceptos traídos de otros lenguajes.
+
+De acuerdo a las características que contempla la orientación a objetos en las definiciones actuales. Las características mas importantes son: 
+
+  - Abstracción 
+  - Encapsula-miento
+  - Polimorfismo 
+  -  Herencia 
+  - Modularidad 
+  - Principio de ocultación
+  -  Recolección de basura 
+
+Se puede decir que se puede utilizar a Go como un lenguaje de programación orientado a objetos, pero no de la forma en se esta acostumbrado a hablar de la orientación a objetos en otros lenguajes.
+
+##### No hay clases, solo structs 
+
+Los structs pueden parecer clases pero no tienen el mismo comportamiento y no son lo mismo. Se puede asignar a los structs métodos, dándole el comportamiento de una clase tradicional, donde la estructura solo contiene el estado y no el comportamiento, los métodos le proporcionan el comportamiento al permitirles cambiar el estado.  
+
+##### Encapsulación 
+
+La encapsulacion en Go funciona a nivel de paquetes y se realiza de manera implicita dependiendo de la primera letra del metodo o atributo. Asi que si se declara un metodo o un atributo con la primera letra en mayuscula, quiere decir que es publico fuera del paquete. Go no implementa **protected** ya que no hay herencia, aunque tiene algo que se le asemeja que son los internals. 
+
+##### No hay herencia, solo composición 
+
+Al haber discusiones en el tema de si es mejor tener composición o herencia, las ventajas de una sobre a la otra. En Go no hay ese problema porque simplemente no hay herencia.
+
+#####  Interfaces 
+
+Las interfaces en Go son implícitas, es decir si tienes los métodos de los que se compone la interfaz, implementas la interfaz.
 
 #### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo? 
 
