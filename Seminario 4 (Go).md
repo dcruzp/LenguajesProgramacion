@@ -1274,6 +1274,44 @@ Esto sucede porque la primera llamada a `defer` se ejecuta de ultimo. El orden e
 
 #### 9 - Presente los ```structs``` en *Go* y comparelos con los de C. (David)
 
+Go admite tipos personalizados o definidos por el usuario en forma de alias types o structs.
+Los componentes de datos que constituyen un **struct** se llaman fields o campos del struct.
+Un field tipo un tipo y un nombre, los nombre de los fields del struct deben ser únicos.
+
+Definición de un struct en Go
+
+El formato general para la definición de un struct en Go es el siguiente:
+```go
+type identifier struct {
+		 field1 type1
+		 field2 type2
+		 …
+}
+```
+También type T struct {a, b int} es una sintaxis válidad y más adecuada para struct simples.
+
+Los fields en un struct tienen nombres, como field1, field2,etc. Si algún field nunca es usado en el código, este puede ser nombrao ```_```.
+
+Los fields de un struct en Go pueden ser de cualquier tipo, incluso el mismo struct. Debido a que los struct tienen un valor, estos pueden ser declarados como una varible de tipo struct, y asignarle valor a los fields como:
+```go
+var s T
+s.a = 5
+s.b = 8
+```
+
+Usando new:
+
+El espacio de memoria para un nuevo struct es asignado con la función **new** que retorna un puntero al almacenamiento asignado: **var t *T = new(T)** , que también puede ponerse en diferentes líneas si es necesario:
+```go
+var t *T
+t = new(T)
+```
+Una forma de escribirlo más corto es: **t := new(T)**, la variable t es un puntero a T: 
+en este punto los fields contienen los valores por defecto de acuerdo a sus tipos.
+Sin embargo, declarar var t T también asigna e inicializa los valores por defecto en memort para t, pero ahora t es de tipo T.
+
+
+
 
 
 #### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia. (David)
@@ -1302,12 +1340,8 @@ Se puede decir que se puede utilizar a *Go* como un lenguaje de programación or
 
 Los structs pueden parecer clases pero no tienen el mismo comportamiento y no son lo mismo. Se puede asignar a los structs métodos, dándole el comportamiento de una clase tradicional, donde la estructura solo contiene el estado y no el comportamiento, los métodos le proporcionan el comportamiento al permitirles cambiar el estado.  
 
-<<<<<<< HEAD
 
 #### 10.  Que es la composición de tipos? Que son las interfaces en Go? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de Go y exprese su preferencia. (David)
-=======
-##### Encapsulación 
->>>>>>> 2406654aca6f72c961dcf5cb016acde8e3bb2e71
 
 La encapsulacion en *Go* funciona a nivel de paquetes y se realiza de manera implicita dependiendo de la primera letra del metodo o atributo. Asi que si se declara un metodo o un atributo con la primera letra en mayuscula, quiere decir que es publico fuera del paquete. *Go* no implementa **protected** ya que no hay herencia, aunque tiene algo que se le asemeja que son los internals. 
 
