@@ -392,7 +392,7 @@ func main() {
 
 Defer:
 
-Una declaración **defer**  aplaza la ejecución de una función hasta que returna la función de donde es llamada
+Una declaración **defer**  aplaza la ejecución de una función hasta que retorna la función de donde es llamada
 
 Ejemplo:
 
@@ -432,6 +432,153 @@ func main() {
 	fmt.Println("done")
 }
 ```
+Funciones:
+
+Una función en Go puede tomar 0 o más argumentos. Se declara con el keyword **func**. 
+
+Ejemplo:
+```go
+package main
+
+import "fmt"
+
+func add(x int, y int) int {
+	return x + y
+}
+
+func main() {
+	fmt.Println(add(42, 13))
+}
+```
+
+Se puede apreciar que el tipo viene después del nombre de la variable
+
+Funciones continuadas:
+
+Cuando dos o más nombres de parámetros consecutivos de una función comparten un tipo, en Go puedes omitir el tipo de todos menos del último
+
+Ejemplo: 
+
+```go
+package main
+
+import "fmt"
+
+func add(x, y int) int {
+	return x + y
+}
+
+func main() {
+	fmt.Println(add(42, 13))
+}
+```
+En este ejemplo acortamos:
+**x int, y int** a **x, y int**
+
+Funciones con mútiples resultados
+
+Una función en Go puede retornar cualquier cantidad de resultados:
+
+Ejemplo:
+
+```go
+
+import "fmt"
+
+func swap(x, y string) (string, string) {
+	return y, x
+}
+
+func main() {
+	a, b := swap("hello", "world")
+	fmt.Println(a, b)
+}
+```
+La función swap retorna dos strings
+
+Named return values:
+
+Se puede nombrar los valores de retorno de una función en Go. Si es así se tratan como variables definidas en la parte superior de la función. Estos nombres deben usarse para documentar el significado de los valores devueltos.
+Una declaración return sin argumentos retorna los valores de retorno nombrados. Esto es conocido como **"naked" return**
+Las **naked return statements** deben ser usadas solamentes en funciones cortas, pues pueden dañar la legibilidad en funciones largas.
+
+Ejemplo:
+
+```go
+package main
+
+import "fmt"
+
+func split(sum int) (x, y int) {
+	x = sum * 4 / 9
+	y = sum - x
+	return
+}
+
+func main() {
+	fmt.Println(split(17))
+}
+
+```
+
+Variables:
+
+Una declaración **var** puede incluir inicializadores, uno por cada variable. Si el inicializador está presente, el tipo de la variable puede ser omitido; la variable tomará el tipo del valor con el que se inicializó.
+
+Ejemplo de variables con inicializadores:
+```go
+package main
+
+import "fmt"
+
+var i, j int = 1, 2
+
+func main() {
+	var c, python, java = true, false, "no!"
+	fmt.Println(i, j, c, python, java)
+}
+
+```
+
+Declaración de variable corta usuando **:=**:
+
+Dentro de una función, la declaración de asignación corta := puede ser usada en lugar de en lugar de var con el tipo implícito. Fuera de una función **:=** no puede ser usada.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var i, j int = 1, 2
+	k := 3
+	c, python, java := true, false, "no!"
+
+	fmt.Println(i, j, k, c, python, java)
+}
+```
+
+Constantes:
+Las constantes son declaradas como las variables , pero con el keyword **const**. Las constantes pueden ser character, string, boolean, o valores numéricos. Las constantes no pueden ser declaradas usando la sintaxis **:=**
+
+Ejemplo:
+```go
+package main
+
+import "fmt"
+
+const Pi = 3.14
+
+func main() {
+	const World = "世界"
+	fmt.Println("Hello", World)
+	fmt.Println("Happy", Pi, "Day")
+
+	const Truth = true
+	fmt.Println("Go rules?", Truth)
+}
+```
+
 
 
 - Creación de variables 
@@ -1062,6 +1209,7 @@ Go
 Esto sucede porque la primera llamada a `defer` se ejecuta de ultimo. El orden es **LIFO**. Ultimo en entrar, primero en salir.
 
 #### 9 - Presente los ```structs``` en Go y comparelos con los de C. (David)
+
 
 
 
