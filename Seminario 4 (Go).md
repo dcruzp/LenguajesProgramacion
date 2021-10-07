@@ -1302,12 +1302,9 @@ Se puede decir que se puede utilizar a *Go* como un lenguaje de programación or
 
 Los structs pueden parecer clases pero no tienen el mismo comportamiento y no son lo mismo. Se puede asignar a los structs métodos, dándole el comportamiento de una clase tradicional, donde la estructura solo contiene el estado y no el comportamiento, los métodos le proporcionan el comportamiento al permitirles cambiar el estado.  
 
-<<<<<<< HEAD
 
 #### 10.  Que es la composición de tipos? Que son las interfaces en Go? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de Go y exprese su preferencia. (David)
-=======
 ##### Encapsulación 
->>>>>>> 2406654aca6f72c961dcf5cb016acde8e3bb2e71
 
 La encapsulacion en *Go* funciona a nivel de paquetes y se realiza de manera implicita dependiendo de la primera letra del metodo o atributo. Asi que si se declara un metodo o un atributo con la primera letra en mayuscula, quiere decir que es publico fuera del paquete. *Go* no implementa **protected** ya que no hay herencia, aunque tiene algo que se le asemeja que son los internals. 
 
@@ -1319,15 +1316,89 @@ Al haber discusiones en el tema de si es mejor tener composición o herencia, la
 
 Las interfaces en *Go* son implícitas, es decir si tienes los métodos de los que se compone la interfaz, implementas la interfaz.
 
-#### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo? 
+#### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo?
 
-#### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de *Go* y *C#*. 
+#### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de *Go* y *C#*.
 
 
 
-#### 14 Como maneja *Go* las excepciones y errores en ejecución? 
+#### 14 Como maneja *Go* las excepciones y errores en ejecución?
 
-#### 15 - *Go* no presente genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone? 
+*Go* no tiene un mecanismo de excepciones, como `try/catch` en *Java* o *C#*, o sea, no es posible lanzar excepciones, en vez de eso tiene lo que ellos llaman **defer-panic-and-recover mechanism**. Los diseñadores de *Go*, pensaron que estos mecanismos (`try/catch`) son usados en exceso y que el lanzamiento de excepciones en capas más profundas a capas más altas de código usa demasiados recursos.
+##### errores
+La forma de *Go* de tratar con errores en el caso de funciones y métodos, es devolver lo que ellos llaman un `error object` como único valor de retorno de la función o como el último de los valores de retorno, ya que como sabemos es posible devolver más de un valor en una función en *Go*. Este `error object` es `nil` encaso de que no haya habido errores durante la ejecución de la función, de lo contrario hubo un error. Nunca se deben ignorar los errores que resultan de la ejecución de una función ya que puede conducir a un eventual crasheo del programa. No obstante, el programa seguirá funcionando y el usuario será notificado. *Go* tiene predefinida una interfaz `error` de la siguiente forma:
+
+```go
+type error interface {
+    Error() string
+}
+```
+
+Esta se emplea para indicar estados anormales durante la ejecución del programa. El paquete **errors** contiene un struct `errorString` que implementa la interfaz `error`, y que podemos usar para definir nuestros propios errores. Es posible detener el programa si se han detectado errores usando `os.Exit(1)`. Ejemplo de como crear nuestro propio error:
+
+```go
+package main
+import (	
+    “errors”		
+    “fmt”
+)
+
+var errNotFound error = errors.New(“Not found error”)
+
+func main() {
+	fmt.Printf(“error: %v”, errNotFound)
+}
+```
+
+##### Excepciones en tiempo de ejecución y **panic-and-recover mechanism**
+
+El propósito del  **panic-and-recover mechanism**, es tratar con problemas verdaderamente serios y excepcionales, y no con errores comunes. Por ejemplo cuando intentamos indexar un array en una posición fuera de sus límites, o cuando intentamos asignarle un tipo incorrecto a una variable determinada. *Go* activa algo que se conoce como **run-time panic**, con un valor del tipo de interfaz `runtime.Error`, y el programa se detiene con un mensaje de error, este valor tiene un método `RuntimeError()`, para diferenciarlo de un error normal. Este mecanismo también puede ser activado manualmente cuando el error es tan severo que el programa no puede continuar, para eso podemos usar la función `panic()`, la cual crea un error en tiempo de ejecución que detendrá el programa, y recibe un solo argumento que es el mensaje a mostrar cuando se detenga el programa. *Go* también tiene una función `recover()`, que permite recuperar el control del programa y que este siga su curso, después de haber lanzado un `runtime.Error`, pero esta función solo es útil cuando se invoca desde dentro de un método llamaddo con `defer`. Podemos ver el funcionamiento completo de **defer-panic-and-recover mechanism** en el siguiente código, en el que podemos ver que se puede apreciar el comportamiente de un `catch` en los lenguajes como *C#*:
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func main() {
+    fmt.Printf("Calling test\r\n")
+	test()
+	fmt.Printf("Test completed\r\n")
+}
+```
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func badCall() {
+	panic("bad end")
+}
+
+func test() {
+	defer func() {
+		if e := recover(); e != nil {
+			fmt.Printf("Panicking %s\r\n", e)
+		}
+	}()
+	badCall()
+	fmt.Printf("After bad call\r\n")
+}
+```
+
+**output**:
+
+Calling test
+
+Panicking bad end
+
+Test completed
+
+#### 15 - *Go* no presente genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone?
 
 
 
