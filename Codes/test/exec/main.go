@@ -14,7 +14,7 @@ func main() {
 	// }
 	// shortVariableDeclaration()
 	// for_range()
-	switchExample()
+	// switchExample()
 	// fmt.Printf()
 
 	// var arr1 = [5]int{1, 2, 3, 4, 5}
@@ -23,4 +23,9 @@ func main() {
 	// Append_test1()
 
 	// Append_test2()
+
+	//Ptrs_test1()
+
+	//Ptrs_test2()
+	Ptrs_test4(-100, Ptrs_test3())
 }
