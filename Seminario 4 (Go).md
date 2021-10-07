@@ -661,6 +661,10 @@ func main() {
 
 #### 5 - Comente sobre ```nil``` y los valores por defecto (Daniel) 
 
+En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slices, canales y funciones. Y corresponde a un valor no inicializado. `nil` no es mas que otro posible valor valido. Sin embargo `nil` no es un valor valido para los tipos básicos (enteros, coma flotante, boleanos, etc)ni tampoco para los `structs` 
+
+ 
+
   1. ##### Valores por defecto para los `string` 
 
       Los valores por defecto para los string en Go es un string vacio `""`
@@ -1119,7 +1123,7 @@ func main() {
  1. **Tipos en *Go***
     
     Excepto los slices, maps y channels que son tipos por referencia, el resto de tipos en *Go* son por valor.
- 
+
  2. **Punteros**
 
     Los punteros en *Go*, al igual que en *C/C++*, son un número (representado generalmente en hexadecimal) que indica la dirección en memoria (o el bloque) donde se almacena cierta información.
@@ -1129,7 +1133,7 @@ func main() {
     func main() {
         Ptrs_test1()
     }
-
+    
     func Ptrs_test1() {
 	    number := 10
 	    fmt.Printf("The value of a is %d, and its memory address is %d", number, &number)
@@ -1159,11 +1163,11 @@ func main() {
     func main() {
         Ptrs_test2()
     }
-
+    
     func Ptrs_test2() {
 	    number := 10
 	    fmt.Printf("The value of a is %d, and its memory address is %d \n", number, &number)
-
+    
 	    var intPtr *int = &number
 	    fmt.Printf("The value stored where intPtr points to is %d and   intPtr points to %d", *intPtr, intPtr)
     }
@@ -1302,8 +1306,6 @@ Se puede decir que se puede utilizar a *Go* como un lenguaje de programación or
 
 Los structs pueden parecer clases pero no tienen el mismo comportamiento y no son lo mismo. Se puede asignar a los structs métodos, dándole el comportamiento de una clase tradicional, donde la estructura solo contiene el estado y no el comportamiento, los métodos le proporcionan el comportamiento al permitirles cambiar el estado.  
 
-
-#### 10.  Que es la composición de tipos? Que son las interfaces en Go? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de Go y exprese su preferencia. (David)
 ##### Encapsulación 
 
 La encapsulacion en *Go* funciona a nivel de paquetes y se realiza de manera implicita dependiendo de la primera letra del metodo o atributo. Asi que si se declara un metodo o un atributo con la primera letra en mayuscula, quiere decir que es publico fuera del paquete. *Go* no implementa **protected** ya que no hay herencia, aunque tiene algo que se le asemeja que son los internals. 
@@ -1315,6 +1317,8 @@ Al haber discusiones en el tema de si es mejor tener composición o herencia, la
 #####  Interfaces 
 
 Las interfaces en *Go* son implícitas, es decir si tienes los métodos de los que se compone la interfaz, implementas la interfaz.
+
+
 
 #### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo?
 
