@@ -1504,6 +1504,48 @@ Entonces si se quiere saber el fullname escribimos:
 person1.Fullname()
 ```
 
+**Herencia Múltiple en Go:**
+
+La herencia múltiple es la habilidad de un tipo de obtener los comportamientos de más de un padre. En muchos lenguajes de programación como C# esto no se implementa debido a que en las herarquías basadas en clases esto introduce una complejidad adicional para el compilador. Pero en Go esto puede ser implementado de forma simple insertando todo los tipos "padres" necesarios debajo de la construcción:
+
+Pongamos un ejemplo:
+
+Definamos dos structs Camera y Phone y creemos dos métodos:
+```go
+type Camera struct { }
+
+func (c *Camera) TakeAPicture() string {
+		
+return “Click”
+}
+
+type Phone struct { }
+
+func (p *Phone ) Call() string {
+		
+return “Ring Ring”
+}
+```
+
+Si se quisiera un struct que utilice a estos 2 como "padres"
+haríamos:
+```go
+// multiple inheritance
+type CameraPhone struct {
+		 Camera
+		 Phone
+}
+```
+De esta forma si creamos una varibale de tipo CameraPhone:
+```go
+cp := new(CameraPhone)
+```
+Entonces podríamos acceder a los métodos de los tipos "padres":
+```go
+cp.TakeAPicture()
+cp.Call()
+```
+
 
 #### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia. (David)
 
