@@ -1302,9 +1302,7 @@ Se puede decir que se puede utilizar a *Go* como un lenguaje de programación or
 
 Los structs pueden parecer clases pero no tienen el mismo comportamiento y no son lo mismo. Se puede asignar a los structs métodos, dándole el comportamiento de una clase tradicional, donde la estructura solo contiene el estado y no el comportamiento, los métodos le proporcionan el comportamiento al permitirles cambiar el estado.  
 
-
-#### 10.  Que es la composición de tipos? Que son las interfaces en Go? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de Go y exprese su preferencia. (David)
-##### Encapsulación 
+##### Encapsulación
 
 La encapsulacion en *Go* funciona a nivel de paquetes y se realiza de manera implicita dependiendo de la primera letra del metodo o atributo. Asi que si se declara un metodo o un atributo con la primera letra en mayuscula, quiere decir que es publico fuera del paquete. *Go* no implementa **protected** ya que no hay herencia, aunque tiene algo que se le asemeja que son los internals. 
 
@@ -1320,7 +1318,7 @@ Las interfaces en *Go* son implícitas, es decir si tienes los métodos de los q
 
 #### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de *Go* y *C#*.
 
-
+El poder de separar el **que** del **como** es lo que hace a las interfaces tan útiles. 
 
 #### 14 Como maneja *Go* las excepciones y errores en ejecución?
 
@@ -1400,7 +1398,10 @@ Test completed
 
 #### 15 - *Go* no presente genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone?
 
+Hasta hoy en día, *Go* no posee concepto de **genericidad**. De todas maneras, la mayoría de casos pueden ser resueltos usando interfaces, especialmente la interfaz vacía, y un `switch` para decidir que hacer dependiendo del tipo. Este concepto de genericidad incrementa la complejidad del código y disminuye su rendimiento, por lo que cuando el rendimiento es muy importante es mejor y producirá código más fácil de leer, si definimos una función para cada tipo que sea necesario explícitamente.
 
+##### Limitaciones
+Por las razones previamente explicadas, consideramos que la gran limitación de que *Go* no presente genericidad de tipo es exclusivamente la cantidad de código necesario para simular este comportamiento, que es algo bastante usado en la actualidad.
 
 [TOC]
 
