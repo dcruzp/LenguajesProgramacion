@@ -661,6 +661,10 @@ func main() {
 
 #### 5 - Comente sobre ```nil``` y los valores por defecto (Daniel) 
 
+En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slices, canales y funciones. Y corresponde a un valor no inicializado. `nil` no es mas que otro posible valor valido. Sin embargo `nil` no es un valor valido para los tipos básicos (enteros, coma flotante, boleanos, etc)ni tampoco para los `structs` 
+
+ 
+
   1. ##### Valores por defecto para los `string` 
 
       Los valores por defecto para los string en Go es un string vacio `""`
@@ -1119,7 +1123,7 @@ func main() {
  1. **Tipos en *Go***
     
     Excepto los slices, maps y channels que son tipos por referencia, el resto de tipos en *Go* son por valor.
- 
+
  2. **Punteros**
 
     Los punteros en *Go*, al igual que en *C/C++*, son un número (representado generalmente en hexadecimal) que indica la dirección en memoria (o el bloque) donde se almacena cierta información.
@@ -1129,7 +1133,7 @@ func main() {
     func main() {
         Ptrs_test1()
     }
-
+    
     func Ptrs_test1() {
 	    number := 10
 	    fmt.Printf("The value of a is %d, and its memory address is %d", number, &number)
@@ -1159,11 +1163,11 @@ func main() {
     func main() {
         Ptrs_test2()
     }
-
+    
     func Ptrs_test2() {
 	    number := 10
 	    fmt.Printf("The value of a is %d, and its memory address is %d \n", number, &number)
-
+    
 	    var intPtr *int = &number
 	    fmt.Printf("The value stored where intPtr points to is %d and   intPtr points to %d", *intPtr, intPtr)
     }
@@ -1274,6 +1278,277 @@ Esto sucede porque la primera llamada a `defer` se ejecuta de ultimo. El orden e
 
 #### 9 - Presente los ```structs``` en *Go* y comparelos con los de C. (David)
 
+Go admite tipos personalizados o definidos por el usuario en forma de alias types o structs.
+Los componentes de datos que constituyen un **struct** se llaman fields o campos del struct.
+Un field tipo un tipo y un nombre, los nombre de los fields del struct deben ser únicos.
+
+Definición de un struct en Go
+
+El formato general para la definición de un struct en Go es el siguiente:
+```go
+type identifier struct {
+		 field1 type1
+		 field2 type2
+		 …
+}
+```
+También type T struct {a, b int} es una sintaxis válidad y más adecuada para struct simples.
+
+Los fields en un struct tienen nombres, como field1, field2,etc. Si algún field nunca es usado en el código, este puede ser nombrao ```_```.
+
+Los fields de un struct en Go pueden ser de cualquier tipo, incluso el mismo struct. Debido a que los struct tienen un valor, estos pueden ser declarados como una varible de tipo struct, y asignarle valor a los fields como:
+```go
+var s T
+s.a = 5
+s.b = 8
+```
+
+Usando new:
+
+El espacio de memoria para un nuevo struct es asignado con la función **new** que retorna un puntero al almacenamiento asignado: **var t *T = new(T)** , que también puede ponerse en diferentes líneas si es necesario:
+```go
+var t *T
+t = new(T)
+```
+Una forma de escribirlo más corto es: **t := new(T)**, la variable t es un puntero a T: 
+en este punto los fields contienen los valores por defecto de acuerdo a sus tipos.
+Sin embargo, declarar var t T también asigna e inicializa los valores por defecto en memort para t, pero ahora t es de tipo T.
+
+
+
+```go
+package main
+
+import "fmt"
+
+type Country struct {
+	name       string
+	capital    string
+	language   string
+	population int
+}
+
+func main() {
+
+	ru := new(Country) //pointer to struct type using new
+	ru.name = "Russia"
+	ru.capital = "Moscow"
+	ru.language = "russian"
+	ru.population = 146171015
+
+    fmt.Println(*ru)
+	fmt.Printf("Name: %s\n", ru.name)
+	fmt.Printf("Capital: %s\n", ru.capital)
+	fmt.Printf("Language: %s\n", ru.language)
+	fmt.Printf("Population: %d\n", ru.population)
+}
+```
+Output:
+```bash
+❯ go run main.go
+{Russia Moscow russian 146171015}
+Name: Russia
+Capital: Moscow
+Language: russian
+Population: 146171015
+```
+
+Los fields de un struct pueden asignarse diferentes valores usando **dot-notation** :
+```
+structname.filedname = value
+```
+
+Los valores de los fields de un struct pueden ser accedidos de la misma forma:
+```
+structname.fieldname
+```
+
+A esto se le llama selector en Go. Para acceder a los fields de un struct, ya sea la variable de tipo struct o un puntero a un tipo struct usamos la misma notación de selector.
+
+```go
+type myStruct struct { i int }
+var v myStruct		 // v has struct type
+var p *myStruct		 // p is a pointer to a struct
+v.i
+p.i
+```
+
+Una notación más corta y de forma ideomática para inicializar una estancia de un struct(struct-literal) es la siguiente:
+
+```go
+ms := &struct1{10, 15.5, “Chris”}
+ // this means that ms is of type *struct1
+or:		
+var mt struct1
+mt = struct1{10, 15.5, “Chris”}
+```
+
+La sintaxis **&struct1{a, b, c}** por debajo sigue llamando a **new()** . Los valores a,b,c deben darse en el mismo orden quue están los fields. 
+**new(Type)** y **&Type{}** son expresiones equivalentes.
+
+Los valores de los fields de un struct también pueden ser inicializados precidiendole el nombre de cada field : valor a asignar
+
+Ejemplo:
+
+```go
+package main
+
+import "fmt"
+
+type Country struct {
+	name       string
+	capital    string
+	language   string
+	population int
+}
+
+func main() {
+
+	var it *Country = &Country{
+		name:       "Italy",
+		capital:    "Rome",
+		language:   "italian",
+		population: 60317116} 
+}
+```
+
+De esta forma se pueden pasar valores a los fields del struct sin que tengan que estar en orden y se pueden omitir algunos fields(en dicho caso en go le asigna el valor por defecto del tipo).
+
+**Structs y diseño de memoria:**
+
+Los structs en Go y los datos que ellos contienen, incluso cuando un struct contiene otros structs, forman un bloque continuo en memoria; esto proporiciona una gran ventaja de rendimiento.
+Esta a diferencia de Java con sus tipos por referencia, donde un objeto y su contenido pueden estar en diferentes partes de la memoria; en Go esto es también el caso de los punteros.
+
+Ilustremos lo anterior con el siguiente ejemplo:
+Si definimos los structs:
+```go
+type Point struct { x, y int }
+```
+
+**Si lo inicializamos con new:**
+
+<img src="./imgs/img1.png" style="zoom:80%;" />
+
+**Si lo inicializamos con struct literal:**
+
+<img src="./imgs/img2.png" style="zoom:80%;" />
+
+
+Partiendo del struct Point creado previamente defininemos:
+```go
+type Rect1 struct { Min, Max Point }
+type Rect2 struct { Min, Max *Point }
+```
+
+Diseño de la memoria de un struct de structs:
+
+<img src="./imgs/img3.png" style="zoom:60%;" />
+
+
+Factory de structs:
+
+Go no admite constructores como en los leguajes de programación orientados a objetos, pero funciones constructor-like factory son fáciles de implementar. A menudo un factory es definido por el tipo por conveniencia; por convención su nombre comienza con new o New.
+
+Pongamos un ejemplo:
+
+Definiremos el siguiente struct:
+```go
+type Point struct {
+	x int
+	y int
+}
+
+```
+
+Un factory retornaría un puntero al tipo del struct en este caso Point:
+
+```go
+func NewPoint(newX, newY int) *Point {
+	return &Point{x: newX, y: newY}
+}
+```
+Entonces podríamos crear una varible del tipo del struc de la siguiente forma:
+
+```go
+p1 := NewPoint(1, 2)
+```
+
+y quedaría similar a como se usan los constructores de las clases de lenguajes como C# o Java.
+
+**Métodos:**
+
+Los structs en Go parecen una forma similar de clases, por lo que debería de tener algo como los métodos de las clases. De nuevo, Go tiene un concepto con el mismo nombre y aproximadamente el mismmo significado: un método en Go es una función que actúa sobre una variable de cierto tipo, llamada **receiver** . Por tanto un método es un tipo especial de función.
+
+La combinación de los structs y sus métodos sería el equivalente en Go de una clase en OO. Una diferencia importante es que el código para el tipo y los métodos que lo vinculan no están agrupados juntos; estos pueden existir en diferentes files siempre y cuando estén en el mismo **package**
+
+La forma general de un método en Go es la siguiente:
+
+```go
+func (recv receiver_type) methodName(parameter_list) (return_value_list) { … }
+```
+
+Por ejemplo definamos el siguiente struct:
+```go
+type Person struct {
+	name     string
+	lastname string
+	age      int
+}
+```
+
+Ahora definemos un método para el **fullname**:
+
+```go
+func (p *Person) Fullname() string {
+	return p.name + " " + p.lastname
+}
+```
+Entonces si se quiere saber el fullname escribimos:
+```go
+person1.Fullname()
+```
+
+**Herencia Múltiple en Go:**
+
+La herencia múltiple es la habilidad de un tipo de obtener los comportamientos de más de un padre. En muchos lenguajes de programación como C# esto no se implementa debido a que en las herarquías basadas en clases esto introduce una complejidad adicional para el compilador. Pero en Go esto puede ser implementado de forma simple insertando todo los tipos "padres" necesarios debajo de la construcción:
+
+Pongamos un ejemplo:
+
+Definamos dos structs Camera y Phone y creemos dos métodos:
+```go
+type Camera struct { }
+
+func (c *Camera) TakeAPicture() string {
+		
+return “Click”
+}
+
+type Phone struct { }
+
+func (p *Phone ) Call() string {
+		
+return “Ring Ring”
+}
+```
+
+Si se quisiera un struct que utilice a estos 2 como "padres"
+haríamos:
+```go
+// multiple inheritance
+type CameraPhone struct {
+		 Camera
+		 Phone
+}
+```
+De esta forma si creamos una varibale de tipo CameraPhone:
+```go
+cp := new(CameraPhone)
+```
+Entonces podríamos acceder a los métodos de los tipos "padres":
+```go
+cp.TakeAPicture()
+cp.Call()
+```
 
 
 #### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia. (David)
@@ -1302,17 +1577,19 @@ Se puede decir que se puede utilizar a *Go* como un lenguaje de programación or
 
 Los structs pueden parecer clases pero no tienen el mismo comportamiento y no son lo mismo. Se puede asignar a los structs métodos, dándole el comportamiento de una clase tradicional, donde la estructura solo contiene el estado y no el comportamiento, los métodos le proporcionan el comportamiento al permitirles cambiar el estado.  
 
-##### Encapsulación
+##### Encapsulación 
 
 La encapsulacion en *Go* funciona a nivel de paquetes y se realiza de manera implicita dependiendo de la primera letra del metodo o atributo. Asi que si se declara un metodo o un atributo con la primera letra en mayuscula, quiere decir que es publico fuera del paquete. *Go* no implementa **protected** ya que no hay herencia, aunque tiene algo que se le asemeja que son los internals. 
 
-##### No hay herencia, solo composición 
+##### No hay herencia, solo composición
 
 Al haber discusiones en el tema de si es mejor tener composición o herencia, las ventajas de una sobre a la otra. En *Go* no hay ese problema porque simplemente no hay herencia.
 
 #####  Interfaces 
 
 Las interfaces en *Go* son implícitas, es decir si tienes los métodos de los que se compone la interfaz, implementas la interfaz.
+
+
 
 #### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo?
 
