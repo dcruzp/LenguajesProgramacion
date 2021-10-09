@@ -1,5 +1,9 @@
 package main
 
+import (
+	"fmt"
+)
+
 func main() {
 	// fmt.Println("Hello, World!")
 	// fmt.Println(add(5, 6))
@@ -27,5 +31,11 @@ func main() {
 	//Ptrs_test1()
 
 	//Ptrs_test2()
-	Ptrs_test4(-100, Ptrs_test3())
+	//Ptrs_test4(-100, Ptrs_test3())
+
+	//defer-panic-recover test
+	fmt.Printf("Calling test\r\n")
+	test()
+	fmt.Printf("Test completed\r\n")
+
 }
