@@ -909,7 +909,7 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
      7. Array coll at index 6 is 0
      8. Array coll at index 7 is 0
      9. Array coll at index 8 is 0
-     10. Array coll at index 9 is 0 
+     10. Array coll at index 9 is 0
     
     <br/>
     Solo pueden ser usados índices dentro del rango del tamaño del array, en caso de que el compilador pueda detectar que se está indexando incorrectamente, lo notificará, de lo contrario el problema se arrastrará a tiempo de ejecución, y se mostrará la notificación:
