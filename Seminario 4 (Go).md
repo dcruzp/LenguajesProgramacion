@@ -61,11 +61,10 @@ A continuación, el árbol de sintaxis abstracta se actualizará y compilara en 
 
 
 
-#### 2 - *Go* es un lenguaje moderno con muchísimas decisiones de diseño intencionales. Que ventejas  y desventajas le da al lenguaje su forma de procesamiento. Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.  (David)
+#### 2 - *Go* es un lenguaje moderno con muchísimas decisiones de diseño intencionales. ¿Que ventajas  y desventajas le da al lenguaje su forma de procesamiento? Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.
 
-*Go* es un lenguaje que pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo
-que no tendrás que pasar años hojeando la documenación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar.Tiene una compuilación rápida lo que mejora la productividad. Tine un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir
-código más simple. Es un leguaje de tipado estático con una librería standard bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado y bien documentado . Es libre y de código abierto (licencia BSD).
+*Go* es un lenguaje que se pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo que no tendrás que pasar años hojeando la documentación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar. Tiene una compilación rápida lo que mejora la productividad. Tiene un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir
+código más simple. Es un lenguaje de tipado estático con una librería standar bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado. Es libre y de código abierto (licencia BSD).
 
 
 
