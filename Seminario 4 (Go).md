@@ -2055,6 +2055,97 @@ Test completed
 
 Hasta hoy en día, *Go* no posee concepto de **genericidad**. De todas maneras, la mayoría de casos pueden ser resueltos usando interfaces, especialmente la interfaz vacía, y un `switch` para decidir que hacer dependiendo del tipo. Este concepto de genericidad incrementa la complejidad del código y disminuye su rendimiento, por lo que cuando el rendimiento es muy importante es mejor y producirá código más fácil de leer, si definimos una función para cada tipo que sea necesario explícitamente.
 
+###### Ejemplo de como simular genericidad:
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+type Person struct {
+	height float64
+	weight float64
+	name   string
+}
+
+type Item struct {
+	weight float64
+	name   string
+}
+type Storage struct {
+	name         string
+	location     string
+	itemsInStock []Item
+}
+
+func main() {
+	person1 := new(Person)
+	person2 := new(Person)
+
+	person1.height = 5.6
+	person1.weight = 150.6
+	person1.name = "John"
+
+	person2.height = 6.2
+	person2.weight = 100.9
+	person2.name = "Peter"
+
+	storage1 := new(Storage)
+	storage2 := new(Storage)
+
+	item1 := new(Item)
+	item2 := new(Item)
+	item3 := new(Item)
+	item4 := new(Item)
+
+	item1.name = "Screwdriver"
+	item1.weight = 14.5
+
+	item2.name = "Plastic Box"
+	item2.weight = 2.3
+
+	item3.name = "Nails"
+	item3.weight = 0.5
+
+	item4.name = "Saw"
+	item4.weight = 22.7
+
+	storage1.location = "Alaska"
+	storage1.name = "Ralph´s workshop"
+	storage1.itemsInStock = []Item{*item1, *item2, *item3}
+
+	storage2.location = "Ohio"
+	storage2.name = "The homies junkhouse"
+	storage2.itemsInStock = []Item{*item1, *item2, *item4}
+
+	PrintAny(person1)
+	PrintAny(person2)
+
+	PrintAny(storage1)
+	PrintAny(storage2)
+}
+
+func PrintAny(any interface{}) {
+	switch elem := any.(type) {
+
+	case *Person:
+		fmt.Printf("This persons´s name is %s, is %f feet tall and weights %f pounds\n", elem.name, elem.height, elem.weight)
+
+	case *Storage:
+		fmt.Printf("This is storage is located in %s, it´s name is %s\n", elem.location, elem.name)
+		fmt.Println("Items in stock are:")
+		for index, item := range elem.itemsInStock {
+			fmt.Printf("%d - The %s weights %f pounds\n", index+1, item.name, item.weight)
+		}
+
+	default:
+		printHelloWorld()
+	}
+}
+```
+
 ##### Limitaciones
 Por las razones previamente explicadas, consideramos que la gran limitación de que *Go* no presente genericidad de tipo es exclusivamente la cantidad de código necesario para simular este comportamiento, que es algo bastante usado en la actualidad.
 
