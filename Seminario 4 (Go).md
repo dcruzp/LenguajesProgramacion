@@ -882,38 +882,40 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
     import "fmt" 
     
     func main() {
-	    Testing_arr()
+        Testing_arr()
     }
     
     func Testing_arr() {
-	    var coll [10]int
+        var coll [10]int
     
         //Conditional styled for loop
-	    // for i := 0; i < len(coll); i++ {
-	    // 	fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
-	    // }
+        // for i := 0; i < len(coll); i++ {
+        // 	fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
+        // }
     
-	    //Range styled for loop
-	    for i := range coll {
-	    	fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
-	}
+        //Range styled for loop
+        for i := range coll {
+            fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
+    }
     ```
-
-
-    **output**:
     
-     1. Array coll at index 0 is 0
-     2. Array coll at index 1 is 0
-     3. Array coll at index 2 is 0
-     4. Array coll at index 3 is 0
-     5. Array coll at index 4 is 0
-     6. Array coll at index 5 is 0
-     7. Array coll at index 6 is 0
-     8. Array coll at index 7 is 0
-     9. Array coll at index 8 is 0
-     10. Array coll at index 9 is 0 
+    **Output:**
     
-    <br/>
+    ```
+    Array coll at index 0 is 0
+    Array coll at index 1 is 0
+    Array coll at index 2 is 0
+    Array coll at index 3 is 0
+    Array coll at index 4 is 0
+    Array coll at index 5 is 0
+    Array coll at index 6 is 0
+    Array coll at index 7 is 0
+    Array coll at index 8 is 0
+    Array coll at index 9 is 0
+    ```
+    
+    ​    
+    
     Solo pueden ser usados índices dentro del rango del tamaño del array, en caso de que el compilador pueda detectar que se está indexando incorrectamente, lo notificará, de lo contrario el problema se arrastrará a tiempo de ejecución, y se mostrará la notificación:
     
     ```runtime error: index out of range```
@@ -922,14 +924,13 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
     
     En *Go*, los arrays por defecto, son tipos por valor, a diferencia de los lenguajes de la familia *C*, que son un puntero al lugar en memoria y por eso son tipos por referencia. Esto trae como consecuencia, que al hacer una operación como la siguiente:
     
-    ```go
+    ```
     arr1 := arr2
     ```
     
     Donde arr1 y arr2 son 2 arrays previamente declarados, en vez de simplemente cambiar las referencias, en arr1 se almacena una copia de arr2, lo que se puede ver claramente en el siguiente código de ejemplo:
     
     ```go
-    
     func main() {
         Arr_managment1()
     }
@@ -945,19 +946,18 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
     }
     ```
     
-    **output**: 
+    **Output**:
     
-    1. arr1 at index 0 is 0
-    2. arr2 at index 0 is 1
-    
-    <br/>
+    ```
+    arr1 at index 0 is 0
+    arr2 at index 0 is 1
+    ```
     
     Como se puede observar el valor de arr2[0] cambió, sin embargo arr1[0] se mantuvo igual.
     
     Si quisiéramos pasar un array por referencia, se puede usar el operador ```&``` delante del nombre del array deseado al igual que en *C++*, como se muestra en el siguiente ejemplo:
     
     ```go
-    
     func main() {
         Arr_managment2
     }
@@ -973,28 +973,27 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
     }
     ```
     
-    **output**
-    1. arr1 at index 0 is 1
-    2. arr2 at index 0 is 1
+    **Output**:
     
-    <br/>
+    ```
+    arr1 at index 0 is 1
+    arr2 at index 0 is 1
+    ```
+    
     Como podemos observar ambos arr1[0] y arr2[0] cambiaron sus valores, pues ambos son punteros que apuntan al mismo lugar en memoria.
-    
-    <br/>
-    <br/>
     
     Al igual que en algunos lenguajes de la familia *C*, como *C++*, pasar los arrays directamente como argumento a una función, rápidamente consume mucha memoria, por lo que se recomienda pasar un puntero al array con el operador ```&```.
     
-    <br/>
     Para construir arrays se puede utilizar el operador ..., que indica al compilador que debe contar los elementos para saber el tamaño del array. Se podría decir que está es una forma lazy de construir arrays en Go.
     
-    <br/>
     Para declarar un array multidimensional, se hace lo siguiente por ejemplo:
     
     ```go
     [3][5]int
     [2][2][2]float64
     ```
+    
+    
 
  2. **Slices**
     
@@ -1055,8 +1054,6 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
     ```
 
     **output**: 15
-
- <br/>
 
  3. Métodos nativos ```make()```, ```append()```, ```copy()```
     
