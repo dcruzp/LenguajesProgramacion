@@ -89,7 +89,7 @@ código más simple. Es un leguaje de tipado estático con una librería standar
 
 
 
-## For
+###### For
 
 *Go* tiene solo una sola estructura para ciclos **for loop**
 
@@ -105,7 +105,7 @@ La declaración init a menudo será una declaración de variable corta(usando **
 
 de esta instrucción. El ciclo for para de iterar una vez que la condición booleana evaluada es falsa. A diferencia de otros lenguajes como *C*, *Java* o *Javascript* aquí no hay paréntesis que rodeen las tress componentes de la instrucción for y las llaves (**{}**) siempre son necesarias.
 
-Ejemplo de instrucción **for** básico en *Go*:
+Ejemplo de instrucción `for` básico en *Go*:
 
 
 
@@ -140,7 +140,7 @@ func main() {
 }
 ```
 
-For is también el "while" de *Go* :):
+For es también el "while" de *Go* :):
 
 Puedes quitar el semicolon(;) y el "while" está escritor for en *Go*
 
@@ -175,8 +175,8 @@ func main() {
 	}
 }
 ```
+##### For statements with range clause:  
 
-For statements with range clause:  
 Una instrucción for con una cláusula range recorre todos los elementos de un array, slice, string, map o valores recibidos en un canal. Por cada entrada este asigna valoros de iteración a las variables de iteración correspondientes y luego ejecuta el bloque.
 
 
@@ -202,11 +202,7 @@ func for_range() {
 	}
 }
 ```
-
-
-
-
-**If** 
+##### `If` statement 
 
 Las sentencias if de *Go* al igual que for no necesita estar entre paréntesis () pero los llaves  {} si son obligatorias
 
@@ -233,7 +229,7 @@ func main() {
 
 ```
 
-**If** con **short statement**
+##### `if` con **short statement**
 
 Similar a for, la instrucción if puede comenzar con una instrucción corta para ejecutar antes de la condición. Las variables declaradas por la instrucción
 
@@ -265,7 +261,7 @@ func main() {
 
 ```
 
-## If and else
+##### `if` and `else`
 
 Las variables declaradas dentro de un if short statement son también accesibles dentro de cualquiera de los bloques else
 
@@ -300,7 +296,7 @@ Ambas llamadas a **pow**  devuelven sus resultados antes que se haga la llamada 
 
 
 
-### Switch:
+##### Switch
 
 Una sentencia **switch** es una manera más corta de escribir una secuencia de  sentencias **if-else**.  Esta ejecuta el primer caso cuyo valor es igual a la expresión de condición .
 
@@ -330,8 +326,8 @@ func main() {
 
 ```
 
+##### Orden de Evaluación Switch:
 
-Orden de Evaluación Switch:
 Los switch cases en *Go* evalúan los casos top to bottom(de arriba hacia abajo) y para cuando encuentra un caso exitoso.
 
 ```go
@@ -358,7 +354,7 @@ func main() {
 }
 ```
 
-Switch sin ninguna condición:
+##### Switch sin ninguna condición:
 
 Switch sin ninguna condición es lo mismo que un **switch true**. Esta construcción puede ser una manera limpia de escribir una larga cadena de 
 **if-then-else**
@@ -386,7 +382,7 @@ func main() {
 }
 ```
 
-Defer:
+##### Defer:
 
 Una declaración **defer**  aplaza la ejecución de una función hasta que retorna la función de donde es llamada
 
@@ -409,7 +405,8 @@ hello
 world
 ```
 
-Stacking defers:
+##### Stacking defers:
+
 Las llamadas llamdas a funciones diferidas se insertan en un stack. Cuando una función regresa, sus llamdas diferidas son ejecutadas en orden **last-in-first-out (LIFO)**
 
 Ejemplo:
@@ -428,7 +425,7 @@ func main() {
 	fmt.Println("done")
 }
 ```
-Funciones:
+##### Funciones:
 
 Una función en Go puede tomar 0 o más argumentos. Se declara con el keyword **func**. 
 
@@ -449,7 +446,7 @@ func main() {
 
 Se puede apreciar que el tipo viene después del nombre de la variable
 
-Funciones continuadas:
+##### Funciones continuadas:
 
 Cuando dos o más nombres de parámetros consecutivos de una función comparten un tipo, en Go puedes omitir el tipo de todos menos del último
 
@@ -471,7 +468,7 @@ func main() {
 En este ejemplo acortamos:
 **x int, y int** a **x, y int**
 
-Funciones con mútiples resultados
+###### Funciones con mútiples resultados
 
 Una función en Go puede retornar cualquier cantidad de resultados:
 
@@ -492,7 +489,7 @@ func main() {
 ```
 La función swap retorna dos strings
 
-Named return values:
+##### Named return values:
 
 Se puede nombrar los valores de retorno de una función en Go. Si es así se tratan como variables definidas en la parte superior de la función. Estos nombres deben usarse para documentar el significado de los valores devueltos.
 Una declaración return sin argumentos retorna los valores de retorno nombrados. Esto es conocido como **"naked" return**
@@ -517,7 +514,7 @@ func main() {
 
 ```
 
-Variables:
+##### Variables:
 
 Una declaración **var** puede incluir inicializadores, uno por cada variable. Si el inicializador está presente, el tipo de la variable puede ser omitido; la variable tomará el tipo del valor con el que se inicializó.
 
@@ -536,7 +533,7 @@ func main() {
 
 ```
 
-Declaración de variable corta usuando **:=**:
+##### Declaración de variable corta usuando **:=**:
 
 Dentro de una función, la declaración de asignación corta := puede ser usada en lugar de en lugar de var con el tipo implícito. Fuera de una función **:=** no puede ser usada.
 
@@ -554,7 +551,8 @@ func main() {
 }
 ```
 
-Constantes:
+##### Constantes:
+
 Las constantes son declaradas como las variables , pero con el keyword **const**. Las constantes pueden ser character, string, boolean, o valores numéricos. Las constantes no pueden ser declaradas usando la sintaxis **:=**
 
 Ejemplo:
