@@ -1898,6 +1898,86 @@ Las interfaces en *Go* son implícitas, es decir si tienes los métodos de los q
 
 #### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo?
 
+Herarquía código:
+```go
+type Recibir interface {
+	RecibirClase()
+}
+
+type Impartir interface {
+	ImpartirClase()
+}
+
+type Cobrar interface {
+	CobrarSalario()
+}
+
+type Persona struct {
+	name string
+}
+type Estudiante struct {
+	Persona
+}
+
+type Profesor struct {
+	Trabajador
+}
+
+type AlumnoAyudante struct {
+	Estudiante
+}
+
+type Trabajador struct {
+	Persona
+}
+
+func (p Profesor) ImpartirClase() {
+	fmt.Printf("El profesor %s imparte la clase\n", p.name)
+}
+
+func (e Estudiante) RecibirClase() {
+	fmt.Printf("El estudiante %s recibe la clase\n", e.name)
+}
+func (t Trabajador) CobrarSalario() {
+	fmt.Printf("El trabajador %s cobra el salario\n", t.name)
+}
+
+func (a AlumnoAyudante) ImpartirClase() {
+	fmt.Printf("El alumno %s  imparte la clase\n", a.name)
+}
+```
+Ejemplo usando esta herarquía:
+```go
+fernan := new(Profesor)
+	fernan.name = "Fernando"
+	david := new(Estudiante)
+	david.name = "David"
+	ale := new(AlumnoAyudante)
+	ale.name = "Alejandro"
+	julio := new(Trabajador)
+	julio.name = "Julio"
+
+	fernan.CobrarSalario()
+	fernan.ImpartirClase()
+
+	david.RecibirClase()
+
+	ale.RecibirClase()
+	ale.ImpartirClase()
+
+	julio.CobrarSalario()
+```
+
+Resultado en consola:
+```
+❯ go run main.go
+El trabajador Fernando cobra el salario
+El profesor Fernando imparte la clase
+El estudiante David recibe la clase
+El estudiante Alejandro recibe la clase
+El alumno Alejandro  imparte la clase
+El trabajador Julio cobra el salario
+```
 #### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de *Go* y *C#*.
 
 El poder de separar el **que** del **como** es lo que hace a las interfaces tan útiles. 
