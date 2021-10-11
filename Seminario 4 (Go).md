@@ -1553,6 +1553,311 @@ cp.Call()
 
 #### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia. (David)
 
+**Interfaces:**
+
+Go no es un lenguaje orientado a objetos "clásico" : esto no conoce el concepto de clases y herencia. Sin embargo, contiene un concepto muy flexible de interfaces, en el que muchos aspectos de la programación orientada a objetos puede estar disponible. Las interfaces en Go proporcionan una forma de especificar el comportamiento de un objeto: si algo puede hacer esto, entonces se puede usar aquí.
+
+Una interface define un conjunto de métodos(method set), pero estos métodos no contienen código, no están implementados (son abstractos). Además una interface no puede contener variables.
+
+Una interfaz en Go es declarada de la forma:
+
+```go
+type Namer interface {
+	Method1(param_list) return_type
+	Method2(param_list) return_type
+	…
+}
+```
+
+Donde **Namer** es el type de la interfaz.
+
+A diferencia de otros lenguajes OO, en Go las interfaces pueden tener valores, una variable del tipo interface o un interface value.
+
+Un valor del tipo interface puede contener cualquier valor que implemente estos métodos.
+
+Ejemplo:
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type Abser interface {
+	Abs() float64
+}
+
+type MyFloat float64
+
+func (f MyFloat) Abs() float64 {
+	if f < 0 {
+		return float64(-f)
+	}
+	return float64(f)
+}
+
+type Vertex struct {
+	X, Y float64
+}
+
+func (v *Vertex) Abs() float64 {
+	return math.Sqrt(v.X*v.X + v.Y*v.Y)
+}
+
+func main() {
+	var a Abser
+	f := MyFloat(-math.Sqrt2)
+	v := Vertex{3, 4}
+
+	a = f  // a MyFloat implements Abser
+	a = &v // a *Vertex implements Abser
+
+	// In the following line, v is a Vertex (not *Vertex)
+	// and does NOT implement Abser.
+	a = v
+
+	fmt.Println(a.Abs())
+}
+
+```
+
+Aquí hay un error en **a = v** debido a que Vertex no implementa Abser pues el método Abs está definido solo en *Vertex
+
+Las interfaces se implementan de forma implícita
+
+Un tipo implementa una interfaz implmentando sus métodos. En Go no existe una declaración implícita de interface, no tiene un keyword "implements" ni nada similar.
+
+Las interfaces implícits desacoplan la definición de una interface  de su propia implementación, que luego podría aparecer en cualquier package sin ningún prerequisito.
+
+Ejemplo:
+```go
+package main
+
+import "fmt"
+
+type I interface {
+	M()
+}
+
+type T struct {
+	S string
+}
+
+// This method means type T implements the interface I,
+// but we don't need to explicitly declare that it does so.
+func (t T) M() {
+	fmt.Println(t.S)
+}
+
+func main() {
+	var i I = T{"hello"}
+	i.M()
+}
+
+```
+
+
+**Interfaces values:**
+ Bajo en capó , interfaces values se pueden considerar como una tupla de un valor y un tipo concreto:
+
+```go
+(value, type)
+```
+
+Un interface value tiene un valor de un tipo concreto subyacente específico.
+
+Llamar a un método de un interface value ejecuta el método del mismo nombre en su tipo subyaciente.
+
+Ejemplo:
+
+
+```go
+package main
+
+import (
+	"fmt"
+	"math"
+)
+
+type I interface {
+	M()
+}
+
+type T struct {
+	S string
+}
+
+func (t *T) M() {
+	fmt.Println(t.S)
+}
+
+type F float64
+
+func (f F) M() {
+	fmt.Println(f)
+}
+
+func main() {
+	var i I
+
+	i = &T{"Hello"}
+	describe(i)
+	i.M()
+
+	i = F(math.Pi)
+	describe(i)
+	i.M()
+}
+
+func describe(i I) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+```
+
+Si ejecutamos debe imprimir los siguiente en consola:
+```
+(&{Hello}, *main.T)
+Hello
+(3.141592653589793, main.F)
+3.141592653589793
+```
+
+**Interfaces values con nil value subyaciente:**
+
+f the concrete value inside the interface itself is nil, the method will be called with a nil receiver.
+Si el valor en concreto dentro de la propia interface es nil, el método será llamado con un nil receiver.
+
+**Ejemplo:**
+
+```go
+package main
+
+import "fmt"
+
+type I interface {
+	M()
+}
+
+type T struct {
+	S string
+}
+
+func (t *T) M() {
+	if t == nil {
+		fmt.Println("<nil>")
+		return
+	}
+	fmt.Println(t.S)
+}
+
+func main() {
+	var i I
+
+	var t *T
+	i = t
+	describe(i)
+	i.M()
+
+	i = &T{"hello"}
+	describe(i)
+	i.M()
+}
+
+func describe(i I) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+```
+En algunos lenguajes esto desencadenaría un null pointer exception, pero en Go es común escribir métodos que manejen con gracia las llamadas con un nil receive(como el método M en el ejemplo anterior)
+
+
+**Nil interface values:**
+
+Un interface value  nil no tiene valor ni tipo
+concreto.
+
+
+Ejemplo:
+```go
+package main
+
+import "fmt"
+
+type I interface {
+	M()
+}
+
+func main() {
+	var i I
+	describe(i)
+	i.M()
+}
+
+func describe(i I) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+```
+Llamar a una interfece nil es un error en tiempo de ejecución porque no hay ningún tipo dentro de la tupla de la interfaz para indicar a qué método concreto llamar(Ejemplo anterior).
+```
+(<nil>, <nil>)
+panic: runtime error: invalid memory address or nil pointer dereference
+[signal SIGSEGV: segmentation violation code=0x1 addr=0x0 pc=0x47f767]
+```
+
+**Empty Interface:**
+
+Una interface que especifica 0 métodos se conoce como **empty interface**.
+
+```go
+interface{}
+```
+
+Un empty interface puede contener valores de cualquier tipo(todo tipo implementa al menos 0 métodos)
+Las empty interfaces son usadas por código que maneja valores de tipo desconocido. Por ejemplo **fmt.print** toma cualquier tipo de argumentos de tipo **interface {}**.
+
+```go
+package main
+
+import "fmt"
+
+func main() {
+	var i interface{}
+	describe(i)
+
+	i = 42
+	describe(i)
+
+	i = "hello"
+	describe(i)
+}
+
+func describe(i interface{}) {
+	fmt.Printf("(%v, %T)\n", i, i)
+}
+```
+**Interface que contiene interfaces:**
+
+Una interface puede contener el nombre de una o más interfaces, lo que es equivalente a enumerar explícitamente los métodos de la interface embebida en la interface contenedora.
+
+Ejemplo:
+```go
+type ReadWrite interface {
+		 Read(b Buffer) bool
+		 Write(b Buffer) bool
+}
+type Lock interface {
+		 Lock()
+		 Unlock()
+}
+type File interface {
+		 ReadWrite
+		 Lock
+		 Close()
+}
+```
+
+En este ejemplo la interface File contiene todos los métodos de  ReadWrite y Lock, además del método Close().
 
 
 #### 11 - Se puede decir que *Go* es un lenguaje que ofrece programación orientada a objetos? 
