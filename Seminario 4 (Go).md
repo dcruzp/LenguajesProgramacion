@@ -1589,13 +1589,11 @@ Al haber discusiones en el tema de si es mejor tener composición o herencia, la
 
 Las interfaces en *Go* son implícitas, es decir si tienes los métodos de los que se compone la interfaz, implementas la interfaz.
 
-
-
 #### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo?
 
 #### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de *Go* y *C#*.
 
-El poder de separar el **que** del **como** es lo que hace a las interfaces tan útiles. 
+El poder de separar el **que** del **como** es lo que hace a las interfaces tan útiles. Le permiten al programador ser más abstracto al referirse a un objeto y agrupar un conjunto de objetos que realizan una misma función bajo un mismo nombre, no importa si la realizan de diferentes formas, ya eso es responsabilidad del programador describirlo en cada clase que implemente la interfaz.
 
 #### 14 Como maneja *Go* las excepciones y errores en ejecución?
 
