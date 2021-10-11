@@ -2,7 +2,7 @@
 
 
 
-#### 1 - Cual es la forma de procesamiento del código fuente utilizada. (los 3 )
+#### 1 - ¿Cuál es la forma de procesamiento del código fuente utilizada?
 
 ​	El compilador de *Go* se divide lógicamente en cuatro etapas 
 
@@ -10,24 +10,24 @@
 
     Análisis del archivo fuente del código. Se convierte la secuencia de cadenas en el archivo en una secuencia `Tokens` para el posterior análisis.(este análisis léxico lo realiza el lexer)
 
-    Al análisis gramatical entra la secuencia de tokens que genera le analizador léxico. Estas secuencias serán analizadas por el analizador gramatical en orden. El procesos de análisis gramatical es seguir la gramática definida por el análisis léxico de abajo hacia arriba. O la especificación de arriba hacia abajo, cada archivo de código fuente de *Go* se resumira en una estructura `SourceFile`:
+    Al análisis gramatical entra la secuencia de tokens que genera le analizador léxico. Estas secuencias serán analizadas por el analizador gramatical en orden. El procesos de análisis gramatical es seguir la gramática definida por el análisis léxico de abajo hacia arriba. O la especificación de arriba hacia abajo, cada archivo de código fuente de *Go* se resumirá en una estructura `SourceFile`:
 
      ```
      SourceFile = PackageClause ";" { ImportDecl ";" } { TopLevelDecl ";" }
      ```
 
-    El analizador sintáctico estándar de Goland  utiliza la gramática de LALR. El resultado del análisis sintáctico es en realidad el árbol de sintaxis abstracta (AST). Cada AST corresponde aun archivo de *Go* independiente. Este árbol de sintaxis abstracta incluye el nombre del paquete, las constantes definidas, las estructuras y las funciones del archivo actual. 
+    El analizador sintáctico estándar de Goland  utiliza la gramática de LALR. El resultado del análisis sintáctico es en realidad el árbol de sintaxis abstracta (AST). Cada AST corresponde a un archivo de *Go* independiente. Este árbol de sintaxis abstracta incluye el nombre del paquete, las constantes definidas, las estructuras y las funciones del archivo actual. 
 
-    Si se produce algún error de sintaxis durante el proceso de análisis, el analizador lo encontrara y el mensaje se imprimirá en la salida estándar. Todo el proceso de compilación también se abortara cuando se produzca un error.
+    Si se produce algún error de sintaxis durante el proceso de análisis, el analizador lo encontrará y el mensaje se imprimirá en la salida estándar. Todo el proceso de compilación también se abortará cuando se produzca un error.
 
     
 
  2. **Verificación de Tipos y conversión AST** 
 
-    Después de obtener el árbol de sintaxis abstracta (AST) de un conjunto de archivos, el compilador del lenguaje verificara los tipos definidos y usados en el árbol de sintaxis. La verificación de tipos verificara diferentes tipos de nodos en orden: 
+    Después de obtener el árbol de sintaxis abstracta (AST) de un conjunto de archivos, el compilador del lenguaje verificará los tipos definidos y usados en el árbol de sintaxis. La verificación de tipos verificará diferentes tipos de nodos en orden: 
 
      - Constantes, tipos y tipos de funciones 
-     - Asignación e inicializacion de variables 
+     - Asignación e inicialización de variables 
      - El cuerpo de la función y cierre 
      - Tipos de pares clave- valor hash
      - Importe de cuerpo de la función 
@@ -41,15 +41,15 @@
 
  3. **Generación SSA general** 
 
-    Cuando se convierte el archivo fuente en un árbol de sintaxis abstracta, se analiza la gramática de todo el árbol de sintaxis y se realiza la verificación de tipos, entonces el código no tiene problemas de incompilacion o errores gramaticales. El compilador convertirá el AST de entrada en código intermedio. 
+    Cuando se convierte el archivo fuente en un árbol de sintaxis abstracta, se analiza la gramática de todo el árbol de sintaxis y se realiza la verificación de tipos, entonces el código no tiene problemas de incompilación o errores gramaticales. El compilador convertirá el AST de entrada en código intermedio. 
 
     El código intermedio del compilador de *Go* utiliza la función SSA (Formulario de asignación única estática). Usando esta función en el proceso de generación de código intermedio, se puede analizar fácilmente las variables y fragmentos inútiles en el código. 
 
-    Después de la verificación de tipos, una función llamada compileFunctions comenzara a compilar todas las funcioes en todo el proyecto del lenguaje *Go*. Estas funciones esperaran el consumo de varias corrutinas de trabajo del back-end en una cola de compilación.
+    Después de la verificación de tipos, una función llamada compileFunctions comenzará a compilar todas las funciones en todo el proyecto del lenguaje *Go*. Estas funciones esperarán el consumo de varias corrutinas de trabajo del back-end en una cola de compilación.
 
  4. **Generación final del código de maquina** 
 
-    El directorio `cmd/compiler/internal` del código fuente del lenguaje *Go* contiene una gran cantidad de paquetes relacionados con la generación de código maquina. Los diferentes tipos de CPU usan diferentes paquetes para generar  `amd64` `arm` `mips` `mips64` `ppc64` `s390x` `x86` y `wasm`, lo que significa que el lenguaje *Go* en casi todos los tipos de conjuntos de instrucciones de CPU comunes.
+    El directorio `cmd/compiler/internal` del código fuente del lenguaje *Go* contiene una gran cantidad de paquetes relacionados con la generación de código máquina. Los diferentes tipos de CPU usan diferentes paquetes para generar  `amd64` `arm` `mips` `mips64` `ppc64` `s390x` `x86` y `wasm`, lo que significa que el lenguaje *Go* en casi todos los tipos de conjuntos de instrucciones de CPU comunes.
 
     
     
@@ -57,13 +57,11 @@
 
 La entrada del compilador del lenguaje de *Go* es el archivo main.go en el paquete `src/cmd/compile/internal/gc` . Esta función es el programa principal del compilador del lenguaje *Go*. Esta función primero obtiene la entrada de la linea de comandos (Parámetro) y actualiza las opciones de compilación y configuración y luego comienza a ejecutar la función `parseFile`  para realizar análisis léxico y gramatical en todos los archivos de entrada para obtener el árbol de sintaxis abstracto correspondiente al archivo. 
 
-A continuación, el árbol de sintaxis abstracta se actualizara y compilara en nueve etapas. Como presentamos anteriormente, todo el proceso pasara por tres partes: verificación de tipos , generación de código intermedio SSA y generación de código maquina.
+A continuación, el árbol de sintaxis abstracta se actualizará y compilara en nueve etapas. Como presentamos anteriormente, todo el proceso pasara por tres partes: verificación de tipos , generación de código intermedio SSA y generación de código maquina.
 
 
 
-
-
-#### 2 - *Go* es un lenguaje moderno con muchisimas decisiones de diseño intencionales. Que ventejas  y desventajas le da al lenguaje su forma de procesamiento. Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.  (David)
+#### 2 - *Go* es un lenguaje moderno con muchísimas decisiones de diseño intencionales. Que ventejas  y desventajas le da al lenguaje su forma de procesamiento. Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.  (David)
 
 *Go* es un lenguaje que pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo
 que no tendrás que pasar años hojeando la documenación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar.Tiene una compuilación rápida lo que mejora la productividad. Tine un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir
