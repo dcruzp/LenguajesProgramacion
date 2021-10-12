@@ -63,8 +63,15 @@ A continuación, el árbol de sintaxis abstracta se actualizará y compilara en 
 
 #### 2 - *Go* es un lenguaje moderno con muchísimas decisiones de diseño intencionales. ¿Que ventajas  y desventajas le da al lenguaje su forma de procesamiento? Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.
 
-*Go* es un lenguaje que se pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo que no tendrás que pasar años hojeando la documentación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar. Tiene una compilación rápida lo que mejora la productividad. Tiene un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir
-código más simple. Es un lenguaje de tipado estático con una librería standar bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado. Es libre y de código abierto (licencia BSD).
+*Go* es un lenguaje que se pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo que no tendrás que pasar años hojeando la documentación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar. Tiene una compilación rápida lo que mejora la productividad. Tiene un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir código más simple. Es un lenguaje de tipado estático con una librería standar bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado, Es libre y de código abierto (licencia BSD).
+
+Su forma de procesamiento le da una portabilidad que aunque no lleve una maquina virtual como Java, corre su código nativo en la mayoría de los procesadores con tecnologías actuales, prácticamente corren en casi la mayoría de la procesadores actuales. 
+
+Tiene código de compilación muy rápido, no es como C# que genera código intermedio, esto hace que su compilación sea muy rápido, y esto es una ventaja que ofrece este lenguaje. Por su sencillez es de gran rendimiento y esto le da una alta velocidad. ademas de soportar grandes conexiones simultaneas. Al presentar concurrencia  mediante gorutinas que permiten manejar múltiples procesos de forma concurrente. siendo esta de gran relevancia ya que su concurrencia nativa permite ejecutar diversos procesos de manera simultanea permitiendo la comunicación entre ellos a través de canales(channels) los cuales simplemente son variables alojadas en memoria. Esto sin duda es muy favorable en las plataformas en las que se usa. 
+
+Un factor importante a tener en cuenta es que con los nuevos procesadores que se incorporan cada vez mas núcleos e hilos, Go se presenta como el lenguaje escalable que puede sacar el máximo rendimiento en estos hardwares. 
+
+Un punto importante de decir de Go es que no presenta abstracciones, que si bien es un poco contradictorio porque como otros lenguajes lo implementan como C#, etc. Esto es un punto positivo porque elimina un nivel de abstracción que resulta en mas rapidez de compilación y ejecución   
 
 #### 3 - Realice un sumario sobre las características mas interesantes de la sintaxis de *Go*: (los 3)
 
@@ -944,21 +951,6 @@ func main() {
 ```
 
 
-- Creación de variables 
-
-- Ciclos ```for```
-
-- Indentacion 
-
-- Condiciones ```if``` con declaración de varaibles en la condición 
-
-- Funciones con múltiples retornos 
-
-- Otros elementos de las sintaxis que consideres relevante  a mostrar
-
-
-
-
 
 #### 4 - Presente los tipos nativos
 
@@ -1025,9 +1017,9 @@ func main() {
 
   
 
-#### 5 - Comente sobre ```nil``` y los valores por defecto (Daniel) 
+#### 5 - Comente sobre ```nil``` y los valores por defecto
 
-En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slices, canales y funciones. Y corresponde a un valor no inicializado. `nil` no es mas que otro posible valor valido. Sin embargo `nil` no es un valor valido para los tipos básicos (enteros, coma flotante, boleanos, etc)ni tampoco para los `structs` 
+En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slices, canales y funciones. Y corresponde a un valor no inicializado. `nil` no es mas que otro posible valor valido. Sin embargo `nil` no es un valor válido para los tipos básicos (enteros, coma flotante, boleanos, etc) ni tampoco para los `structs` 
 
  
 
@@ -1239,7 +1231,7 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
       
 
 
-#### 6 - Arrays y slices en *Go*. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas? (Javier) 
+#### 6 - Arrays y slices en *Go*. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas?
 
  1. **Arrays**
 
@@ -1478,7 +1470,7 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
 
     La función ```copy()```, copia elementos de un mismo tipo, de un slice a otro, sobreescribiendo los correspodientes elementos del slice origen en el slice destino. La cantidad de elementos que se copian del origen al destino es el mínimo de los tamaños de ambos slices.
 
-#### 7 - Los tipos en *Go* son por referencia o por valor. Punteros en *Go*, que son , que se puede hacer con ellos , son seguros? Por que es seguro referenciar en *Go* a una variable local de un metodo?  Haga una comparacion con los punteros de *C* o *C++*. (Javier)
+#### 7 - ¿Los tipos en *Go* son por referencia o por valor? Punteros en *Go*, que son, que se puede hacer con ellos, son seguros? Por que es seguro referenciar en *Go* a una variable local de un método?  Haga una comparación con los punteros de *C* o *C++*. 
 
 
  1. **Tipos en *Go***
@@ -1548,7 +1540,7 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
 
  <br/>
 
-#### 8 - Que es el keyword ```defer``` ?  (Daniel)
+#### 8 - Que es el keyword ```defer``` ?
 
 El keyword `defer` es una sentencia que ejecuta el código que le indiquemos antes de que se termine la función, sin importar en que punto se termine la misma. 
 
@@ -1637,7 +1629,7 @@ Go
 
 Esto sucede porque la primera llamada a `defer` se ejecuta de ultimo. El orden es **LIFO**. Ultimo en entrar, primero en salir.
 
-#### 9 - Presente los ```structs``` en *Go* y comparelos con los de C. (David)
+#### 9 - Presente los ```structs``` en *Go* y comparelos con los de C.
 
 Go admite tipos personalizados o definidos por el usuario en forma de alias types o structs.
 Los componentes de datos que constituyen un **struct** se llaman fields o campos del struct.
@@ -1912,7 +1904,7 @@ cp.Call()
 ```
 
 
-#### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia. (David)
+#### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia.
 
 
 
@@ -2415,7 +2407,7 @@ Las interfaces en *Go* son implícitas, es decir si tienes los métodos de los q
 
 #### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo?
 
-Herarquía código:
+Jerarquía código:
 ```go
 type Recibir interface {
 	RecibirClase()
@@ -2463,7 +2455,7 @@ func (a AlumnoAyudante) ImpartirClase() {
 	fmt.Printf("El alumno %s  imparte la clase\n", a.name)
 }
 ```
-Ejemplo usando esta herarquía:
+Ejemplo usando esta jerarquía:
 ```go
 fernan := new(Profesor)
 	fernan.name = "Fernando"
@@ -2575,7 +2567,7 @@ Panicking bad end
 
 Test completed
 
-#### 15 - *Go* no presente genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone?
+#### 15 - *Go* no presenta genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone?
 
 Hasta hoy en día, *Go* no posee concepto de **genericidad**. De todas maneras, la mayoría de casos pueden ser resueltos usando interfaces, especialmente la interfaz vacía, y un `switch` para decidir que hacer dependiendo del tipo. Este concepto de genericidad incrementa la complejidad del código y disminuye su rendimiento, por lo que cuando el rendimiento es muy importante es mejor y producirá código más fácil de leer, si definimos una función para cada tipo que sea necesario explícitamente.
 
