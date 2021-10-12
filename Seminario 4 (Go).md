@@ -1826,6 +1826,162 @@ cp.Call()
 
 #### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia. (David)
 
+
+
+_**Composición de tipos:**_
+La composición de tipos es un método usado para escribir segmentos de código reutilizables. 
+Se logra cuando los objetos se componen de otros objetos más pequeños con comportamientos particulares, es decir, los objetos más grandes con una funcionalidad más amplia se incrustan con objetos más pequeños con comportamientos específicos. El objetivo final de la composición es el mismo que el de la herencia; sin embargo, en lugar de heredar características de una clase / objeto principal, los objetos más grandes a este respecto se componen de los otros objetos y, por lo tanto, pueden usar su funcionalidad. De esta forma un objeto puede adquirir los comportamientos y datos de los otros objetos por los que está compuesto.
+
+Composición de structs en Go:
+
+```go
+// Golang program to store information
+// about games in structs and display them
+package main
+  
+import "fmt"
+  
+// We create a struct details to hold
+// generic information about games
+type details struct {
+    genre       string
+    genreRating string
+    reviews     string
+}
+  
+// We create a struct game to hold
+// more specific information about
+// a particular game
+type game struct {
+  
+    name  string
+    price string
+    // We use composition through
+    // embedding to add the
+    // fields of the details 
+    // struct to the game struct
+    details
+}
+  
+// this is a method defined
+// on the details struct
+func (d details) showDetails() {
+    fmt.Println("Genre:", d.genre)
+    fmt.Println("Genre Rating:", d.genreRating)
+    fmt.Println("Reviews:", d.reviews)
+}
+  
+// this is a method defined 
+// on the game struct
+// this method has access 
+// to showDetails() as well since
+// the game struct is composed
+// of the details struct
+func (g game) show() {
+    fmt.Println("Name: ", g.name)
+    fmt.Println("Price:", g.price)
+    g.showDetails()
+}
+  
+func main() {
+  
+    // defining a struct 
+    // object of Type details
+    action := details{"Action","18+", "mostly positive"}
+      
+    // defining a struct
+    // object of Type game
+    newGame := game{"XYZ","$125", action}
+  
+    newGame.show()
+}
+```
+
+Output:
+```
+Name:  XYZ
+Price: $125
+Genre: Action
+Genre Rating: 18+
+Reviews: mostly positive
+```
+
+Hemos creado dos structs _details_ y _game_ . El struct game es un tipo compuesto que tiene fields propios y también lo details. Esta composición se ha logrado mediante la incorporación de tipos, como resultado de lo cual el struct _details_ se convierte en una pieza de código reutilizable.
+
+
+Composición mediante incrustación de interfaces:
+
+Una interface puede integrarse con otra interface para formar interfaces compuestas. Si se implementan todas las interfaces en una interface compuesta, entonces también se dice que la interface compuesta es implementada por ese objeto.
+
+
+```go
+// Golang Program to implement composite interfaces
+package main
+  
+import "fmt"
+  
+type purchase interface {
+    sell()
+}
+  
+type display interface {
+    show()
+}
+  
+// We use the two previous
+// interfaces to form
+// The following composite 
+// interface through embedding
+type salesman interface {
+    purchase
+    display
+}
+  
+type game struct {
+    name, price    string
+    gameCollection []string
+}
+  
+// We use the game struct to
+// implement the interfaces
+func (t game) sell() {
+    fmt.Println("--------------------------------------")
+    fmt.Println("Name:", t.name)
+    fmt.Println("Price:", t.price)
+    fmt.Println("--------------------------------------")
+}
+func (t game) show() {
+    fmt.Println("The Games available are: ")
+    for _, name := range t.gameCollection {
+        fmt.Println(name)
+    }
+    fmt.Println("--------------------------------------")
+}
+   
+// This method takes the composite
+// interface as a parameter
+// Since the interface is composed
+// of purchase and display
+// Hence the child methods of those
+// interfaces can be accessed here
+func shop(s salesman) {
+    fmt.Println(s)
+    s.sell()
+    s.show()
+}
+  
+func main() {
+  
+    collection := []string{"XYZ", 
+        "Trial by Code", "Sea of Rubies"}
+    game1 := game{"ABC", "$125", collection}
+    shop(game1)
+  
+}
+```
+En primer lugar creamos 2 interfaces _purchase_ y _display_ con sus propios prototipos de métodos. Luego en _salesman_ hacemos una composición con _purshase_ y _display_. En el método _shop()_ hemos implementado la interface _salesman_ pasando un objeto de type _game_ en el método. Dado que este método implemena la interface compuesta, tenemos acceso a los métodos secundarios de las 2 interfaces que habíamos declarado inicialmente. De esta forma, se puede realizar una programación en Go eficaz a través de un código limpio y reutilizable.
+
+
 **Interfaces:**
 
 Go no es un lenguaje orientado a objetos "clásico" : esto no conoce el concepto de clases y herencia. Sin embargo, contiene un concepto muy flexible de interfaces, en el que muchos aspectos de la programación orientada a objetos puede estar disponible. Las interfaces en Go proporcionan una forma de especificar el comportamiento de un objeto: si algo puede hacer esto, entonces se puede usar aquí.
@@ -2131,6 +2287,8 @@ type File interface {
 ```
 
 En este ejemplo la interface File contiene todos los métodos de  ReadWrite y Lock, además del método Close().
+
+_**Composición de tipos vs Herencia**_
 
 
 #### 11 - Se puede decir que *Go* es un lenguaje que ofrece programación orientada a objetos? 
