@@ -2502,6 +2502,10 @@ El estudiante Alejandro recibe la clase
 El alumno Alejandro  imparte la clase
 El trabajador Julio cobra el salario
 ```
+
+Consideramos que es menos expresivo pues no queda declarada explícitamente la jerarquía, debido a las características del propio lenguaje. En cuanto a comodidad, consideramos que no es tan cómodo como otros lenguajes como *C#, C++*.
+
+
 #### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de *Go* y *C#*.
 
 El poder de separar el **que** del **como** es lo que hace a las interfaces tan útiles. Le permiten al programador ser más abstracto al referirse a un objeto y agrupar un conjunto de objetos que realizan una misma función bajo un mismo nombre, no importa si la realizan de diferentes formas, ya eso es responsabilidad del programador describirlo en cada clase que implemente la interfaz.
