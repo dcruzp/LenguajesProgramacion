@@ -70,7 +70,7 @@ código más simple. Es un lenguaje de tipado estático con una librería standa
 
 #### 3 - Realice un sumario sobre las características mas interesantes de la sintaxis de *Go*: (los 3)
 
-- Presente un Hello World (creatividad apreciada) 
+- **Presente un Hello World (creatividad apreciada)** 
 
   ```go
   package main
@@ -82,9 +82,108 @@ código más simple. Es un lenguaje de tipado estático con una librería standa
   }
   ```
 
-- 
+- **Indentación** 
 
-- 
+  Un ejemplo de indentacion en Go. 
+
+  ```go
+  package main
+  
+  import (
+  	"fmt"
+  	"strconv"
+  	"strings"
+  	"unicode"
+  )
+  
+  func main() {
+  
+  	text := "Oh! Welcome to Go language."
+  
+  	text = Indent(text, 6)
+  	fmt.Println(text)
+  
+  	text = Unindent(text, 3)
+  	fmt.Println(text)
+  
+  	text = Unindent(text, 10)
+  	fmt.Println(text)
+  
+  	text = IndentByRune(text, 10, '.')
+  	fmt.Println(text)
+  }
+  
+  // Sangrado de la entrada por indentación dada y runa .
+  func IndentByRune(input string, indent int, r rune) string {
+  	return strings.Repeat(string(r), indent) + input
+  }
+  
+  // Sangrado de la entrada por indentación dada
+  func Indent(input string, indent int) string {
+  	padding := indent + len(input)
+  	return fmt.Sprintf("% "+strconv.Itoa(padding)+"s", input)
+  }
+  
+  // Unindent desangra la cadena de entrada. En caso de que
+  // la entrada está sangrada por menos de espacios de "sangría"
+  // se elimina el mínimo de ambos.
+  func Unindent(input string, indent int) string {
+  
+  	count := 0
+  	for _, val := range input {
+  		if unicode.IsSpace(val) {
+  			count++
+  		}
+  		if count == indent || !unicode.IsSpace(val) {
+  			break
+  		}
+  	}
+  
+  	return input[count:]
+  }
+  
+  ```
+
+  **Output**: 
+
+  ```
+        Oh! Welcome to Go language.
+     Oh! Welcome to Go language.
+  Oh! Welcome to Go language.
+  ..........Oh! Welcome to Go language.
+  ```
+
+  
+
+- **Otros elementos de interés en el lenguaje Go**
+
+  Los creadores de Go no querian discusiones sobre el estilo de codigo para el lenguaje Go. Por lo que desarrollaron una herramienta: `go fmt`. Es una impresora que impone el formato y el estilo de codigo estandar del codigo fuente. Es una Herramienta  de reescritura a nivel de sintaxis, una forma simple de refractorizacion. Debe ser utilizado por todo los desarrolladore de Go.  
+
+  La libertad de sintaxis de la que el programador se ve privado tiene ciertamente grandes ventajas al hacer que el código de Go sea uniforme y mejor legible y por lo tanto facilita la lectura y comprensión de código para programadores foráneas. La mayoría de los editores lo tienen integrado. Para la sangría de diferentes niveles en el codigo, la regla no es estricta, se pueden usar tabulaciones o espacios, una tabulación puede ser de 4 u 8 espacios. 
+
+  En la linea de comandos `gofmt -w program.go`  re-formatea el fichero `program.go`  sin el `-w` se muestran los cambios pero no se guardan. 
+
+  Esto puede ser útil para simples cambios(refractorizacion) en el código base.
+
+  **Ejemplos**:
+
+  ```
+  gofmt -r “(a) -> a” –w *.go
+  ```
+
+   Esto va a remplazar todos los  `(())` innecesarios con `()` en todos los fichero de go en el directorio actual. 
+
+  ```
+  gofmt –r ‘A.Func1(a,b) -> A.Func2(b,a)’ –w *.go
+  ```
+
+   Esto reemplaza `Func1` con `Func2` e intercambia los argumentos de la función
+
+  
+
+  
+
+  
 
 
 
