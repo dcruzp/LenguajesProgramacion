@@ -577,6 +577,288 @@ func main() {
 }
 ```
 
+### Goroutines
+
+Las partes de una aplicación que se ejecutan de forma concurrente son conocidas como **goroutine** en Go. Aquí no hay correspondencia 1 a 1 entre las goroutines  y los threads del sistema operativo: una goroutine se mapea(multiplexa, ejecuta) en uno o más hilos(threads) según la disponibiliad
+Las **goroutines** son ligeras, muchos más ligeras que un **thread**. Las tareas concurrentes podrían incluir obtener datos de un servidor web, computar millones de dígitos de pi, o controlar un brazo de un robot. Esto se logra mediantes el **goroutine-scheduler** en tiempo de ejecucición(runtime) de Go. Las goroutines en Go usan muy poca memoria y recursos.
+
+Iniciar una goroutine es tan fácil como llamar a unan función. Todo lo que necesitas es el keyword go delante del llamado a la función. Cada vez que usuamos el keyword go se inicia una nueva goroutine. Todas las goroutines parecen ejecutarse al mismo tiempo. Sin embargo, es posible que técnicamente no se ejecuten al mismo tiempo, porque las computadoras solo tienen un número limitado de processing units. Las goroutines se ejecutan en el mismo espacio de memoria por lo que el acceso a la memoria compartida debe ser sincronizado.
+
+
+
+Ejemplo de goroutine:
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func say(s string) {
+	for i := 0; i < 2; i++ {
+		time.Sleep(100 * time.Millisecond)
+		fmt.Println(s)
+	}
+}
+
+func suma(a int, b int) {
+	time.Sleep(100 * time.Millisecond)
+	suma := a + b
+	fmt.Println(suma)
+}
+func main() {
+	go say("world")
+	go suma(1, 2)
+	say("hello")
+}
+```
+
+Si ejecutamos el código se debe imprimir en consola:
+```
+❯ go run main.go
+3
+world
+hello
+world
+hello
+```
+
+Lo ejecutamos otra vez :
+```
+❯ go run main.go
+hello
+3
+world
+hello
+```
+Y si lo volvemos a ejecutar podría dar otra salida pues depende mucho de que routine termine primero.
+
+
+**_Channels: para comunicación entre goroutines_**
+
+En el ejemplo anterior las goroutines se ejecutaban independientemente, sin comunicarse entre ellas. 
+Las **goroutines** podrían comunicarse mediante el uso compartido de 
+variables, pero esto se desaconseja mucho porque esta forma de trabajar presenta todas las dificultades
+con la memoria compartida en multihilo(multi-threading). 
+En cambio, Go tiene un tipo especial, channel, que es como un conducto(pipe) a través del cual se pueden enviar valores de un tipo y comunicarlo entre goroutines, evitando
+todos los problemas de la memoria compartida; el mismo acto de comunicarse a través de un channel garantiza la sincronización. Los datos son transmitidos en los channels: solo una goroutine tiene acceso a un elemento de datos en cualquier momento: por lo que se conoce como data races no puede ocurrir, por diseño. La propiedad de los datos( la habilidad de read y write) se transmite.
+
+Los channels cumplen con el doble propósito de la comunicación: el intercambio de un valor, con sincronización garantizando que dos goroutines estén en un stado conocido en cualquier momento.
+
+<img src="./imgs/img4.png" style="zoom:80%;" />
+
+La declaración de un channel de forma general es :
+```go
+var identifier chan datatype
+```
+
+El valor de un channel no inicializado es nil.
+
+Un channel solo puede transmitir elementos de datos de un tipo de datos(ej: chan int o chan string), pero todos los tipos se pueden utilizar en un canal, incluso la empty interface{} y un channal de channnel (útil en muchos casos)
+Un channel es también un tipo por referencia, por lo que se usa la función make() para alocar memoria para este. 
+
+Ejemplos de channels:
+
+channel de tipo string:
+```go
+var ch1 chan string
+ch1 = make(chan string)
+```
+channel de tipo int:
+```go
+chanOfChans := make(chan chan int)
+```
+
+channel de channels de int:
+```go
+chanOfChans := make(chan chan int)
+```
+channel de funciones:
+```go
+funcChan := chan func()
+```
+
+_Operador de comunicación **<-**_
+
+Este operador representa de manera muy intuitiva la transmisión de datos: la información fluye en la dirección
+de la flecha.
+
+_Haci el channel (sending):_
+
+```go
+ch <- int1
+```
+Significa que la variable int1 se envía a través del channel ch
+
+_Desde el channel (receiving):_
+
+```go
+int2 = <- ch
+```
+Significa que la variable int2 recibe la data(obtiene un nuevo value) desde el canal ch; esto supone que int2 ya está declarado; si no puede ser escrito como: **int2:=<-ch**
+
+```go
+<- ch
+```
+Puede usarse a si mismo para obtener el siguiente valor del canal, este valor se descarta efectivamente , pero se puede testear por lo que el siguiente es un código legal
+Por ejemplo :
+```go
+if <-ch != 1000 {
+…
+}
+```
+
+Ejemplo:
+```go
+package main
+
+import "fmt"
+
+func sum(s []int, c chan int) {
+	sum := 0
+	for _, v := range s {
+		sum += v
+	}
+	c <- sum // send sum to c
+}
+
+func main() {
+	s := []int{7, 2, 8, -9, 4, 0}
+
+	c := make(chan int)
+	go sum(s[:len(s)/2], c)
+	go sum(s[len(s)/2:], c)
+	x, y := <-c, <-c // receive from c
+
+	fmt.Println(x, y, x+y)
+}
+```
+
+El código de ejemplo suma los números en un slice, distribuyendo el trabajo entre dos goroutines. Una vez que ambas goroutines han completado su ejecución, calcula el resultado final.
+
+_Buffered Channels:_
+
+Los channels se pueden almacenar en buffer. Se le proporciona el lenght del buffer como segundo argumento de make para inicializar un buffered channel.
+
+```go
+ch := make(chan int, 100)
+```
+De esta forma envia un bloque al buffered channel  solo cuando el buffer está lleno y recibe el bloque cuando el buffer está vacío.
+
+Ejemplo
+```go
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan int, 2)
+	ch <- 1
+	ch <- 2
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
+}
+
+```
+Pero si hacemos hacemos 1 más que el lenght del buffer:
+```go
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan int, 2)
+	ch <- 1
+	ch <- 2
+	ch <- 3
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
+}
+```
+
+Daría error :
+
+
+```
+fatal error: all goroutines are asleep - deadlock!
+```
+_Range y Close:_
+
+Un sender puede cerrar un channel para indicar que no se enviará más valores. Los receptores pueden probar si un canal se ha cerrado asignando un segundo parámetro a la expresión de recepción:
+```go
+v, ok := <-ch
+```
+ok es _false_ si no hay más valores que recibir y el canal está cerrado
+
+Ejemplo:
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func fibonacci(n int, c chan int) {
+	x, y := 0, 1
+	for i := 0; i < n; i++ {
+		c <- x
+		x, y = y, x+y
+	}
+	close(c)
+}
+
+func main() {
+	c := make(chan int, 10)
+	go fibonacci(cap(c), c)
+	for i := range c {
+		fmt.Println(i)
+	}
+}
+```
+close(c) cierra el channel c
+
+El ciclo for i:= range c recibe valores del channel repetidamente hasta que es cerrado.
+
+Solo el sender puede cerrar el channel, nunca el receiver. Enviar a un channel cerrado puede causar panic.
+
+_Select in goroutines_:
+
+La declaración select permite que una goroutine espere en mútlples operaciones de comunicación
+
+Select bloque hasta que uno de sus casos pueda ejecutarse, luego ejecuta ese caso. Si hay varios listos elige uno al azar.
+
+Ejemplo:
+```go
+package main
+
+import "fmt"
+
+func fibonacci(c, quit chan int) {
+	x, y := 0, 1
+	for {
+		select {
+		case c <- x:
+			x, y = y, x+y
+		case <-quit:
+			fmt.Println("quit")
+			return
+		}
+	}
+}
+
+func main() {
+	c := make(chan int)
+	quit := make(chan int)
+	go func() {
+		for i := 0; i < 10; i++ {
+			fmt.Println(<-c)
+		}
+		quit <- 0
+	}()
+	fibonacci(c, quit)
+}
+```
 
 
 - Creación de variables 
@@ -590,6 +872,7 @@ func main() {
 - Funciones con múltiples retornos 
 
 - Otros elementos de las sintaxis que consideres relevante  a mostrar
+
 
 
 
