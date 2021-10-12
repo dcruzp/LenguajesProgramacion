@@ -1909,7 +1909,7 @@ cp.Call()
 
 Los Structs tienen una declaración bastante parecida tanto en C como en Go, con las particularidades de las sintaxis en cada uno de estos lenguajes. En el lenguaje C los `structs` no se pueden comparar directamente, es decir no se generan los operadores de comparación para los tipos no aritméticos definidos, por lo tanto el programador tendrá que proporcionar dicho operador. Por otra parte en Go si pueden ser comparador 
 
-Otros aspecto a tener en cuenta es la composición de tipos. En C los structs no tienen el concepto de composición de tipos, mientras que en C esta es una de las principales características que define al propio Go por no presentar herencia de tipos.
+Otros aspecto a tener en cuenta es la composición de tipos. En C los structs no tienen el concepto de composición de tipos, mientras que en Go esta es una de las principales características que define al propio Go por no presentar herencia de tipos.
 
 #### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia.
 
