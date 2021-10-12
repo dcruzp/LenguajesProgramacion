@@ -2378,7 +2378,7 @@ La herencia se puede expresar de dos maneras: herencia de clases y herencia de i
 Asimismo los comportamientos y datos heredados pueden estar limitados al acceso con el que el objeto padre los definió, esto se denomina visibilidad. Se expresa a la herencia como una _**relación es-un/a**_. La composición es una manera de definir objetos dentro de otros objetos. De esta forma un objeto puede adquirir los comportamientos y datos de los otros objetos por los que está compuesto. Esto en cierta medida es más similar al concepto de herencia múltiple que al de simple. Se expresa a la composición como una relación _**tiene-un/a**_.
 
 ### Valore ventajas y desventajas de la composición de tipos de Go y exprese su preferencia.
-
+La composición en Go es una forma muy elegante de generar funcionalidad a partir de componentes existentes. Consiste en meter unas estructuras dentro de otras y beneficiarse de sus atributos y funciones.En palabras de algunos, es “como la herencia, pero mejor“. En la típica herencia en otros lenguajes con clases y objetos se vuelve bastante engoroso luego de hablar hecho el diseño de clases cambiar algo sin que se afecte la estructura en general, por lo que se vuelve necesario pensarlo todo de antemano lo cual muchas veces no es muy viable en proyectos grandes. Con la composición de tipos en structs en Go se pueden cambiar los cambios sin tener que cambiar después la definición de otros, se vuelve más comodo para trabajar dinámicamente sin tener a priori un diseño consistente de la herarquía que se quiere.
 
 #### 11 - Se puede decir que *Go* es un lenguaje que ofrece programación orientada a objetos? 
 
