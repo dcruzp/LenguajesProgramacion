@@ -2,7 +2,7 @@
 
 
 
-#### 1 - Cual es la forma de procesamiento del código fuente utilizada. (los 3 )
+#### 1 - ¿Cuál es la forma de procesamiento del código fuente utilizada?
 
 ​	El compilador de *Go* se divide lógicamente en cuatro etapas 
 
@@ -10,24 +10,24 @@
 
     Análisis del archivo fuente del código. Se convierte la secuencia de cadenas en el archivo en una secuencia `Tokens` para el posterior análisis.(este análisis léxico lo realiza el lexer)
 
-    Al análisis gramatical entra la secuencia de tokens que genera le analizador léxico. Estas secuencias serán analizadas por el analizador gramatical en orden. El procesos de análisis gramatical es seguir la gramática definida por el análisis léxico de abajo hacia arriba. O la especificación de arriba hacia abajo, cada archivo de código fuente de *Go* se resumira en una estructura `SourceFile`:
+    Al análisis gramatical entra la secuencia de tokens que genera le analizador léxico. Estas secuencias serán analizadas por el analizador gramatical en orden. El procesos de análisis gramatical es seguir la gramática definida por el análisis léxico de abajo hacia arriba. O la especificación de arriba hacia abajo, cada archivo de código fuente de *Go* se resumirá en una estructura `SourceFile`:
 
      ```
      SourceFile = PackageClause ";" { ImportDecl ";" } { TopLevelDecl ";" }
      ```
 
-    El analizador sintáctico estándar de Goland  utiliza la gramática de LALR. El resultado del análisis sintáctico es en realidad el árbol de sintaxis abstracta (AST). Cada AST corresponde aun archivo de *Go* independiente. Este árbol de sintaxis abstracta incluye el nombre del paquete, las constantes definidas, las estructuras y las funciones del archivo actual. 
+    El analizador sintáctico estándar de Goland  utiliza la gramática de LALR. El resultado del análisis sintáctico es en realidad el árbol de sintaxis abstracta (AST). Cada AST corresponde a un archivo de *Go* independiente. Este árbol de sintaxis abstracta incluye el nombre del paquete, las constantes definidas, las estructuras y las funciones del archivo actual. 
 
-    Si se produce algún error de sintaxis durante el proceso de análisis, el analizador lo encontrara y el mensaje se imprimirá en la salida estándar. Todo el proceso de compilación también se abortara cuando se produzca un error.
+    Si se produce algún error de sintaxis durante el proceso de análisis, el analizador lo encontrará y el mensaje se imprimirá en la salida estándar. Todo el proceso de compilación también se abortará cuando se produzca un error.
 
     
 
  2. **Verificación de Tipos y conversión AST** 
 
-    Después de obtener el árbol de sintaxis abstracta (AST) de un conjunto de archivos, el compilador del lenguaje verificara los tipos definidos y usados en el árbol de sintaxis. La verificación de tipos verificara diferentes tipos de nodos en orden: 
+    Después de obtener el árbol de sintaxis abstracta (AST) de un conjunto de archivos, el compilador del lenguaje verificará los tipos definidos y usados en el árbol de sintaxis. La verificación de tipos verificará diferentes tipos de nodos en orden: 
 
      - Constantes, tipos y tipos de funciones 
-     - Asignación e inicializacion de variables 
+     - Asignación e inicialización de variables 
      - El cuerpo de la función y cierre 
      - Tipos de pares clave- valor hash
      - Importe de cuerpo de la función 
@@ -41,15 +41,15 @@
 
  3. **Generación SSA general** 
 
-    Cuando se convierte el archivo fuente en un árbol de sintaxis abstracta, se analiza la gramática de todo el árbol de sintaxis y se realiza la verificación de tipos, entonces el código no tiene problemas de incompilacion o errores gramaticales. El compilador convertirá el AST de entrada en código intermedio. 
+    Cuando se convierte el archivo fuente en un árbol de sintaxis abstracta, se analiza la gramática de todo el árbol de sintaxis y se realiza la verificación de tipos, entonces el código no tiene problemas de incompilación o errores gramaticales. El compilador convertirá el AST de entrada en código intermedio. 
 
     El código intermedio del compilador de *Go* utiliza la función SSA (Formulario de asignación única estática). Usando esta función en el proceso de generación de código intermedio, se puede analizar fácilmente las variables y fragmentos inútiles en el código. 
 
-    Después de la verificación de tipos, una función llamada compileFunctions comenzara a compilar todas las funcioes en todo el proyecto del lenguaje *Go*. Estas funciones esperaran el consumo de varias corrutinas de trabajo del back-end en una cola de compilación.
+    Después de la verificación de tipos, una función llamada compileFunctions comenzará a compilar todas las funciones en todo el proyecto del lenguaje *Go*. Estas funciones esperarán el consumo de varias corrutinas de trabajo del back-end en una cola de compilación.
 
  4. **Generación final del código de maquina** 
 
-    El directorio `cmd/compiler/internal` del código fuente del lenguaje *Go* contiene una gran cantidad de paquetes relacionados con la generación de código maquina. Los diferentes tipos de CPU usan diferentes paquetes para generar  `amd64` `arm` `mips` `mips64` `ppc64` `s390x` `x86` y `wasm`, lo que significa que el lenguaje *Go* en casi todos los tipos de conjuntos de instrucciones de CPU comunes.
+    El directorio `cmd/compiler/internal` del código fuente del lenguaje *Go* contiene una gran cantidad de paquetes relacionados con la generación de código máquina. Los diferentes tipos de CPU usan diferentes paquetes para generar  `amd64` `arm` `mips` `mips64` `ppc64` `s390x` `x86` y `wasm`, lo que significa que el lenguaje *Go* en casi todos los tipos de conjuntos de instrucciones de CPU comunes.
 
     
     
@@ -57,17 +57,14 @@
 
 La entrada del compilador del lenguaje de *Go* es el archivo main.go en el paquete `src/cmd/compile/internal/gc` . Esta función es el programa principal del compilador del lenguaje *Go*. Esta función primero obtiene la entrada de la linea de comandos (Parámetro) y actualiza las opciones de compilación y configuración y luego comienza a ejecutar la función `parseFile`  para realizar análisis léxico y gramatical en todos los archivos de entrada para obtener el árbol de sintaxis abstracto correspondiente al archivo. 
 
-A continuación, el árbol de sintaxis abstracta se actualizara y compilara en nueve etapas. Como presentamos anteriormente, todo el proceso pasara por tres partes: verificación de tipos , generación de código intermedio SSA y generación de código maquina.
+A continuación, el árbol de sintaxis abstracta se actualizará y compilara en nueve etapas. Como presentamos anteriormente, todo el proceso pasara por tres partes: verificación de tipos , generación de código intermedio SSA y generación de código maquina.
 
 
 
+#### 2 - *Go* es un lenguaje moderno con muchísimas decisiones de diseño intencionales. ¿Que ventajas  y desventajas le da al lenguaje su forma de procesamiento? Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.
 
-
-#### 2 - *Go* es un lenguaje moderno con muchisimas decisiones de diseño intencionales. Que ventejas  y desventajas le da al lenguaje su forma de procesamiento. Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.  (David)
-
-*Go* es un lenguaje que pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo
-que no tendrás que pasar años hojeando la documenación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar.Tiene una compuilación rápida lo que mejora la productividad. Tine un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir
-código más simple. Es un leguaje de tipado estático con una librería standard bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado y bien documentado . Es libre y de código abierto (licencia BSD).
+*Go* es un lenguaje que se pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo que no tendrás que pasar años hojeando la documentación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar. Tiene una compilación rápida lo que mejora la productividad. Tiene un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir
+código más simple. Es un lenguaje de tipado estático con una librería standar bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado. Es libre y de código abierto (licencia BSD).
 
 
 
@@ -91,7 +88,7 @@ código más simple. Es un leguaje de tipado estático con una librería standar
 
 
 
-## For
+##### For
 
 *Go* tiene solo una sola estructura para ciclos **for loop**
 
@@ -107,7 +104,7 @@ La declaración init a menudo será una declaración de variable corta(usando **
 
 de esta instrucción. El ciclo for para de iterar una vez que la condición booleana evaluada es falsa. A diferencia de otros lenguajes como *C*, *Java* o *Javascript* aquí no hay paréntesis que rodeen las tress componentes de la instrucción for y las llaves (**{}**) siempre son necesarias.
 
-Ejemplo de instrucción **for** básico en *Go*:
+Ejemplo de instrucción `for` básico en *Go*:
 
 
 
@@ -142,7 +139,7 @@ func main() {
 }
 ```
 
-For is también el "while" de *Go* :):
+For es también el "while" de *Go* :):
 
 Puedes quitar el semicolon(;) y el "while" está escritor for en *Go*
 
@@ -177,8 +174,8 @@ func main() {
 	}
 }
 ```
+##### For statements with range clause:  
 
-For statements with range clause:  
 Una instrucción for con una cláusula range recorre todos los elementos de un array, slice, string, map o valores recibidos en un canal. Por cada entrada este asigna valoros de iteración a las variables de iteración correspondientes y luego ejecuta el bloque.
 
 
@@ -204,11 +201,7 @@ func for_range() {
 	}
 }
 ```
-
-
-
-
-**If** 
+##### `If` statement 
 
 Las sentencias if de *Go* al igual que for no necesita estar entre paréntesis () pero los llaves  {} si son obligatorias
 
@@ -235,7 +228,7 @@ func main() {
 
 ```
 
-**If** con **short statement**
+##### `if` con **short statement**
 
 Similar a for, la instrucción if puede comenzar con una instrucción corta para ejecutar antes de la condición. Las variables declaradas por la instrucción
 
@@ -267,7 +260,7 @@ func main() {
 
 ```
 
-## If and else
+##### `if` and `else`
 
 Las variables declaradas dentro de un if short statement son también accesibles dentro de cualquiera de los bloques else
 
@@ -302,7 +295,7 @@ Ambas llamadas a **pow**  devuelven sus resultados antes que se haga la llamada 
 
 
 
-### Switch:
+##### Switch
 
 Una sentencia **switch** es una manera más corta de escribir una secuencia de  sentencias **if-else**.  Esta ejecuta el primer caso cuyo valor es igual a la expresión de condición .
 
@@ -332,8 +325,8 @@ func main() {
 
 ```
 
+##### Orden de Evaluación Switch:
 
-Orden de Evaluación Switch:
 Los switch cases en *Go* evalúan los casos top to bottom(de arriba hacia abajo) y para cuando encuentra un caso exitoso.
 
 ```go
@@ -360,7 +353,7 @@ func main() {
 }
 ```
 
-Switch sin ninguna condición:
+##### Switch sin ninguna condición:
 
 Switch sin ninguna condición es lo mismo que un **switch true**. Esta construcción puede ser una manera limpia de escribir una larga cadena de 
 **if-then-else**
@@ -388,7 +381,7 @@ func main() {
 }
 ```
 
-Defer:
+##### Defer:
 
 Una declaración **defer**  aplaza la ejecución de una función hasta que retorna la función de donde es llamada
 
@@ -411,7 +404,8 @@ hello
 world
 ```
 
-Stacking defers:
+##### Stacking defers:
+
 Las llamadas llamdas a funciones diferidas se insertan en un stack. Cuando una función regresa, sus llamdas diferidas son ejecutadas en orden **last-in-first-out (LIFO)**
 
 Ejemplo:
@@ -430,7 +424,7 @@ func main() {
 	fmt.Println("done")
 }
 ```
-Funciones:
+##### Funciones:
 
 Una función en Go puede tomar 0 o más argumentos. Se declara con el keyword **func**. 
 
@@ -451,7 +445,7 @@ func main() {
 
 Se puede apreciar que el tipo viene después del nombre de la variable
 
-Funciones continuadas:
+##### Funciones continuadas:
 
 Cuando dos o más nombres de parámetros consecutivos de una función comparten un tipo, en Go puedes omitir el tipo de todos menos del último
 
@@ -473,7 +467,7 @@ func main() {
 En este ejemplo acortamos:
 **x int, y int** a **x, y int**
 
-Funciones con mútiples resultados
+###### Funciones con mútiples resultados
 
 Una función en Go puede retornar cualquier cantidad de resultados:
 
@@ -494,7 +488,7 @@ func main() {
 ```
 La función swap retorna dos strings
 
-Named return values:
+##### Named return values:
 
 Se puede nombrar los valores de retorno de una función en Go. Si es así se tratan como variables definidas en la parte superior de la función. Estos nombres deben usarse para documentar el significado de los valores devueltos.
 Una declaración return sin argumentos retorna los valores de retorno nombrados. Esto es conocido como **"naked" return**
@@ -519,7 +513,7 @@ func main() {
 
 ```
 
-Variables:
+##### Variables:
 
 Una declaración **var** puede incluir inicializadores, uno por cada variable. Si el inicializador está presente, el tipo de la variable puede ser omitido; la variable tomará el tipo del valor con el que se inicializó.
 
@@ -538,7 +532,7 @@ func main() {
 
 ```
 
-Declaración de variable corta usuando **:=**:
+##### Declaración de variable corta usuando **:=**:
 
 Dentro de una función, la declaración de asignación corta := puede ser usada en lugar de en lugar de var con el tipo implícito. Fuera de una función **:=** no puede ser usada.
 
@@ -556,7 +550,8 @@ func main() {
 }
 ```
 
-Constantes:
+##### Constantes:
+
 Las constantes son declaradas como las variables , pero con el keyword **const**. Las constantes pueden ser character, string, boolean, o valores numéricos. Las constantes no pueden ser declaradas usando la sintaxis **:=**
 
 Ejemplo:
@@ -1168,38 +1163,38 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
     import "fmt" 
     
     func main() {
-	    Testing_arr()
+        Testing_arr()
     }
     
     func Testing_arr() {
-	    var coll [10]int
+        var coll [10]int
     
         //Conditional styled for loop
-	    // for i := 0; i < len(coll); i++ {
-	    // 	fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
-	    // }
+        // for i := 0; i < len(coll); i++ {
+        // 	fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
+        // }
     
-	    //Range styled for loop
-	    for i := range coll {
-	    	fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
-	}
+        //Range styled for loop
+        for i := range coll {
+            fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
+    }
     ```
-
-
-    **output**:
     
-     1. Array coll at index 0 is 0
-     2. Array coll at index 1 is 0
-     3. Array coll at index 2 is 0
-     4. Array coll at index 3 is 0
-     5. Array coll at index 4 is 0
-     6. Array coll at index 5 is 0
-     7. Array coll at index 6 is 0
-     8. Array coll at index 7 is 0
-     9. Array coll at index 8 is 0
-     10. Array coll at index 9 is 0 
+    **Output:**
     
-    <br/>
+    ```
+    Array coll at index 0 is 0
+    Array coll at index 1 is 0
+    Array coll at index 2 is 0
+    Array coll at index 3 is 0
+    Array coll at index 4 is 0
+    Array coll at index 5 is 0
+    Array coll at index 6 is 0
+    Array coll at index 7 is 0
+    Array coll at index 8 is 0
+    Array coll at index 9 is 0
+    ```
+    
     Solo pueden ser usados índices dentro del rango del tamaño del array, en caso de que el compilador pueda detectar que se está indexando incorrectamente, lo notificará, de lo contrario el problema se arrastrará a tiempo de ejecución, y se mostrará la notificación:
     
     ```runtime error: index out of range```
@@ -1208,14 +1203,13 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
     
     En *Go*, los arrays por defecto, son tipos por valor, a diferencia de los lenguajes de la familia *C*, que son un puntero al lugar en memoria y por eso son tipos por referencia. Esto trae como consecuencia, que al hacer una operación como la siguiente:
     
-    ```go
+    ```
     arr1 := arr2
     ```
     
     Donde arr1 y arr2 son 2 arrays previamente declarados, en vez de simplemente cambiar las referencias, en arr1 se almacena una copia de arr2, lo que se puede ver claramente en el siguiente código de ejemplo:
     
     ```go
-    
     func main() {
         Arr_managment1()
     }
@@ -1231,19 +1225,18 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
     }
     ```
     
-    **output**: 
+    **Output**:
     
-    1. arr1 at index 0 is 0
-    2. arr2 at index 0 is 1
-    
-    <br/>
+    ```
+    arr1 at index 0 is 0
+    arr2 at index 0 is 1
+    ```
     
     Como se puede observar el valor de arr2[0] cambió, sin embargo arr1[0] se mantuvo igual.
     
     Si quisiéramos pasar un array por referencia, se puede usar el operador ```&``` delante del nombre del array deseado al igual que en *C++*, como se muestra en el siguiente ejemplo:
     
     ```go
-    
     func main() {
         Arr_managment2
     }
@@ -1259,28 +1252,27 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
     }
     ```
     
-    **output**
-    1. arr1 at index 0 is 1
-    2. arr2 at index 0 is 1
+    **Output**:
     
-    <br/>
+    ```
+    arr1 at index 0 is 1
+    arr2 at index 0 is 1
+    ```
+    
     Como podemos observar ambos arr1[0] y arr2[0] cambiaron sus valores, pues ambos son punteros que apuntan al mismo lugar en memoria.
-    
-    <br/>
-    <br/>
     
     Al igual que en algunos lenguajes de la familia *C*, como *C++*, pasar los arrays directamente como argumento a una función, rápidamente consume mucha memoria, por lo que se recomienda pasar un puntero al array con el operador ```&```.
     
-    <br/>
     Para construir arrays se puede utilizar el operador ..., que indica al compilador que debe contar los elementos para saber el tamaño del array. Se podría decir que está es una forma lazy de construir arrays en Go.
     
-    <br/>
     Para declarar un array multidimensional, se hace lo siguiente por ejemplo:
     
     ```go
     [3][5]int
     [2][2][2]float64
     ```
+    
+    
 
  2. **Slices**
     
@@ -1341,8 +1333,6 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
     ```
 
     **output**: 15
-
- <br/>
 
  3. Métodos nativos ```make()```, ```append()```, ```copy()```
     
@@ -2177,8 +2167,6 @@ Al haber discusiones en el tema de si es mejor tener composición o herencia, la
 
 Las interfaces en *Go* son implícitas, es decir si tienes los métodos de los que se compone la interfaz, implementas la interfaz.
 
-
-
 #### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo?
 
 Herarquía código:
@@ -2263,7 +2251,7 @@ El trabajador Julio cobra el salario
 ```
 #### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de *Go* y *C#*.
 
-El poder de separar el **que** del **como** es lo que hace a las interfaces tan útiles. 
+El poder de separar el **que** del **como** es lo que hace a las interfaces tan útiles. Le permiten al programador ser más abstracto al referirse a un objeto y agrupar un conjunto de objetos que realizan una misma función bajo un mismo nombre, no importa si la realizan de diferentes formas, ya eso es responsabilidad del programador describirlo en cada clase que implemente la interfaz.
 
 #### 14 Como maneja *Go* las excepciones y errores en ejecución?
 
@@ -2344,6 +2332,97 @@ Test completed
 #### 15 - *Go* no presente genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone?
 
 Hasta hoy en día, *Go* no posee concepto de **genericidad**. De todas maneras, la mayoría de casos pueden ser resueltos usando interfaces, especialmente la interfaz vacía, y un `switch` para decidir que hacer dependiendo del tipo. Este concepto de genericidad incrementa la complejidad del código y disminuye su rendimiento, por lo que cuando el rendimiento es muy importante es mejor y producirá código más fácil de leer, si definimos una función para cada tipo que sea necesario explícitamente.
+
+###### Ejemplo de como simular genericidad:
+
+```go
+package main
+
+import (
+	"fmt"
+)
+
+type Person struct {
+	height float64
+	weight float64
+	name   string
+}
+
+type Item struct {
+	weight float64
+	name   string
+}
+type Storage struct {
+	name         string
+	location     string
+	itemsInStock []Item
+}
+
+func main() {
+	person1 := new(Person)
+	person2 := new(Person)
+
+	person1.height = 5.6
+	person1.weight = 150.6
+	person1.name = "John"
+
+	person2.height = 6.2
+	person2.weight = 100.9
+	person2.name = "Peter"
+
+	storage1 := new(Storage)
+	storage2 := new(Storage)
+
+	item1 := new(Item)
+	item2 := new(Item)
+	item3 := new(Item)
+	item4 := new(Item)
+
+	item1.name = "Screwdriver"
+	item1.weight = 14.5
+
+	item2.name = "Plastic Box"
+	item2.weight = 2.3
+
+	item3.name = "Nails"
+	item3.weight = 0.5
+
+	item4.name = "Saw"
+	item4.weight = 22.7
+
+	storage1.location = "Alaska"
+	storage1.name = "Ralph´s workshop"
+	storage1.itemsInStock = []Item{*item1, *item2, *item3}
+
+	storage2.location = "Ohio"
+	storage2.name = "The homies junkhouse"
+	storage2.itemsInStock = []Item{*item1, *item2, *item4}
+
+	PrintAny(person1)
+	PrintAny(person2)
+
+	PrintAny(storage1)
+	PrintAny(storage2)
+}
+
+func PrintAny(any interface{}) {
+	switch elem := any.(type) {
+
+	case *Person:
+		fmt.Printf("This persons´s name is %s, is %f feet tall and weights %f pounds\n", elem.name, elem.height, elem.weight)
+
+	case *Storage:
+		fmt.Printf("This is storage is located in %s, it´s name is %s\n", elem.location, elem.name)
+		fmt.Println("Items in stock are:")
+		for index, item := range elem.itemsInStock {
+			fmt.Printf("%d - The %s weights %f pounds\n", index+1, item.name, item.weight)
+		}
+
+	default:
+		printHelloWorld()
+	}
+}
+```
 
 ##### Limitaciones
 Por las razones previamente explicadas, consideramos que la gran limitación de que *Go* no presente genericidad de tipo es exclusivamente la cantidad de código necesario para simular este comportamiento, que es algo bastante usado en la actualidad.
