@@ -128,7 +128,6 @@ código más simple. Es un lenguaje de tipado estático con una librería standa
   // la entrada está sangrada por menos de espacios de "sangría"
   // se elimina el mínimo de ambos.
   func Unindent(input string, indent int) string {
-  
   	count := 0
   	for _, val := range input {
   		if unicode.IsSpace(val) {
@@ -178,12 +177,6 @@ código más simple. Es un lenguaje de tipado estático con una librería standa
   ```
 
    Esto reemplaza `Func1` con `Func2` e intercambia los argumentos de la función
-
-  
-
-  
-
-  
 
 
 
@@ -971,7 +964,7 @@ func main() {
 
 
 
-#### 4 - Presente los tipos nativos  (Daniel)
+#### 4 - Presente los tipos nativos
 
  1. **Enteros** 
 
