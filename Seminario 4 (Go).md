@@ -4,7 +4,7 @@
 
 #### 1 - ¿Cuál es la forma de procesamiento del código fuente utilizada?
 
-​	El compilador de *Go* se divide lógicamente en cuatro etapas 
+Go es un lenguaje de programación concurrente, compilado, imperativo, estructurado, inspirado en la sintaxis del lenguaje C, que intenta ser dinámico como Python y con el rendimiento de  C o C++. El compilador de *Go* se divide lógicamente en cuatro etapas 
 
  1. **Análisis léxico y gramatical**
 
