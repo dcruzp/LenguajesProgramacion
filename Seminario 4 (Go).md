@@ -66,8 +66,6 @@ A continuación, el árbol de sintaxis abstracta se actualizará y compilara en 
 *Go* es un lenguaje que se pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo que no tendrás que pasar años hojeando la documentación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar. Tiene una compilación rápida lo que mejora la productividad. Tiene un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir
 código más simple. Es un lenguaje de tipado estático con una librería standar bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado. Es libre y de código abierto (licencia BSD).
 
-
-
 #### 3 - Realice un sumario sobre las características mas interesantes de la sintaxis de *Go*: (los 3)
 
 - **Presente un Hello World (creatividad apreciada)** 
@@ -198,8 +196,6 @@ de esta instrucción. El ciclo for para de iterar una vez que la condición bool
 
 Ejemplo de instrucción `for` básico en *Go*:
 
-
-
 ```go
 package main
 
@@ -266,7 +262,7 @@ func main() {
 	}
 }
 ```
-##### For statements with range clause:  
+##### For statements with range clause:
 
 Una instrucción for con una cláusula range recorre todos los elementos de un array, slice, string, map o valores recibidos en un canal. Por cada entrada este asigna valoros de iteración a las variables de iteración correspondientes y luego ejecuta el bloque.
 
@@ -275,7 +271,7 @@ RangeClause = [ ExpressionList "=" | IdentifierList ":=" ] "range" Expression .
 
 La expresión de la derecha en la clausula **range** se denomina range expression y puede ser un array, puntero a un array,slice,string, map, o un channel que permite operaciones de recepción
 
-For stament with range en array o slices:
+For statement con range en array o slices:
 ```go
 package main
 
