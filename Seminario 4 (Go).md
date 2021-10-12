@@ -4,7 +4,7 @@
 
 #### 1 - ¿Cuál es la forma de procesamiento del código fuente utilizada?
 
-​	El compilador de *Go* se divide lógicamente en cuatro etapas 
+Go es un lenguaje de programación concurrente, compilado, imperativo, estructurado, inspirado en la sintaxis del lenguaje C, que intenta ser dinámico como Python y con el rendimiento de  C o C++. El compilador de *Go* se divide lógicamente en cuatro etapas 
 
  1. **Análisis léxico y gramatical**
 
@@ -63,14 +63,19 @@ A continuación, el árbol de sintaxis abstracta se actualizará y compilara en 
 
 #### 2 - *Go* es un lenguaje moderno con muchísimas decisiones de diseño intencionales. ¿Que ventajas  y desventajas le da al lenguaje su forma de procesamiento? Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.
 
-*Go* es un lenguaje que se pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo que no tendrás que pasar años hojeando la documentación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar. Tiene una compilación rápida lo que mejora la productividad. Tiene un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir
-código más simple. Es un lenguaje de tipado estático con una librería standar bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado. Es libre y de código abierto (licencia BSD).
+*Go* es un lenguaje que se pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo que no tendrás que pasar años hojeando la documentación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar. Tiene una compilación rápida lo que mejora la productividad. Tiene un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir código más simple. Es un lenguaje de tipado estático con una librería standar bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado, Es libre y de código abierto (licencia BSD).
 
+Su forma de procesamiento le da una portabilidad que aunque no lleve una maquina virtual como Java, corre su código nativo en la mayoría de los procesadores con tecnologías actuales, prácticamente corren en casi la mayoría de la procesadores actuales. 
 
+Tiene código de compilación muy rápido, no es como C# que genera código intermedio, esto hace que su compilación sea muy rápido, y esto es una ventaja que ofrece este lenguaje. Por su sencillez es de gran rendimiento y esto le da una alta velocidad. ademas de soportar grandes conexiones simultaneas. Al presentar concurrencia  mediante gorutinas que permiten manejar múltiples procesos de forma concurrente. siendo esta de gran relevancia ya que su concurrencia nativa permite ejecutar diversos procesos de manera simultanea permitiendo la comunicación entre ellos a través de canales(channels) los cuales simplemente son variables alojadas en memoria. Esto sin duda es muy favorable en las plataformas en las que se usa. 
+
+Un factor importante a tener en cuenta es que con los nuevos procesadores que se incorporan cada vez mas núcleos e hilos, Go se presenta como el lenguaje escalable que puede sacar el máximo rendimiento en estos hardwares. 
+
+Un punto importante de decir de Go es que no presenta abstracciones, que si bien es un poco contradictorio porque como otros lenguajes lo implementan como C#, etc. Esto es un punto positivo porque elimina un nivel de abstracción que resulta en mas rapidez de compilación y ejecución   
 
 #### 3 - Realice un sumario sobre las características mas interesantes de la sintaxis de *Go*: (los 3)
 
-- Presente un Hello World (creatividad apreciada) 
+- **Presente un Hello World (creatividad apreciada)** 
 
   ```go
   package main
@@ -82,9 +87,101 @@ código más simple. Es un lenguaje de tipado estático con una librería standa
   }
   ```
 
-- 
+- **Indentación** 
 
-- 
+  Un ejemplo de indentacion en Go. 
+
+  ```go
+  package main
+  
+  import (
+  	"fmt"
+  	"strconv"
+  	"strings"
+  	"unicode"
+  )
+  
+  func main() {
+  
+  	text := "Oh! Welcome to Go language."
+  
+  	text = Indent(text, 6)
+  	fmt.Println(text)
+  
+  	text = Unindent(text, 3)
+  	fmt.Println(text)
+  
+  	text = Unindent(text, 10)
+  	fmt.Println(text)
+  
+  	text = IndentByRune(text, 10, '.')
+  	fmt.Println(text)
+  }
+  
+  // Sangrado de la entrada por indentación dada y runa .
+  func IndentByRune(input string, indent int, r rune) string {
+  	return strings.Repeat(string(r), indent) + input
+  }
+  
+  // Sangrado de la entrada por indentación dada
+  func Indent(input string, indent int) string {
+  	padding := indent + len(input)
+  	return fmt.Sprintf("% "+strconv.Itoa(padding)+"s", input)
+  }
+  
+  // Unindent desangra la cadena de entrada. En caso de que
+  // la entrada está sangrada por menos de espacios de "sangría"
+  // se elimina el mínimo de ambos.
+  func Unindent(input string, indent int) string {
+  	count := 0
+  	for _, val := range input {
+  		if unicode.IsSpace(val) {
+  			count++
+  		}
+  		if count == indent || !unicode.IsSpace(val) {
+  			break
+  		}
+  	}
+  
+  	return input[count:]
+  }
+  
+  ```
+
+  **Output**: 
+
+  ```
+        Oh! Welcome to Go language.
+     Oh! Welcome to Go language.
+  Oh! Welcome to Go language.
+  ..........Oh! Welcome to Go language.
+  ```
+
+  
+
+- **Otros elementos de interés en el lenguaje Go**
+
+  Los creadores de Go no querian discusiones sobre el estilo de codigo para el lenguaje Go. Por lo que desarrollaron una herramienta: `go fmt`. Es una impresora que impone el formato y el estilo de codigo estandar del codigo fuente. Es una Herramienta  de reescritura a nivel de sintaxis, una forma simple de refractorizacion. Debe ser utilizado por todo los desarrolladore de Go.  
+
+  La libertad de sintaxis de la que el programador se ve privado tiene ciertamente grandes ventajas al hacer que el código de Go sea uniforme y mejor legible y por lo tanto facilita la lectura y comprensión de código para programadores foráneas. La mayoría de los editores lo tienen integrado. Para la sangría de diferentes niveles en el codigo, la regla no es estricta, se pueden usar tabulaciones o espacios, una tabulación puede ser de 4 u 8 espacios. 
+
+  En la linea de comandos `gofmt -w program.go`  re-formatea el fichero `program.go`  sin el `-w` se muestran los cambios pero no se guardan. 
+
+  Esto puede ser útil para simples cambios(refractorizacion) en el código base.
+
+  **Ejemplos**:
+
+  ```
+  gofmt -r “(a) -> a” –w *.go
+  ```
+
+   Esto va a remplazar todos los  `(())` innecesarios con `()` en todos los fichero de go en el directorio actual. 
+
+  ```
+  gofmt –r ‘A.Func1(a,b) -> A.Func2(b,a)’ –w *.go
+  ```
+
+   Esto reemplaza `Func1` con `Func2` e intercambia los argumentos de la función
 
 
 
@@ -105,8 +202,6 @@ La declaración init a menudo será una declaración de variable corta(usando **
 de esta instrucción. El ciclo for para de iterar una vez que la condición booleana evaluada es falsa. A diferencia de otros lenguajes como *C*, *Java* o *Javascript* aquí no hay paréntesis que rodeen las tress componentes de la instrucción for y las llaves (**{}**) siempre son necesarias.
 
 Ejemplo de instrucción `for` básico en *Go*:
-
-
 
 ```go
 package main
@@ -174,7 +269,7 @@ func main() {
 	}
 }
 ```
-##### For statements with range clause:  
+##### For statements with range clause:
 
 Una instrucción for con una cláusula range recorre todos los elementos de un array, slice, string, map o valores recibidos en un canal. Por cada entrada este asigna valoros de iteración a las variables de iteración correspondientes y luego ejecuta el bloque.
 
@@ -183,7 +278,7 @@ RangeClause = [ ExpressionList "=" | IdentifierList ":=" ] "range" Expression .
 
 La expresión de la derecha en la clausula **range** se denomina range expression y puede ser un array, puntero a un array,slice,string, map, o un channel que permite operaciones de recepción
 
-For stament with range en array o slices:
+For statement con range en array o slices:
 ```go
 package main
 
@@ -856,23 +951,8 @@ func main() {
 ```
 
 
-- Creación de variables 
 
-- Ciclos ```for```
-
-- Indentacion 
-
-- Condiciones ```if``` con declaración de varaibles en la condición 
-
-- Funciones con múltiples retornos 
-
-- Otros elementos de las sintaxis que consideres relevante  a mostrar
-
-
-
-
-
-#### 4 - Presente los tipos nativos  (Daniel)
+#### 4 - Presente los tipos nativos
 
  1. **Enteros** 
 
@@ -937,9 +1017,9 @@ func main() {
 
   
 
-#### 5 - Comente sobre ```nil``` y los valores por defecto (Daniel) 
+#### 5 - Comente sobre ```nil``` y los valores por defecto
 
-En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slices, canales y funciones. Y corresponde a un valor no inicializado. `nil` no es mas que otro posible valor valido. Sin embargo `nil` no es un valor valido para los tipos básicos (enteros, coma flotante, boleanos, etc)ni tampoco para los `structs` 
+En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slices, canales y funciones. Y corresponde a un valor no inicializado. `nil` no es mas que otro posible valor valido. Sin embargo `nil` no es un valor válido para los tipos básicos (enteros, coma flotante, boleanos, etc) ni tampoco para los `structs` 
 
  
 
@@ -1151,7 +1231,7 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
       
 
 
-#### 6 - Arrays y slices en *Go*. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas? (Javier) 
+#### 6 - Arrays y slices en *Go*. Métodos nativos ```make```  ```append```  ``` copy``` Son los slice listas dinámicas?
 
  1. **Arrays**
 
@@ -1390,7 +1470,7 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
 
     La función ```copy()```, copia elementos de un mismo tipo, de un slice a otro, sobreescribiendo los correspodientes elementos del slice origen en el slice destino. La cantidad de elementos que se copian del origen al destino es el mínimo de los tamaños de ambos slices.
 
-#### 7 - Los tipos en *Go* son por referencia o por valor. Punteros en *Go*, que son , que se puede hacer con ellos , son seguros? Por que es seguro referenciar en *Go* a una variable local de un metodo?  Haga una comparacion con los punteros de *C* o *C++*. (Javier)
+#### 7 - ¿Los tipos en *Go* son por referencia o por valor? Punteros en *Go*, que son, que se puede hacer con ellos, son seguros? Por que es seguro referenciar en *Go* a una variable local de un método?  Haga una comparación con los punteros de *C* o *C++*. 
 
 
  1. **Tipos en *Go***
@@ -1460,7 +1540,7 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
 
  <br/>
 
-#### 8 - Que es el keyword ```defer``` ?  (Daniel)
+#### 8 - Que es el keyword ```defer``` ?
 
 El keyword `defer` es una sentencia que ejecuta el código que le indiquemos antes de que se termine la función, sin importar en que punto se termine la misma. 
 
@@ -1549,7 +1629,7 @@ Go
 
 Esto sucede porque la primera llamada a `defer` se ejecuta de ultimo. El orden es **LIFO**. Ultimo en entrar, primero en salir.
 
-#### 9 - Presente los ```structs``` en *Go* y comparelos con los de C. (David)
+#### 9 - Presente los ```structs``` en *Go* y comparelos con los de C.
 
 Go admite tipos personalizados o definidos por el usuario en forma de alias types o structs.
 Los componentes de datos que constituyen un **struct** se llaman fields o campos del struct.
@@ -1824,7 +1904,7 @@ cp.Call()
 ```
 
 
-#### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia. (David)
+#### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia.
 
 
 
@@ -2336,7 +2416,7 @@ Las interfaces en *Go* son implícitas, es decir si tienes los métodos de los q
 
 #### 12 - Implemente una jerarquía de clases del seminario de genericidad (Seminario 3) usando ```structs``` e ```interfaces``` .Trate de que los métodos solo reciban tipos nativos o interfaces . Les resulto mas cómodo que usar herencia? Les resulta mas seguro? Les resulta mas expresivo?
 
-Herarquía código:
+Jerarquía código:
 ```go
 type Recibir interface {
 	RecibirClase()
@@ -2384,7 +2464,7 @@ func (a AlumnoAyudante) ImpartirClase() {
 	fmt.Printf("El alumno %s  imparte la clase\n", a.name)
 }
 ```
-Ejemplo usando esta herarquía:
+Ejemplo usando esta jerarquía:
 ```go
 fernan := new(Profesor)
 	fernan.name = "Fernando"
@@ -2416,6 +2496,10 @@ El estudiante Alejandro recibe la clase
 El alumno Alejandro  imparte la clase
 El trabajador Julio cobra el salario
 ```
+
+Consideramos que es menos expresivo pues no queda declarada explícitamente la jerarquía, debido a las características del propio lenguaje. En cuanto a comodidad, consideramos que no es tan cómodo como otros lenguajes como *C#, C++*.
+
+
 #### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de *Go* y *C#*.
 
 El poder de separar el **que** del **como** es lo que hace a las interfaces tan útiles. Le permiten al programador ser más abstracto al referirse a un objeto y agrupar un conjunto de objetos que realizan una misma función bajo un mismo nombre, no importa si la realizan de diferentes formas, ya eso es responsabilidad del programador describirlo en cada clase que implemente la interfaz.
@@ -2496,7 +2580,7 @@ Panicking bad end
 
 Test completed
 
-#### 15 - *Go* no presente genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone?
+#### 15 - *Go* no presenta genericidad de tipos Que limitaciones les puede ofrecer esto al lenguaje? que alternativa propone?
 
 Hasta hoy en día, *Go* no posee concepto de **genericidad**. De todas maneras, la mayoría de casos pueden ser resueltos usando interfaces, especialmente la interfaz vacía, y un `switch` para decidir que hacer dependiendo del tipo. Este concepto de genericidad incrementa la complejidad del código y disminuye su rendimiento, por lo que cuando el rendimiento es muy importante es mejor y producirá código más fácil de leer, si definimos una función para cada tipo que sea necesario explícitamente.
 
