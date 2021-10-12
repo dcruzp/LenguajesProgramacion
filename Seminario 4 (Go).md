@@ -2290,6 +2290,15 @@ En este ejemplo la interface File contiene todos los métodos de  ReadWrite y Lo
 
 _**Composición de tipos vs Herencia**_
 
+A grandes rasgos la herencia es una relación "is-a" . La composición es a "tiene-a".
+
+### Haga una comparación entre composición de tipos y herencia
+
+La herencia se puede expresar de dos maneras: herencia de clases y herencia de interfaces. La herencia de clases define la implementación de un objeto en términos de la implementación de otro objeto. En resumen, es un mecanismo para compartir código y representación. Por el contrario, la herencia de interfaces describe cuándo se puede usar un objeto en el lugar de otro. No todos los lenguajes de programación implementan la herencia de la misma manera. En algunos lenguajes la herencia de clases y la de interfaces existen como un mismo mecanismo (Eiffel por ejemplo), mientras que en otros están separados (Java por ejemplo). Algunos solamente permiten heredar de un único objeto, esto se denomina herencia simple; mientras otros permiten heredar de varios objetos y a esto se lo denomina herencia múltiple.
+Asimismo los comportamientos y datos heredados pueden estar limitados al acceso con el que el objeto padre los definió, esto se denomina visibilidad. Se expresa a la herencia como una _**relación es-un/a**_. La composición es una manera de definir objetos dentro de otros objetos. De esta forma un objeto puede adquirir los comportamientos y datos de los otros objetos por los que está compuesto. Esto en cierta medida es más similar al concepto de herencia múltiple que al de simple. Se expresa a la composición como una relación _**tiene-un/a**_.
+
+### Valore ventajas y desventajas de la composición de tipos de Go y exprese su preferencia.
+
 
 #### 11 - Se puede decir que *Go* es un lenguaje que ofrece programación orientada a objetos? 
 
