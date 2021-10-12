@@ -572,6 +572,288 @@ func main() {
 }
 ```
 
+### Goroutines
+
+Las partes de una aplicación que se ejecutan de forma concurrente son conocidas como **goroutine** en Go. Aquí no hay correspondencia 1 a 1 entre las goroutines  y los threads del sistema operativo: una goroutine se mapea(multiplexa, ejecuta) en uno o más hilos(threads) según la disponibiliad
+Las **goroutines** son ligeras, muchos más ligeras que un **thread**. Las tareas concurrentes podrían incluir obtener datos de un servidor web, computar millones de dígitos de pi, o controlar un brazo de un robot. Esto se logra mediantes el **goroutine-scheduler** en tiempo de ejecucición(runtime) de Go. Las goroutines en Go usan muy poca memoria y recursos.
+
+Iniciar una goroutine es tan fácil como llamar a unan función. Todo lo que necesitas es el keyword go delante del llamado a la función. Cada vez que usuamos el keyword go se inicia una nueva goroutine. Todas las goroutines parecen ejecutarse al mismo tiempo. Sin embargo, es posible que técnicamente no se ejecuten al mismo tiempo, porque las computadoras solo tienen un número limitado de processing units. Las goroutines se ejecutan en el mismo espacio de memoria por lo que el acceso a la memoria compartida debe ser sincronizado.
+
+
+
+Ejemplo de goroutine:
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+)
+
+func say(s string) {
+	for i := 0; i < 2; i++ {
+		time.Sleep(100 * time.Millisecond)
+		fmt.Println(s)
+	}
+}
+
+func suma(a int, b int) {
+	time.Sleep(100 * time.Millisecond)
+	suma := a + b
+	fmt.Println(suma)
+}
+func main() {
+	go say("world")
+	go suma(1, 2)
+	say("hello")
+}
+```
+
+Si ejecutamos el código se debe imprimir en consola:
+```
+❯ go run main.go
+3
+world
+hello
+world
+hello
+```
+
+Lo ejecutamos otra vez :
+```
+❯ go run main.go
+hello
+3
+world
+hello
+```
+Y si lo volvemos a ejecutar podría dar otra salida pues depende mucho de que routine termine primero.
+
+
+**_Channels: para comunicación entre goroutines_**
+
+En el ejemplo anterior las goroutines se ejecutaban independientemente, sin comunicarse entre ellas. 
+Las **goroutines** podrían comunicarse mediante el uso compartido de 
+variables, pero esto se desaconseja mucho porque esta forma de trabajar presenta todas las dificultades
+con la memoria compartida en multihilo(multi-threading). 
+En cambio, Go tiene un tipo especial, channel, que es como un conducto(pipe) a través del cual se pueden enviar valores de un tipo y comunicarlo entre goroutines, evitando
+todos los problemas de la memoria compartida; el mismo acto de comunicarse a través de un channel garantiza la sincronización. Los datos son transmitidos en los channels: solo una goroutine tiene acceso a un elemento de datos en cualquier momento: por lo que se conoce como data races no puede ocurrir, por diseño. La propiedad de los datos( la habilidad de read y write) se transmite.
+
+Los channels cumplen con el doble propósito de la comunicación: el intercambio de un valor, con sincronización garantizando que dos goroutines estén en un stado conocido en cualquier momento.
+
+<img src="./imgs/img4.png" style="zoom:80%;" />
+
+La declaración de un channel de forma general es :
+```go
+var identifier chan datatype
+```
+
+El valor de un channel no inicializado es nil.
+
+Un channel solo puede transmitir elementos de datos de un tipo de datos(ej: chan int o chan string), pero todos los tipos se pueden utilizar en un canal, incluso la empty interface{} y un channal de channnel (útil en muchos casos)
+Un channel es también un tipo por referencia, por lo que se usa la función make() para alocar memoria para este. 
+
+Ejemplos de channels:
+
+channel de tipo string:
+```go
+var ch1 chan string
+ch1 = make(chan string)
+```
+channel de tipo int:
+```go
+chanOfChans := make(chan chan int)
+```
+
+channel de channels de int:
+```go
+chanOfChans := make(chan chan int)
+```
+channel de funciones:
+```go
+funcChan := chan func()
+```
+
+_Operador de comunicación **<-**_
+
+Este operador representa de manera muy intuitiva la transmisión de datos: la información fluye en la dirección
+de la flecha.
+
+_Haci el channel (sending):_
+
+```go
+ch <- int1
+```
+Significa que la variable int1 se envía a través del channel ch
+
+_Desde el channel (receiving):_
+
+```go
+int2 = <- ch
+```
+Significa que la variable int2 recibe la data(obtiene un nuevo value) desde el canal ch; esto supone que int2 ya está declarado; si no puede ser escrito como: **int2:=<-ch**
+
+```go
+<- ch
+```
+Puede usarse a si mismo para obtener el siguiente valor del canal, este valor se descarta efectivamente , pero se puede testear por lo que el siguiente es un código legal
+Por ejemplo :
+```go
+if <-ch != 1000 {
+…
+}
+```
+
+Ejemplo:
+```go
+package main
+
+import "fmt"
+
+func sum(s []int, c chan int) {
+	sum := 0
+	for _, v := range s {
+		sum += v
+	}
+	c <- sum // send sum to c
+}
+
+func main() {
+	s := []int{7, 2, 8, -9, 4, 0}
+
+	c := make(chan int)
+	go sum(s[:len(s)/2], c)
+	go sum(s[len(s)/2:], c)
+	x, y := <-c, <-c // receive from c
+
+	fmt.Println(x, y, x+y)
+}
+```
+
+El código de ejemplo suma los números en un slice, distribuyendo el trabajo entre dos goroutines. Una vez que ambas goroutines han completado su ejecución, calcula el resultado final.
+
+_Buffered Channels:_
+
+Los channels se pueden almacenar en buffer. Se le proporciona el lenght del buffer como segundo argumento de make para inicializar un buffered channel.
+
+```go
+ch := make(chan int, 100)
+```
+De esta forma envia un bloque al buffered channel  solo cuando el buffer está lleno y recibe el bloque cuando el buffer está vacío.
+
+Ejemplo
+```go
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan int, 2)
+	ch <- 1
+	ch <- 2
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
+}
+
+```
+Pero si hacemos hacemos 1 más que el lenght del buffer:
+```go
+package main
+
+import "fmt"
+
+func main() {
+	ch := make(chan int, 2)
+	ch <- 1
+	ch <- 2
+	ch <- 3
+	fmt.Println(<-ch)
+	fmt.Println(<-ch)
+}
+```
+
+Daría error :
+
+
+```
+fatal error: all goroutines are asleep - deadlock!
+```
+_Range y Close:_
+
+Un sender puede cerrar un channel para indicar que no se enviará más valores. Los receptores pueden probar si un canal se ha cerrado asignando un segundo parámetro a la expresión de recepción:
+```go
+v, ok := <-ch
+```
+ok es _false_ si no hay más valores que recibir y el canal está cerrado
+
+Ejemplo:
+```go
+package main
+
+import (
+	"fmt"
+)
+
+func fibonacci(n int, c chan int) {
+	x, y := 0, 1
+	for i := 0; i < n; i++ {
+		c <- x
+		x, y = y, x+y
+	}
+	close(c)
+}
+
+func main() {
+	c := make(chan int, 10)
+	go fibonacci(cap(c), c)
+	for i := range c {
+		fmt.Println(i)
+	}
+}
+```
+close(c) cierra el channel c
+
+El ciclo for i:= range c recibe valores del channel repetidamente hasta que es cerrado.
+
+Solo el sender puede cerrar el channel, nunca el receiver. Enviar a un channel cerrado puede causar panic.
+
+_Select in goroutines_:
+
+La declaración select permite que una goroutine espere en mútlples operaciones de comunicación
+
+Select bloque hasta que uno de sus casos pueda ejecutarse, luego ejecuta ese caso. Si hay varios listos elige uno al azar.
+
+Ejemplo:
+```go
+package main
+
+import "fmt"
+
+func fibonacci(c, quit chan int) {
+	x, y := 0, 1
+	for {
+		select {
+		case c <- x:
+			x, y = y, x+y
+		case <-quit:
+			fmt.Println("quit")
+			return
+		}
+	}
+}
+
+func main() {
+	c := make(chan int)
+	quit := make(chan int)
+	go func() {
+		for i := 0; i < 10; i++ {
+			fmt.Println(<-c)
+		}
+		quit <- 0
+	}()
+	fibonacci(c, quit)
+}
+```
 
 
 - Creación de variables 
@@ -585,6 +867,7 @@ func main() {
 - Funciones con múltiples retornos 
 
 - Otros elementos de las sintaxis que consideres relevante  a mostrar
+
 
 
 
@@ -1543,6 +1826,162 @@ cp.Call()
 
 #### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia. (David)
 
+
+
+_**Composición de tipos:**_
+La composición de tipos es un método usado para escribir segmentos de código reutilizables. 
+Se logra cuando los objetos se componen de otros objetos más pequeños con comportamientos particulares, es decir, los objetos más grandes con una funcionalidad más amplia se incrustan con objetos más pequeños con comportamientos específicos. El objetivo final de la composición es el mismo que el de la herencia; sin embargo, en lugar de heredar características de una clase / objeto principal, los objetos más grandes a este respecto se componen de los otros objetos y, por lo tanto, pueden usar su funcionalidad. De esta forma un objeto puede adquirir los comportamientos y datos de los otros objetos por los que está compuesto.
+
+Composición de structs en Go:
+
+```go
+// Golang program to store information
+// about games in structs and display them
+package main
+  
+import "fmt"
+  
+// We create a struct details to hold
+// generic information about games
+type details struct {
+    genre       string
+    genreRating string
+    reviews     string
+}
+  
+// We create a struct game to hold
+// more specific information about
+// a particular game
+type game struct {
+  
+    name  string
+    price string
+    // We use composition through
+    // embedding to add the
+    // fields of the details 
+    // struct to the game struct
+    details
+}
+  
+// this is a method defined
+// on the details struct
+func (d details) showDetails() {
+    fmt.Println("Genre:", d.genre)
+    fmt.Println("Genre Rating:", d.genreRating)
+    fmt.Println("Reviews:", d.reviews)
+}
+  
+// this is a method defined 
+// on the game struct
+// this method has access 
+// to showDetails() as well since
+// the game struct is composed
+// of the details struct
+func (g game) show() {
+    fmt.Println("Name: ", g.name)
+    fmt.Println("Price:", g.price)
+    g.showDetails()
+}
+  
+func main() {
+  
+    // defining a struct 
+    // object of Type details
+    action := details{"Action","18+", "mostly positive"}
+      
+    // defining a struct
+    // object of Type game
+    newGame := game{"XYZ","$125", action}
+  
+    newGame.show()
+}
+```
+
+Output:
+```
+Name:  XYZ
+Price: $125
+Genre: Action
+Genre Rating: 18+
+Reviews: mostly positive
+```
+
+Hemos creado dos structs _details_ y _game_ . El struct game es un tipo compuesto que tiene fields propios y también lo details. Esta composición se ha logrado mediante la incorporación de tipos, como resultado de lo cual el struct _details_ se convierte en una pieza de código reutilizable.
+
+
+Composición mediante incrustación de interfaces:
+
+Una interface puede integrarse con otra interface para formar interfaces compuestas. Si se implementan todas las interfaces en una interface compuesta, entonces también se dice que la interface compuesta es implementada por ese objeto.
+
+
+```go
+// Golang Program to implement composite interfaces
+package main
+  
+import "fmt"
+  
+type purchase interface {
+    sell()
+}
+  
+type display interface {
+    show()
+}
+  
+// We use the two previous
+// interfaces to form
+// The following composite 
+// interface through embedding
+type salesman interface {
+    purchase
+    display
+}
+  
+type game struct {
+    name, price    string
+    gameCollection []string
+}
+  
+// We use the game struct to
+// implement the interfaces
+func (t game) sell() {
+    fmt.Println("--------------------------------------")
+    fmt.Println("Name:", t.name)
+    fmt.Println("Price:", t.price)
+    fmt.Println("--------------------------------------")
+}
+func (t game) show() {
+    fmt.Println("The Games available are: ")
+    for _, name := range t.gameCollection {
+        fmt.Println(name)
+    }
+    fmt.Println("--------------------------------------")
+}
+   
+// This method takes the composite
+// interface as a parameter
+// Since the interface is composed
+// of purchase and display
+// Hence the child methods of those
+// interfaces can be accessed here
+func shop(s salesman) {
+    fmt.Println(s)
+    s.sell()
+    s.show()
+}
+  
+func main() {
+  
+    collection := []string{"XYZ", 
+        "Trial by Code", "Sea of Rubies"}
+    game1 := game{"ABC", "$125", collection}
+    shop(game1)
+  
+}
+```
+En primer lugar creamos 2 interfaces _purchase_ y _display_ con sus propios prototipos de métodos. Luego en _salesman_ hacemos una composición con _purshase_ y _display_. En el método _shop()_ hemos implementado la interface _salesman_ pasando un objeto de type _game_ en el método. Dado que este método implemena la interface compuesta, tenemos acceso a los métodos secundarios de las 2 interfaces que habíamos declarado inicialmente. De esta forma, se puede realizar una programación en Go eficaz a través de un código limpio y reutilizable.
+
+
 **Interfaces:**
 
 Go no es un lenguaje orientado a objetos "clásico" : esto no conoce el concepto de clases y herencia. Sin embargo, contiene un concepto muy flexible de interfaces, en el que muchos aspectos de la programación orientada a objetos puede estar disponible. Las interfaces en Go proporcionan una forma de especificar el comportamiento de un objeto: si algo puede hacer esto, entonces se puede usar aquí.
@@ -1848,6 +2287,8 @@ type File interface {
 ```
 
 En este ejemplo la interface File contiene todos los métodos de  ReadWrite y Lock, además del método Close().
+
+_**Composición de tipos vs Herencia**_
 
 
 #### 11 - Se puede decir que *Go* es un lenguaje que ofrece programación orientada a objetos? 
