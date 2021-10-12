@@ -1148,7 +1148,7 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
 
   7. ##### Valores por defecto para los Structs
 
-      Los tipos por defecto para las variables de los Strucut son los propos valores por defecto de cada uno de los tipos presentados. 
+      Los tipos por defecto para las variables de los Struct son los propios valores por defecto de cada uno de los tipos presentados. 
 
       ```go
       package main
@@ -1629,7 +1629,7 @@ Go
 
 Esto sucede porque la primera llamada a `defer` se ejecuta de ultimo. El orden es **LIFO**. Ultimo en entrar, primero en salir.
 
-#### 9 - Presente los ```structs``` en *Go* y comparelos con los de C.
+#### 9 - Presente los ```structs``` en *Go* y compárelos con los de C.
 
 Go admite tipos personalizados o definidos por el usuario en forma de alias types o structs.
 Los componentes de datos que constituyen un **struct** se llaman fields o campos del struct.
