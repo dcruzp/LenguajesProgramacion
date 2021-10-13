@@ -1,5 +1,33 @@
 # Seminario 4 (Go)
 
+**Integrantes:**
+
+***David Orlando De Quesada Oliva C311***
+
+***Javier Domínguez C312***
+
+***Daniel de la Cruz C311***
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 #### 1 - ¿Cuál es la forma de procesamiento del código fuente utilizada?
@@ -61,8 +89,14 @@ A continuación, el árbol de sintaxis abstracta se actualizará y compilara en 
 
 
 
+
+
+
+
 #### 2 - *Go* es un lenguaje moderno con muchísimas decisiones de diseño intencionales. ¿Que ventajas  y desventajas le da al lenguaje su forma de procesamiento? Tome en cuenta las plataformas sobre las que se usa para elaborar su respuesta.
 
+
+* 
 *Go* es un lenguaje que se pensó haciendo énfasis en la simplicidad lo que lo hace fácil de aprender. Su sintaxis es pequeña por lo que no tendrás que pasar años hojeando la documentación de referencia. El manejo de la memoria y la sintaxis es bastante liviana lo que lo hace fácil de usar. Tiene una compilación rápida lo que mejora la productividad. Tiene un rápido código compilado acercándose bastante a C en ese aspecto. Tiene soporte nativo para la concurrencia lo cual permite escribir código más simple. Es un lenguaje de tipado estático con una librería standar bastante consistente y fácil de instalar para el desarrollo haciendo uso de **go install**. Es autodocumentado, Es libre y de código abierto (licencia BSD).
 
 Su forma de procesamiento le da una portabilidad que aunque no lleve una maquina virtual como Java, corre su código nativo en la mayoría de los procesadores con tecnologías actuales, prácticamente corren en casi la mayoría de la procesadores actuales. 
@@ -72,6 +106,10 @@ Tiene código de compilación muy rápido, no es como C# que genera código inte
 Un factor importante a tener en cuenta es que con los nuevos procesadores que se incorporan cada vez mas núcleos e hilos, Go se presenta como el lenguaje escalable que puede sacar el máximo rendimiento en estos hardwares. 
 
 Un punto importante de decir de Go es que no presenta abstracciones, que si bien es un poco contradictorio porque como otros lenguajes lo implementan como C#, etc. Esto es un punto positivo porque elimina un nivel de abstracción que resulta en mas rapidez de compilación y ejecución   
+
+
+
+
 
 #### 3 - Realice un sumario sobre las características mas interesantes de la sintaxis de *Go*: (los 3)
 
@@ -949,6 +987,10 @@ func main() {
 	fibonacci(c, quit)
 }
 ```
+
+
+
+
 
 
 
