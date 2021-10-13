@@ -44,7 +44,7 @@ Go es un lenguaje de programación concurrente, compilado, imperativo, estructur
      SourceFile = PackageClause ";" { ImportDecl ";" } { TopLevelDecl ";" }
      ```
 
-    El analizador sintáctico estándar de Goland  utiliza la gramática de LALR. El resultado del análisis sintáctico es en realidad el árbol de sintaxis abstracta (AST). Cada AST corresponde a un archivo de *Go* independiente. Este árbol de sintaxis abstracta incluye el nombre del paquete, las constantes definidas, las estructuras y las funciones del archivo actual. 
+    El analizador sintáctico estándar de Golang  utiliza la gramática de LALR. El resultado del análisis sintáctico es en realidad el árbol de sintaxis abstracta (AST). Cada AST corresponde a un archivo de *Go* independiente. Este árbol de sintaxis abstracta incluye el nombre del paquete, las constantes definidas, las estructuras y las funciones del archivo actual. 
 
     Si se produce algún error de sintaxis durante el proceso de análisis, el analizador lo encontrará y el mensaje se imprimirá en la salida estándar. Todo el proceso de compilación también se abortará cuando se produzca un error.
 
@@ -1575,7 +1575,7 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
 
     Como podemos apreciar el valor de ```a``` y el valor del lugar en memoria a donde apunta ```intPtr``` son el mismo, al igual que la dirección en memoria de ```a``` y la dirección en memoria a donde apunta ```intPtr```.
 
-    De esta forma, dándole al programador el control sobre la distribución y gestión de la memoria, *Go* nos proporciona la capacidad para controlar totalmente el tamaño de una cierta colección de datos, el número de lugares en memoria reservados, así como los patrones de accesoa memoria, todas, herramientas muy importantes para desarrollar programas que se comporten correctamente. Sin embargo, a pesar de que *Go*, como la mayoría de lenguajes de bajo nivel como *C* y *C++*, tiene el concepto de punteros, no tiene la conocida aritmética de punteros, que nos permitiría en estos otros lenguajes usar el operador ```+``` para desplazarnos por los bytes, que están a partir de un puntero o para dezplazarnos por cada posición de un array, que es en su mayoría lo que conduce a accesos a memoria erróneos en C, causando errores en tiempos de ejecución como *segmentation fault*. Por esta razón los punteros son seguros, y el trabajo con memoria en*Go* es seguro, por lo que los punteros en *Go* se asemejan más a los tipos por referecia en *C#* o *Java*.
+    De esta forma, dándole al programador el control sobre la distribución y gestión de la memoria, *Go* nos proporciona la capacidad para controlar totalmente el tamaño de una cierta colección de datos, el número de lugares en memoria reservados, así como los patrones de acceso a memoria, todas, herramientas muy importantes para desarrollar programas que se comporten correctamente. Sin embargo, a pesar de que *Go*, como la mayoría de lenguajes de bajo nivel como *C* y *C++*, tiene el concepto de punteros, no tiene la conocida aritmética de punteros, que nos permitiría en estos otros lenguajes usar el operador ```+``` para desplazarnos por los bytes, que están a partir de un puntero o para dezplazarnos por cada posición de un array, que es en su mayoría lo que conduce a accesos a memoria erróneos en C, causando errores en tiempos de ejecución como *segmentation fault*. Por esta razón los punteros son seguros, y el trabajo con memoria en *Go* es seguro, por lo que los punteros en *Go* se asemejan más a los tipos por referecia en *C#* o *Java*.
 
     En *Go* es seguro referenciar una variable local en un método, ya que las variables que son referenciadas por algún puntero, continúan existiendo en memoria, mientras exista al menos 1 puntero referenciándola, por lo que su tiempo de vida no se limita al scope donde fue creada (por ejemplo una función).
 
@@ -1603,7 +1603,7 @@ Welcome
 to Go
 ```
 
-Lo que pasa es que el código de la sentencia `defer` se ejecuta de ultimo (es decir justo antes de que la funcio termine) sin importar el punto en donde se hace el `return` 
+Lo que pasa es que el código de la sentencia `defer` se ejecuta de último (es decir justo antes de que la función termine) sin importar el punto en donde se hace el `return` 
 
 No importa si la función termina normalmente o *"se interrumpe"*, todo lo que este agendado con `defer` se ejecutara antes de que termine la función. 
 
@@ -1637,9 +1637,9 @@ La sentencia de `defer` en *Go* es parecida a la sentencia *finally* de un *try/
 
 2. Evita olvidar cerrar archivos, bases de datos, etc 
 
-   El mismo ejemplo de arriba. Si hubieran muchas lineas de codigo y no existiera `defer`, a menudo se olvidaria terminar lo que empezamos si se extende el codigo. 
+   El mismo ejemplo de arriba. Si hubieran muchas lineas de codigo y no existiera `defer`, a menudo se olvidaría terminar lo que empezamos si se extende el código.
 
-   En el ejemplo se hablo de una base de datos, pero puede ser con un fichero o cualquier otra cosa que se deba terminar cada vez que se llame a un procedimiento. 
+   En el ejemplo se hablo de una base de datos, pero puede ser con un fichero o cualquier otra cosa que se deba terminar cada vez que se llame a un procedimiento.
 
 ##### Otras cosas sobre `defer`
 
@@ -1668,7 +1668,7 @@ al lenguaje
 Go
 ```
 
-Esto sucede porque la primera llamada a `defer` se ejecuta de ultimo. El orden es **LIFO**. Ultimo en entrar, primero en salir.
+Esto sucede porque la primera llamada a `defer` se ejecuta de último. El orden es **LIFO**. Ultimo en entrar, primero en salir.
 
 #### 9 - Presente los ```structs``` en *Go* y compárelos con los de C.
 
@@ -2545,8 +2545,54 @@ El alumno Alejandro  imparte la clase
 El trabajador Julio cobra el salario
 ```
 
-Consideramos que es menos expresivo pues no queda declarada explícitamente la jerarquía, debido a las características del propio lenguaje. En cuanto a comodidad, consideramos que no es tan cómodo como otros lenguajes como *C#, C++*.
+Consideramos que es menos expresivo pues no queda declarada explícitamente la jerarquía, debido a las características del propio lenguaje. En cuanto a comodidad, consideramos que no es tan cómodo como otros lenguajes como *C#, C++*. Y en cuanto a seguridad, no nos permite tratar ningún tipo derivado de una jerarquía como un tipo base, lo que evita potenciales errores en tiempo de ejecución como en *C#*, como se puede observar en el siguiente ejemplo:
 
+```C#
+using System;
+using Operaciones;
+
+
+namespace ConsoleApp1
+{
+    class Program
+    {
+        public class Perro {
+
+            public void Ladra(){
+                Console.WriteLine("ladra");
+            }
+        }
+    
+        public class Gato{
+            void Maulla(){
+                Console.WriteLine("miau");    
+            }
+        }
+    
+        static void Main(string[] args)
+        {
+            object[ ] animales;
+            var perros = new Perro[10];
+            for (int i = 0; i< perros.Length-1; i++) 
+               perros[i] = new Perro();
+            var gatos = new Gato[10];
+            for (int i = 0; i < gatos.Length-1; i++) 
+               gatos[i] = new Gato();
+            animales = perros;
+            animales[3] = gatos[3];
+            perros[3].Ladra();
+        }
+```
+
+justo en la línea:
+
+```C#
+animales[3] = gatos[3];
+```
+
+el compilador lanza una excepción:
+
+**Unhandled exception. System.ArrayTypeMismatchException: Attempted to access an element as a type incompatible with the array**.
 
 #### 13 - Argumente  el poder que tiene la programación con interfaces para el desarrollo de software, sobre todo el poder que ofrecen las interfaces de *Go* y *C#*.
 
