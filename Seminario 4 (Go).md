@@ -1190,7 +1190,7 @@ En Go, `nil` es el valor por defecto para los punteros, interfaces, mapas, slice
 
   7. ##### Valores por defecto para los Structs
 
-      Los tipos por defecto para las variables de los Strucut son los propos valores por defecto de cada uno de los tipos presentados. 
+      Los tipos por defecto para las variables de los Struct son los propios valores por defecto de cada uno de los tipos presentados. 
 
       ```go
       package main
@@ -1671,7 +1671,7 @@ Go
 
 Esto sucede porque la primera llamada a `defer` se ejecuta de ultimo. El orden es **LIFO**. Ultimo en entrar, primero en salir.
 
-#### 9 - Presente los ```structs``` en *Go* y comparelos con los de C.
+#### 9 - Presente los ```structs``` en *Go* y compárelos con los de C.
 
 Go admite tipos personalizados o definidos por el usuario en forma de alias types o structs.
 Los componentes de datos que constituyen un **struct** se llaman fields o campos del struct.
@@ -1905,7 +1905,7 @@ person1.Fullname()
 
 **Herencia Múltiple en Go:**
 
-La herencia múltiple es la habilidad de un tipo de obtener los comportamientos de más de un padre. En muchos lenguajes de programación como C# esto no se implementa debido a que en las herarquías basadas en clases esto introduce una complejidad adicional para el compilador. Pero en Go esto puede ser implementado de forma simple insertando todo los tipos "padres" necesarios debajo de la construcción:
+La herencia múltiple es la habilidad de un tipo de obtener los comportamientos de más de un padre. En muchos lenguajes de programación como C# esto no se implementa debido a que en las jerarquías basadas en clases esto introduce una complejidad adicional para el compilador. Pero en Go esto puede ser implementado de forma simple insertando todo los tipos "padres" necesarios debajo de la construcción:
 
 Pongamos un ejemplo:
 
@@ -1945,6 +1945,13 @@ cp.TakeAPicture()
 cp.Call()
 ```
 
+
+
+###### Aspectos en cuanto a los Structs (C vs Go)
+
+Los Structs tienen una declaración bastante parecida tanto en C como en Go, con las particularidades de las sintaxis en cada uno de estos lenguajes. En el lenguaje C los `structs` no se pueden comparar directamente, es decir no se generan los operadores de comparación para los tipos no aritméticos definidos, por lo tanto el programador tendrá que proporcionar dicho operador. Por otra parte en Go si pueden ser comparador 
+
+Otros aspecto a tener en cuenta es la composición de tipos. En C los structs no tienen el concepto de composición de tipos, mientras que en Go esta es una de las principales características que define al propio Go por no presentar herencia de tipos.
 
 #### 10.  Que es la composición de tipos? Que son las interfaces en *Go*? Haga una comparación entre composición de tipos y herencia. Valore ventejas y desventajas de la composición de tipos de *Go* y exprese su preferencia.
 
@@ -2420,7 +2427,7 @@ La herencia se puede expresar de dos maneras: herencia de clases y herencia de i
 Asimismo los comportamientos y datos heredados pueden estar limitados al acceso con el que el objeto padre los definió, esto se denomina visibilidad. Se expresa a la herencia como una _**relación es-un/a**_. La composición es una manera de definir objetos dentro de otros objetos. De esta forma un objeto puede adquirir los comportamientos y datos de los otros objetos por los que está compuesto. Esto en cierta medida es más similar al concepto de herencia múltiple que al de simple. Se expresa a la composición como una relación _**tiene-un/a**_.
 
 ### Valore ventajas y desventajas de la composición de tipos de Go y exprese su preferencia.
-La composición en Go es una forma muy elegante de generar funcionalidad a partir de componentes existentes. Consiste en meter unas estructuras dentro de otras y beneficiarse de sus atributos y funciones.En palabras de algunos, es “como la herencia, pero mejor“. En la típica herencia en otros lenguajes con clases y objetos se vuelve bastante engoroso luego de hablar hecho el diseño de clases cambiar algo sin que se afecte la estructura en general, por lo que se vuelve necesario pensarlo todo de antemano lo cual muchas veces no es muy viable en proyectos grandes. Con la composición de tipos en structs en Go se pueden cambiar los cambios sin tener que cambiar después la definición de otros, se vuelve más comodo para trabajar dinámicamente sin tener a priori un diseño consistente de la herarquía que se quiere.
+La composición en Go es una forma muy elegante de generar funcionalidad a partir de componentes existentes. Consiste en meter unas estructuras dentro de otras y beneficiarse de sus atributos y funciones. En palabras de algunos, es “como la herencia, pero mejor“. En la típica herencia en otros lenguajes con clases y objetos se vuelve bastante engoroso luego de hablar hecho el diseño de clases cambiar algo sin que se afecte la estructura en general, por lo que se vuelve necesario pensarlo todo de antemano lo cual muchas veces no es muy viable en proyectos grandes. Con la composición de tipos en structs en Go se pueden cambiar los cambios sin tener que cambiar después la definición de otros, se vuelve más comodo para trabajar dinámicamente sin tener a priori un diseño consistente de la jerarquía que se quiere.
 
 #### 11 - Se puede decir que *Go* es un lenguaje que ofrece programación orientada a objetos? 
 
