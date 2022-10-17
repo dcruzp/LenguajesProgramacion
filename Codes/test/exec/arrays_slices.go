@@ -14,7 +14,7 @@ func Testing_arr() {
 
 	//Range styled for loop
 	for i := range coll {
-		fmt.Printf("Array coll at index %d is %d\n", i, coll[i])
+		fmt.Printf("Array (Aquí probando, probando) coll at index %d is %d\n", i, coll[i])
 	}
 }
 
