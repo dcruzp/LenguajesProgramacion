@@ -1,8 +1,8 @@
 package main
 
-import (
-	"fmt"
-)
+#import (
+#	"fmt"
+#)
 
 func Testing_arr() {
 	var coll [10]int
